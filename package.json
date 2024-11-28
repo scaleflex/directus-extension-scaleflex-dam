@@ -1,0 +1,53 @@
+{
+	"name": "Scaleflex Dam",
+	"description": "Please enter a description for your extension",
+	"icon": "extension",
+	"version": "1.0.0",
+	"keywords": [
+		"directus",
+		"directus-extension",
+		"directus-extension-bundle"
+	],
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"directus:extension": {
+		"type": "bundle",
+		"path": {
+			"app": "dist/app.js",
+			"api": "dist/api.js"
+		},
+		"entries": [
+			{
+				"type": "interface",
+				"name": "DAM Interface",
+				"source": "src/DAM Interface/index.js"
+			},
+			{
+				"type": "module",
+				"name": "DAM Module",
+				"source": "src/DAM Module/index.js"
+			},
+			{
+				"type": "hook",
+				"name": "DAM Hook",
+				"source": "src/DAM Hook/index.js"
+			}
+		],
+		"host": "^10.10.0"
+	},
+	"scripts": {
+		"build": "directus-extension build",
+		"dev": "directus-extension build -w --no-minify",
+		"link": "directus-extension link",
+		"add": "directus-extension add"
+	},
+	"devDependencies": {
+		"@directus/extensions-sdk": "12.1.3",
+		"vue": "^3.5.13"
+	},
+	"dependencies": {
+		"vue-plugin-load-script": "^2.1.1"
+	}
+}
