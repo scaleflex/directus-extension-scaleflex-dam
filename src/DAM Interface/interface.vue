@@ -1,9 +1,73 @@
 <template>
   <link rel="stylesheet" type="text/css" href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css" />
 	<input :value="JSON.stringify(value)" type="hidden" id="sfx_value" />
-  <br>
+  <VButton @click="openModal" class="mb-3">Open DAM</VButton>
 
-  <VButton @click="openModal">Open DAM</VButton>
+  <div id="sfx-result">
+    <h3 class="mb-3"><strong>Asset Files</strong></h3>
+    <div v-for="(item, index) in value" :key="index" class="media-container">
+      <!-- Kiểm tra loại file và hiển thị phù hợp -->
+      <template v-if="isImage(item.file.type)">
+        <div class="sfx-item sfx-clear">
+          <div class="sfx-media-icon">
+            <img :src="item.link" :alt="item.file.name" class="media-item" />
+          </div>
+          <div class="item-info">
+            <strong>Filename: </strong>{{ item.file.name }} <br>
+            <strong>Type: </strong>{{ item.file.type }} <br>
+            <a :href="item.link" target="_blank"><strong>View Imgage</strong></a>
+          </div>
+          <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
+        </div>
+      </template>
+      <template v-else-if="isVideo(item.file.type)">
+        <div class="sfx-item sfx-clear">
+          <div class="sfx-media-icon">
+            <div class="icon">
+              <VIcon name="movie" />
+            </div>
+          </div>
+          <div class="item-info">
+            <strong>Filename: </strong>{{ item.file.name }} <br>
+            <strong>Type: </strong>{{ item.file.type }} <br>
+            <a :href="item.link" target="_blank"><strong>Watch Video</strong></a>
+          </div>
+          <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
+        </div>
+      </template>
+      <template v-else-if="isAudio(item.file.type)">
+        <div class="sfx-item sfx-clear">
+          <div class="sfx-media-icon">
+            <div class="icon">
+              <VIcon name="volume_up" />
+            </div>
+          </div>
+          <div class="item-info">
+            <strong>Filename: </strong>{{ item.file.name }} <br>
+            <strong>Type: </strong>{{ item.file.type }} <br>
+            <a :href="item.link" target="_blank"><strong>Listen Audio</strong></a>
+          </div>
+          <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="sfx-item sfx-clear">
+          <div class="sfx-media-icon">
+            <div class="icon">
+              <VIcon name="draft" />
+            </div>
+          </div>
+          <div class="item-info">
+            <strong>Filename: </strong>{{ item.file.name }} <br>
+            <strong>Type: </strong>{{ item.file.type }} <br>
+            <a :href="item.link" target="_blank"><strong>View File</strong></a>
+          </div>
+          <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
+        </div>
+      </template>
+    </div>
+  </div>
+
   <div :style="{ display: isOpen ? 'block' : 'none' }" class="modal-overlay" id="sfx-modal">
     <div class="modal">
       <div class="modal-header">
@@ -37,8 +101,19 @@ export default {
     title: {
       type: String,
       default: 'Scaleflex DAM Widget',
-    },
+    }
 	},
+  methods: {
+    isImage(type) {
+      return type.startsWith("image");
+    },
+    isVideo(type) {
+      return type.startsWith("video");
+    },
+    isAudio(type) {
+      return type.startsWith("audio");
+    },
+  },
 	emits: ['input', 'close'],
 	setup(props, { emit }) {
     const isOpen = ref(false);
@@ -49,7 +124,13 @@ export default {
     const sec = ref('');
     const directory = ref('');
 
-		return { openSfxDAM, openModal, closeModal };
+		return { openSfxDAM, openModal, closeModal, deleteItem };
+
+    function deleteItem(index) {
+      let value = props.value;
+      value.splice(index, 1);
+      emit('input', value);
+    }
 
     function closeModal() {
       document.getElementById("sfx-modal").setAttribute("style","display: none");
@@ -137,7 +218,12 @@ export default {
           .use(XHRUpload)
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
             console.dir(files);
-            emit('input', JSON.stringify(files));
+            if (props.value !== '') {
+              let newValue = props.value.concat(files);
+              emit('input', newValue);
+            } else {
+              emit('input', files);
+            }
             closeModal();
           })
           .on('complete', ({failed, uploadID, successful}) => {
@@ -206,4 +292,74 @@ export default {
 .modal-footer {
   text-align: right;
 }
+
+.sfx-clear {
+  zoom: 1;
+}
+
+.sfx-clear:after {
+  clear: both;
+  content: ".";
+  display: block;
+  height: 0;
+  line-height: 0;
+  visibility: hidden;
+}
+
+.sfx-media-icon {
+  float: left;
+}
+
+.sfx-media-icon img {
+  width: 80px;
+  display: block;
+  margin: 0 auto;
+  height: 80px;
+  object-fit: cover;
+}
+
+.sfx-item .item-info {
+  margin-left: 12px;
+  float: left;
+}
+
+.sfx-item .item-info a {
+  color: var(--theme--primary);
+}
+
+.sfx-item {
+  margin-bottom: 15px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  position: relative;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.sfx-media-icon .icon {
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+
+.sfx-media-icon .icon i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(50%, 50%);
+  font-size: 35px;
+}
+
+.btn-delete-item {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: red;
+  cursor: pointer;
+  padding: 2px;
+}
+
 </style>
