@@ -13,6 +13,59 @@
         <label for="sfx_token"><b>Root Directory</b></label>
         <VInput v-model="directory" />
       </div>
+      <div style="margin-bottom: 1rem">
+        <label for="limit"><b>Limit</b></label>
+        <VInput v-model="limit" type="number" />
+      </div>
+      <div style="margin-bottom: 1rem">
+        <label for="attributes"><b>Attributes</b></label>
+        <VSelect
+          v-model="attributes"
+          :items="[
+            {
+              text: 'Meta',
+              value: 'meta',
+            },
+            {
+              text: 'Tags',
+              value: 'tags',
+            },
+            {
+              text: 'Info',
+              value: 'info',
+            },
+          ]"
+          :multiplePreviewThreshold="4"
+          :multiple="true"
+        />
+      </div>
+      
+      <div style="margin-bottom: 1rem">
+        <label for="limitType"><b>Limit Type</b></label>
+        <VSelect
+          v-model="limitType"
+          :multiplePreviewThreshold="5"
+          :items="[
+            {
+              text: 'Image',
+              value: 'image',
+            },
+            {
+              text: 'Document',
+              value: 'document',
+            },
+            {
+              text: 'Video',
+              value: 'video',
+            },
+            {
+              text: 'Audio',
+              value: 'audio',
+            },
+          ]"
+          :multiple="true"
+        />
+      </div>
       <VButton :disabled="loading" @click="saveSfxToken">
         <span v-if="loading">Processing...</span>
         <span v-else>Save</span>
@@ -38,6 +91,9 @@ export default {
     const token = ref('');
     const sec = ref('');
     const directory = ref('');
+    const limit = ref('');
+    const attributes = ref([]);
+    const limitType = ref([]);
     const loading = ref(false);
     const collectionExists = ref(false);
 
@@ -101,6 +157,21 @@ export default {
           meta: { interface: 'input', special: null },
           field: 'directory',
         },
+        {
+          type: 'number',
+          meta: { interface: 'input', special: null },
+          field: 'limit',
+        },
+        {
+          type: 'string',
+          meta: { interface: 'input', special: null },
+          field: 'attributes',
+        },
+        {
+          type: 'string',
+          meta: { interface: 'input', special: null },
+          field: 'limitType',
+        },
       ];
 
       try {
@@ -119,7 +190,7 @@ export default {
     }
 
     async function createFirstData() {
-      const payload = { token: '', sec: '', directory: '/' }
+      const payload = { token: '', sec: '', directory: '/', limit: null, limitType: '', attributes: '' }
       try {
         await api.post(`/items/${props.collection}`, payload);
       } catch (error) {
@@ -135,6 +206,9 @@ export default {
           token.value = data.token || '';
           sec.value = data.sec || '';
           directory.value = data.directory || '';
+          limit.value = data.limit || 0;
+          attributes.value = data.attributes.split(",") || []
+          limitType.value = data.limitType.split(",") || []
         }
       } catch (error) {
         console.error(`Error loading data: ${error.message}`);
@@ -144,7 +218,9 @@ export default {
     async function saveSfxToken() {
       loading.value = true;
       try {
-        const payload = { token: token.value, sec: sec.value, directory: directory.value };
+        let limitTypeString = limitType.value.toString();
+        let attributesString = attributes.value.toString();
+        const payload = { token: token.value, sec: sec.value, directory: directory.value, limit: limit.value, attributes: attributesString, limitType: limitTypeString };
         await api.patch(`/items/${props.collection}/${props.id}`, payload);
         alert('Settings saved successfully!');
       } catch (error) {
@@ -157,7 +233,7 @@ export default {
 
     ensureCollectionExists().then(loadData);
 
-    return { token, sec, directory, saveSfxToken, loading };
+    return { token, sec, directory, saveSfxToken, loading, limit, attributes, limitType };
   },
 };
 </script>

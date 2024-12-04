@@ -123,6 +123,9 @@ export default {
     const token = ref('');
     const sec = ref('');
     const directory = ref('');
+    const limit = ref(null);
+    const attributes = ref([]);
+    const limitType = ref([]);
 
 		return { openSfxDAM, openModal, closeModal, deleteItem };
 
@@ -149,7 +152,10 @@ export default {
         const frConfig = {
           token: token.value,
           sec: sec.value,
-          directory: directory.value
+          directory: directory.value,
+          limit: limit.value,
+          limitType: limitType.value,
+          attributes: attributes.value
         }
         renderWidget(frConfig);
       });
@@ -165,6 +171,9 @@ export default {
         token.value = data.token || '';
         sec.value = data.sec || '';
         directory.value = data.directory || '';
+        limit.value = data.limit || null;
+        limitType.value = data.limitType || [];
+        attributes.value = data.attributes || [];
       } catch (error) {
         console.error(`Error loading data: ${error.message}`);
         alert('Failed to load Filerobot settings. Please check your configuration.');
