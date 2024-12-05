@@ -13,6 +13,18 @@
         <label for="sfx_token"><b>Root Directory</b></label>
         <VInput v-model="directory" />
       </div>
+      <div id="check_token_content">
+        <VButton
+          @click="checkToken()"
+          :small="true"
+          style="margin-bottom: 1rem"
+          :loading="getCheckTokenLoading()"
+          :disabled="getCheckTokenLoading()"
+        >
+          Check Token
+        </VButton>
+        <div style="display: inline-block" v-html="isValidStatus()"></div>
+      </div>
       <div style="margin-bottom: 1rem">
         <label for="limit"><b>Limit</b></label>
         <VInput v-model="limit" type="number" />
@@ -94,9 +106,10 @@ export default {
     const limit = ref('');
     const attributes = ref([]);
     const limitType = ref([]);
+    const isValid = ref(null);
     const loading = ref(false);
     const collectionExists = ref(false);
-
+    const checkTokenLoading = ref(false);
     async function ensureCollectionExists() {
       loading.value = true;
       const collectionName = props.collection;
@@ -198,6 +211,10 @@ export default {
       }
     }
 
+    function isNull(value) {
+      return value === '' || value === null 
+    }
+
     async function loadData() {
       try {
         if (collectionExists) {
@@ -207,8 +224,8 @@ export default {
           sec.value = data.sec || '';
           directory.value = data.directory || '';
           limit.value = data.limit || 0;
-          attributes.value = data.attributes.split(",") || []
-          limitType.value = data.limitType.split(",") || []
+          attributes.value = isNull(data.attributes) ? [] : data.attributes.split(",")
+          limitType.value = isNull(data.limitType) ? [] : data.limitType.split(",")
         }
       } catch (error) {
         console.error(`Error loading data: ${error.message}`);
@@ -218,8 +235,9 @@ export default {
     async function saveSfxToken() {
       loading.value = true;
       try {
-        let limitTypeString = limitType.value.toString();
-        let attributesString = attributes.value.toString();
+        let limitTypeString = limitType.value ? limitType.value.toString() : null;
+        let attributesString = attributes.value ? attributes.value.toString() : null;
+      
         const payload = { token: token.value, sec: sec.value, directory: directory.value, limit: limit.value, attributes: attributesString, limitType: limitTypeString };
         await api.patch(`/items/${props.collection}/${props.id}`, payload);
         alert('Settings saved successfully!');
@@ -231,9 +249,43 @@ export default {
       }
     }
 
+    async function checkToken()
+    {
+      const url = `https://api.filerobot.com/${token.value}/v4/key/${sec.value}`;
+      try {
+        checkTokenLoading.value = true;
+        isValid.value = null;
+        const response = await fetch(url);
+
+        if (response.status == 200) isValid.value = true;
+        else isValid.value = false;
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        
+      } catch (err) {
+        checkTokenLoading.value = false;
+        return null; // Return null in case of error
+      } finally {
+        checkTokenLoading.value = false;
+      }
+    }
+
+    function getCheckTokenLoading() {
+      return checkTokenLoading.value
+    }
+
+    function isValidStatus()
+    {
+      if (isValid.value == true) return '<span style="margin-left: 10px;color: green;">Validated</span>';
+      else if (isValid.value == false) return '<span style="margin-left: 10px;color: red;">invalidated</span>';
+      else return '';
+    }
+
     ensureCollectionExists().then(loadData);
 
-    return { token, sec, directory, saveSfxToken, loading, limit, attributes, limitType };
+    return { token, sec, directory, saveSfxToken, loading, limit, attributes, limitType, checkToken, getCheckTokenLoading, isValidStatus };
   },
 };
 </script>
@@ -241,5 +293,8 @@ export default {
 <style>
 .sfx-padding-box {
   padding: 0 32px 32px;
+}
+#check_token_content {
+  position: relative;
 }
 </style>
