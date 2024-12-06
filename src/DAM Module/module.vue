@@ -171,7 +171,7 @@ export default {
           field: 'directory',
         },
         {
-          type: 'number',
+          type: 'integer',
           meta: { interface: 'input', special: null },
           field: 'limit',
         },

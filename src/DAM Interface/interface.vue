@@ -225,7 +225,7 @@ export default {
     function addAssetsDisabled () {
       if (limit.value == getTotalAssets() && getTotalAssets() > 0) return true;
       return isLoading.value;
-    };
+    }
 
     function getIsLoading() {
       return isLoading.value;
