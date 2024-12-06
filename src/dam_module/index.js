@@ -9,5 +9,11 @@ export default {
 			path: '',
 			component: ModuleComponent,
 		},
+		{
+			name: 'page',
+			path: ':page',
+			props: true,
+			component: ModuleComponent,
+		},
 	]
 };

@@ -1,5 +1,15 @@
 <template>
   <private-view title="Scaleflex DAM">
+    <template #navigation>
+      <div style="margin-top: 20px">
+          <div style="display: flex; flex-direction: column; align-content: center">
+            <div style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 10px; color: var(--theme--primary);">
+              <VIcon name="settings" :small="true" style="margin-top: 2px"/>
+              <span style="margin-left: 4px; font-size: 14px;  display: block">Dam Configuration</span>
+            </div>
+          </div>
+      </div>
+    </template>
     <VCard style="margin:0 32px 32px 32px; max-width: 100%">
       <VCardTitle style="padding: 15px">
         About Scaleflex DAM
@@ -16,6 +26,10 @@
       </VCardText>
     </VCard>
     <div class="sfx-padding-box">
+      <div style="font-size: 18px; margin-bottom: 20px">
+        <h2 >Base configurations</h2>
+        <p class="guide-text">The following fields are required to integrate the Scaleflex DAM Widget within Directus.</p>
+      </div>
       <div style="margin-bottom: 1rem">
         <label for="sfx_token"><b>Token</b></label>
         <VInput v-model="token"/>
@@ -34,6 +48,11 @@
         <label for="sfx_token"><b>Root Directory</b></label>
         <VInput v-model="directory"/>
         <p class="guide-text">The directory in your Hub, where the files will be stored</p>
+      </div>
+      <VDivider style="margin: 20px 0" />
+      <div style="font-size: 18px; margin-bottom: 20px">
+        <h2 >Advanced configuration</h2>
+        <p class="guide-text">This configuration will be overridden if 'Use Custom Setting' is activated in each Field Interface.</p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="limit"><b>Limit</b></label>
