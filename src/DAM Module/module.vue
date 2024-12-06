@@ -1,12 +1,18 @@
 <template>
   <private-view title="Scaleflex DAM">
     <VCard style="margin:0 32px 32px 32px; max-width: 100%">
-      <VCardTitle style="padding: 10px">
+      <VCardTitle style="padding: 15px">
         About Scaleflex DAM
       </VCardTitle>
-      <VCardText style="padding: 10px; width: 100%">
-        Scaleflex DAM(Filerobot) is a scalable and performance-oriented Digital Asset Management platform with integrated image and video optimizers to store, organize,
-        optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.
+      <VCardText style="padding: 15px; width: 100%; position: relative">
+        <div style="display: flex; align-items: center; justify-content: start; margin-bottom: 20px">
+          <img src="https://frzjaqrbb.filerobot.com/plugins_assets/scaleflex.svg" />
+        </div>
+        <div style="z-index: 999">
+          Scaleflex DAM(Filerobot) is a scalable and performance-oriented Digital Asset Management platform with integrated image and video optimizers to store, organize,
+          optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.
+        </div>
+        <img src="https://frzjaqrbb.filerobot.com/plugins_assets/dam.svg" style="position: absolute; right: 10px; top: -40px; width: 180px; z-index: 1; opacity: 0.4;" />
       </VCardText>
     </VCard>
     <div class="sfx-padding-box">
@@ -100,9 +106,7 @@
           <button @click="closeDialog">Close</button>
         </v-card-actions>
       </v-card>
-    </VDialog>
-
-  </private-view>
+    </VDialog></private-view>
 </template>
 
 <script>
@@ -325,7 +329,8 @@ export default {
       isValid,
       dialogVisible,
       closeDialog,
-      dialogText
+      dialogText,
+      Scaleflex
     };
   },
 };
