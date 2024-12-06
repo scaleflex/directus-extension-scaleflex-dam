@@ -125,7 +125,7 @@
           <VIcon name="save" />
           <span style="margin-left: 5px">Save Settings</span>
         </VButton>
-        <VButton style="margin-left: 15px" v-if="!loading" @click="confirmResetAllSettings" :outlined="true" :danger="true">
+        <VButton style="margin-left: 15px" v-if="!loading && token !== '' && sec !== ''" @click="confirmResetAllSettings" :outlined="true" :danger="true">
           <VIcon name="restart_alt" />
           <span style="margin-left: 5px">Reset all settings</span>
         </VButton>
