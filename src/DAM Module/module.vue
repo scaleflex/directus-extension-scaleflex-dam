@@ -1,11 +1,20 @@
 <template>
-  <private-view title="Scaleflex DAM Configuration">
+  <private-view title="Scaleflex DAM">
+    <VCard style="margin:0 32px 32px 32px; max-width: 100%">
+      <VCardTitle style="padding: 10px">
+        About Scaleflex DAM
+      </VCardTitle>
+      <VCardText style="padding: 10px; width: 100%">
+        Scaleflex DAM(Filerobot) is a scalable and performance-oriented Digital Asset Management platform with integrated image and video optimizers to store, organize,
+        optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.
+      </VCardText>
+    </VCard>
     <div class="sfx-padding-box">
       <div style="margin-bottom: 1rem">
         <label for="sfx_token"><b>Token</b></label>
         <VInput v-model="token"/>
-        <p class="guide-text">Scaleflex DAM token from your account, you can obtain a token by fill in <a
-            href="https://www.scaleflex.com/contact-us">Scaleflex contact page</a></p>
+        <p class="guide-text">Scaleflex DAM token from your account, you can obtain a token by fill in <a style="color: var(--theme--primary)"
+            href="https://www.scaleflex.com/contact-us" target="_blank">Scaleflex contact page</a></p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="sfx_sec"><b>Security Template</b></label>
@@ -20,22 +29,10 @@
         <VInput v-model="directory"/>
         <p class="guide-text">The directory in your Hub, where the files will be stored</p>
       </div>
-      <!--      <div id="check_token_content">-->
-      <!--        <VButton-->
-      <!--          @click="checkToken()"-->
-      <!--          :small="true"-->
-      <!--          style="margin-bottom: 1rem"-->
-      <!--          :loading="getCheckTokenLoading()"-->
-      <!--          :disabled="getCheckTokenLoading()"-->
-      <!--        >-->
-      <!--          Check Token-->
-      <!--        </VButton>-->
-      <!--        <div style="display: inline-block" v-html="isValidStatus()"></div>-->
-      <!--      </div>-->
       <div style="margin-bottom: 1rem">
         <label for="limit"><b>Limit</b></label>
         <VInput v-model="limit" type="number"/>
-        <p class="guide-text">The max number of files that can be added to a single field</p>
+        <p class="guide-text">The max number of files that can be added to a single field, <b style="color:tomato">default: 0(unlimited)</b></p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="attributes"><b>Attributes</b></label>
