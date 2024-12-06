@@ -11,6 +11,7 @@ export default {
 			field: 'custom',
 			type: 'boolean',
 			name: 'Use custom setting',
+			recommendedDisplays: ["scaleflex-dam-display"],
 			schema: {
 				default_value: false,
 			},

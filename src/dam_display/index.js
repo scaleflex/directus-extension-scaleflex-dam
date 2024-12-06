@@ -2,21 +2,23 @@ import DisplayComponent from './display.vue';
 
 export default {
 	id: 'scaleflex-dam-display',
-	name: 'Display Images',
+	name: 'DAM Assets',
 	icon: 'image',
-	description: 'Display The Current Images',
+	description: 'Display DAM assets',
 	component: DisplayComponent,
 	options: [
 		{
-			field: 'show_images',
-			type: 'boolean',
-			name: 'Show Images as well',
+			field: 'limit',
+			type: 'integer',
+			name: 'Limit assets on Display',
 			meta: {
-				interface: 'boolean',
+				interface: 'input',
 				options: {
-					label: 'Yes',
-				},
-				width: 'half',
+					min: 0,
+				}
+			},
+			schema: {
+				default_value: 2,
 			},
 		},
 	],
