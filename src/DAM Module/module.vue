@@ -87,13 +87,14 @@
         <p class="guide-text">File types limit when use Widget</p>
       </div>
       <div v-if="!isValid" style="margin-bottom: 1rem">
-        Config như shit
+        Config is not validate
       </div>
       <VButton :disabled="loading" @click="saveSfxToken">
         <span v-if="loading">Processing...</span>
         <span v-else>Update</span>
       </VButton>
     </div>
+
     <VDialog v-model="dialogVisible">
       <template #activator="{ on }">
         <button @click="on">Open Dialog</button>
@@ -102,10 +103,11 @@
         <v-card-title>Dialog Title</v-card-title>
         <v-card-text>Centered dialog content goes here.</v-card-text>
         <v-card-actions>
-          <button @click="dialogVisible = false">Close</button>
+          <button @click="closeDialog">Close</button>
         </v-card-actions>
       </v-card>
     </VDialog>
+
   </private-view>
 </template>
 
@@ -129,9 +131,11 @@ export default {
     const limit = ref('');
     const attributes = ref([]);
     const limitType = ref([]);
-    const isValid = ref(null);
+    const isValid = ref(true);
     const loading = ref(false);
     const collectionExists = ref(false);
+    const dialogVisible = ref(true);
+
 
     async function ensureCollectionExists() {
       loading.value = true;
@@ -312,8 +316,11 @@ export default {
       }
     }
 
+    function closeDialog () {
+      dialogVisible.value = false;
+    }
+
     ensureCollectionExists().then(loadData);
-    const dialogVisible = true;
     return {
       token,
       sec,
@@ -324,7 +331,8 @@ export default {
       attributes,
       limitType,
       isValid,
-      dialogVisible
+      dialogVisible,
+      closeDialog
     };
   },
 };
