@@ -96,12 +96,9 @@
     </div>
 
     <VDialog v-model="dialogVisible">
-      <template #activator="{ on }">
-        <button @click="on">Open Dialog</button>
-      </template>
       <v-card class="dialog-content">
-        <v-card-title>Dialog Title</v-card-title>
-        <v-card-text>Centered dialog content goes here.</v-card-text>
+        <v-card-title>Scaleflex DAM</v-card-title>
+        <v-card-text>{{dialogText}}</v-card-text>
         <v-card-actions>
           <button @click="closeDialog">Close</button>
         </v-card-actions>
@@ -134,7 +131,8 @@ export default {
     const isValid = ref(true);
     const loading = ref(false);
     const collectionExists = ref(false);
-    const dialogVisible = ref(true);
+    const dialogVisible = ref(false);
+    const dialogText = ref(null);
 
 
     async function ensureCollectionExists() {
@@ -277,10 +275,10 @@ export default {
 
     async function saveSfxToken() {
       loading.value = true;
-      isValid.value = checkToken();
-
+      isValid.value = await checkToken();
+      dialogVisible.value = true;
       if (!isValid.value) {
-
+        dialogText.value = 'Config is not validate'
       } else {
         try {
           let limitTypeString = limitType.value ? limitType.value.toString() : null;
@@ -295,9 +293,11 @@ export default {
             limitType: limitTypeString
           };
           await api.patch(`/items/${props.collection}/${props.id}`, payload);
-          alert('Settings saved successfully!');
+          // alert('Settings saved successfully!');
+          dialogText.value = 'Settings saved successfully!';
         } catch (error) {
-          alert('Failed to save settings. Please try again.');
+          // alert('Failed to save settings. Please try again.');
+          dialogText.value = 'Failed to save settings. Please try again.';
           console.error(`Error saving data: ${error.message}`);
         } finally {
           loading.value = false;
@@ -332,7 +332,8 @@ export default {
       limitType,
       isValid,
       dialogVisible,
-      closeDialog
+      closeDialog,
+      dialogText
     };
   },
 };
