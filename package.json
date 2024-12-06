@@ -33,6 +33,11 @@
 				"type": "hook",
 				"name": "DAM Hook",
 				"source": "src/DAM Hook/index.js"
+			},
+			{
+				"type": "display",
+				"name": "DAM Display",
+				"source": "src/DAM Display/index.js"
 			}
 		],
 		"host": "^10.10.0"
