@@ -14,8 +14,9 @@
                 <VIcon name="drag_handle"/>
               </div>
               <div class="sfx-media-icon" target="_blank">
-                <a :href="item.cdn">
+                <a :href="item.cdn" target="_blank">
                   <img :src="createThumbnail(item.cdn)" :alt="item.name" class="media-item"/>
+                  <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
                 </a>
               </div>
               <div class="item-info">
@@ -34,8 +35,9 @@
                 <VIcon name="drag_handle"/>
               </div>
               <div class="sfx-media-icon" target="_blank">
-                <a :href="item.cdn">
+                <a :href="item.cdn" target="_blank">
                   <VIcon class="item-icon" name="videocam"/>
+                  <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
                 </a>
               </div>
               <div class="item-info">
@@ -54,8 +56,9 @@
                 <VIcon name="drag_handle"/>
               </div>
               <div class="sfx-media-icon" target="_blank">
-                <a :href="item.cdn">
-                  <VIcon class="item-icon" name="play_circle"/>
+                <a :href="item.cdn" target="_blank">
+                  <VIcon  class="item-icon" name="play_circle"/>
+                  <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
                 </a>
               </div>
               <div class="item-info">
@@ -74,8 +77,9 @@
                 <VIcon name="drag_handle"/>
               </div>
               <div class="sfx-media-icon" target="_blank">
-                <a :href="item.cdn">
+                <a :href="item.cdn" target="_blank">
                   <VIcon class="item-icon" name="draft"/>
+                  <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
                 </a>
               </div>
               <div class="item-info">
@@ -103,7 +107,7 @@
     <VDialog v-model="dialogVisible">
       <v-card class="dialog-content">
         <v-card-title>Scaleflex DAM</v-card-title>
-        <v-card-text>Are you sure you would like to delete all? Please confirm your decision to proceed.</v-card-text>
+        <v-card-text>Are you sure you want to delete everything? Please confirm to proceed.</v-card-text>
         <v-card-actions>
         <VButton
           @click="removeAllAssets"
@@ -157,7 +161,16 @@
     </div>
   </div>
   <div v-else>
-    <a href="/admin/scaleflex-dam-setting" target="_blank">Please setting config</a>
+    <VCard style="max-width: 100%; margin-top: 20px">
+      <VCardTitle style="color: tomato">
+        <VIcon name="report" :small="true"/>
+        <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
+      </VCardTitle>
+      <VCardText style="max-width: 100%; padding-bottom: 25px">
+        Please visit the <a style="text-decoration: underline; color: dodgerblue" href="/admin/scaleflex-dam-setting" target="_blank">Scaleflex DAM Configuration</a>
+        to add your Token and Template ID before browsing assets.
+      </VCardText>
+    </VCard>
   </div>
 
   <div :style="{ display: isOpen ? 'block' : 'none' }" class="modal-overlay" id="sfx-modal">
@@ -353,8 +366,7 @@ export default {
           attributes.value = data.attributes ? data.attributes.split(",") : [];
         }
       } catch (error) {
-        console.error(`Error loading data: ${error.message}`);
-        alert('Failed to load Filerobot settings. Please check your configuration.');
+
       }
     }
 
@@ -537,7 +549,6 @@ export default {
 
     function renderWidget(frConfig) {
       if (!window.Filerobot) {
-        console.error('Filerobot Widget is not loaded. Please check the script.');
         return;
       }
 
@@ -615,16 +626,6 @@ export default {
   margin-left: 0.5rem;
 }
 
-.flex {
-  display: flex;
-  flex-wrap: wrap; /* Ensures the columns wrap in smaller viewports */
-  gap: 20px
-}
-
-.flex-justify-content-end {
-  justify-content: flex-end;
-}
-
 #sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {
   top: 0;
 }
@@ -675,7 +676,45 @@ export default {
 }
 
 .sfx-media-icon {
-  float: left;
+  width: 34px;
+  height: 34px;
+  border-radius: 25%;
+  position: relative; /* Ensure the pseudo-element is positioned relative to this container */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-item-icon {
+  position: absolute!important;
+  top: 7px;
+  left: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 9999;
+}
+
+.sfx-media-icon::after {
+  content: ''; /* Empty content to create the pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  height: 100%;
+  background-color: #0c3745;
+  opacity: 0; /* Start with no visibility */
+  transition: opacity 0.3s ease; /* Smooth fade in/out effect */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+}
+
+.sfx-media-icon:hover .media-item-icon{
+  opacity: 1;
+}
+
+.sfx-media-icon:hover::after {
+  opacity: 0.85; /* Show the white blur overlay on hover */
 }
 
 .sfx-media-icon img {
@@ -684,9 +723,8 @@ export default {
   display: block;
   margin: 0 auto;
   object-fit: cover;
-  border-radius: 100%;
+  border-radius: 25%;
 }
-
 
 .sfx-item .item-info {
   margin-left: 12px;

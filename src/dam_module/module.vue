@@ -40,13 +40,13 @@
       </div>
       <div style="margin-bottom: 1rem">
         <label for="sfx_token"><b>Token</b></label>
-        <VInput v-model="token"/>
+        <VInput :disabled="loading" v-model="token"/>
         <p class="guide-text">Scaleflex DAM token from your account, you can obtain a token by fill in <a style="color: var(--theme--primary)"
             href="https://www.scaleflex.com/contact-us" target="_blank">Scaleflex contact page</a></p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="sfx_sec"><b>Security Template</b></label>
-        <VInput v-model="sec"/>
+        <VInput :disabled="loading" v-model="sec"/>
         <p class="guide-text">To load the Scaleflex DAM Widget or Scaleflex DAM Image Editor, you you need to create a
           Security Template in your Asset Hub first,
           in order for your Directus instantiation of the Widget to obtain proper credentials and access your
@@ -54,7 +54,7 @@
       </div>
       <div style="margin-bottom: 1rem">
         <label for="sfx_token"><b>Root Directory</b></label>
-        <VInput v-model="directory"/>
+        <VInput :disabled="loading" v-model="directory"/>
         <p class="guide-text">The directory in your Hub, where the files will be stored</p>
       </div>
       <VDivider style="margin: 20px 0" />
@@ -64,13 +64,14 @@
       </div>
       <div style="margin-bottom: 1rem">
         <label for="limit"><b>Limit</b></label>
-        <VInput min="0" v-model="limit" type="number"/>
+        <VInput :disabled="loading" min="0" v-model="limit" type="number"/>
         <p class="guide-text">The max number of files that can be added to a single field, <b style="color:tomato">default: 0(unlimited)</b></p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="attributes"><b>Attributes</b></label>
         <VSelect
             v-model="attributes"
+            :disabled="loading"
             :items="[
             {
               text: 'Meta',
@@ -95,6 +96,7 @@
         <label for="limitType"><b>Limit Type</b></label>
         <VSelect
             v-model="limitType"
+            :disabled="loading"
             :multiplePreviewThreshold="5"
             :items="[
             {
@@ -118,18 +120,40 @@
         />
         <p class="guide-text">File types limit when use Widget</p>
       </div>
-      <VButton :disabled="loading" @click="saveSfxToken">
-        <span v-if="loading">Processing...</span>
-        <span v-else>Update</span>
-      </VButton>
+      <div>
+        <VButton v-if="!loading" @click="saveSfxToken">
+          <VIcon name="save" />
+          <span style="margin-left: 5px">Save Settings</span>
+        </VButton>
+        <VButton style="margin-left: 15px" v-if="!loading" @click="confirmResetAllSettings" :outlined="true" :danger="true">
+          <VIcon name="restart_alt" />
+          <span style="margin-left: 5px">Reset all settings</span>
+        </VButton>
+        <VButton :disabled="loading" v-if="loading">
+          <span>Processing...</span>
+        </VButton>
+      </div>
     </div>
 
     <VDialog v-model="dialogVisible">
       <v-card class="dialog-content">
-        <v-card-title>Scaleflex DAM</v-card-title>
-        <v-card-text>{{dialogText}}</v-card-text>
+        <v-card-title>
+          <div style="display: flex; justify-content: start; align-items: center;">
+            <VIcon color="gray" v-if="dialogType === 'info'" name="info" />
+            <VIcon color="tomato" v-if="dialogType === 'warning'" name="warning" />
+            <VIcon color="green" v-if="dialogType === 'success'" name="check_circle" />
+            <VIcon color="red" v-if="dialogType === 'danger'" name="error" />
+            <span style="margin-left: 5px;">{{dialogTitle}}</span>
+          </div>
+        </v-card-title>
+        <v-card-text style="padding:10px 35px;">{{dialogText}}</v-card-text>
         <v-card-actions>
-          <button @click="closeDialog">Close</button>
+          <VButton :outlined="true" v-if="dialogReset" @click="closeDialog">Cancel</VButton>
+          <VButton :outlined="true" v-if="!dialogReset" @click="closeDialog">Close</VButton>
+          <VButton :danger="true" v-if="dialogReset" @click="resetAllSettings">Reset</VButton>
+          <VButton v-if="(dialogType === 'warning' || dialogType === 'danger') && !dialogReset" @click="closeDialog">
+            Double check Settings
+          </VButton>
         </v-card-actions>
       </v-card>
     </VDialog></private-view>
@@ -159,7 +183,10 @@ export default {
     const loading = ref(false);
     const collectionExists = ref(false);
     const dialogVisible = ref(false);
+    const dialogType = ref("info");
+    const dialogTitle = ref(null);
     const dialogText = ref(null);
+    const dialogReset = ref(false);
 
 
     async function ensureCollectionExists() {
@@ -298,11 +325,54 @@ export default {
       }
     }
 
+    async function resetAllSettings() {
+      loading.value = true;
+      try {
+        const payload = {
+          token: '',
+          sec: '',
+          directory: '/',
+          limit: null,
+          attributes: null,
+          limitType: null
+        };
+        await api.patch(`/items/${props.collection}/${props.id}`, payload);
+        dialogType.value = 'success';
+        dialogTitle.value = 'Settings Reset Successfully';
+        dialogText.value = 'All settings have been reset to their defaults. ' +
+            'To continue using Scaleflex DAM with your model, please reconfigure your settings and verify them for seamless functionality.';
+      } catch (error) {
+        dialogType.value = 'danger';
+        dialogTitle.value = 'System Error';
+        dialogText.value = 'Failed to save settings. Please refresh the Page and try again.';
+      } finally {
+        loading.value = false;
+        dialogReset.value = false;
+        token.value = '';
+        sec.value = '';
+        directory.value = '';
+        limit.value = '';
+        attributes.value = [];
+        limitType.value = [];
+      }
+    }
+
+
+    async function confirmResetAllSettings() {
+      dialogType.value = 'danger';
+      dialogTitle.value = 'Reset All Settings';
+      dialogText.value = 'Are you sure you want to reset all settings to their default values? This action cannot be undone and may affect your current configuration.';
+      dialogVisible.value = true;
+      dialogReset.value = true;
+    }
+
     async function saveSfxToken() {
       loading.value = true;
       isValid.value = await checkToken();
       dialogVisible.value = true;
       if (!isValid.value) {
+        dialogType.value = 'warning';
+        dialogTitle.value = 'Invalid Settings';
         dialogText.value = 'Please verify your token and security template. The current configuration is incorrect and requires adjustment.'
       } else {
         try {
@@ -318,9 +388,13 @@ export default {
             limitType: limitTypeString
           };
           await api.patch(`/items/${props.collection}/${props.id}`, payload);
+          dialogType.value = 'success';
+          dialogTitle.value = 'Successfully Saved';
           dialogText.value = 'Your updates have been saved and are now active. You can now add the Scaleflex DAM Field to your schema and begin using it immediately.';
         } catch (error) {
-          dialogText.value = 'Failed to save settings. Please try again.';
+          dialogType.value = 'danger';
+          dialogTitle.value = 'System Error';
+          dialogText.value = 'Failed to save settings. Please refresh the Page and try again.';
         } finally {
           loading.value = false;
         }
@@ -355,7 +429,12 @@ export default {
       isValid,
       dialogVisible,
       closeDialog,
-      dialogText
+      dialogText,
+      dialogTitle,
+      dialogType,
+      confirmResetAllSettings,
+      dialogReset,
+      resetAllSettings
     };
   },
 };
