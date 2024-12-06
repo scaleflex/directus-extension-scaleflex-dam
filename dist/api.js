@@ -1,0 +1,1 @@
+const e=[{name:"dam_hook",config:({embed:e},{env:t})=>{e("body",'<script src="https://cdn.scaleflex.com/plugins/filerobot-widget/v3/latest/filerobot-widget.min.js"><\/script>')}}],t=[],o=[];export{t as endpoints,e as hooks,o as operations};
