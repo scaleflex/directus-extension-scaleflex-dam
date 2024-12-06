@@ -100,6 +100,27 @@
          class="exceeds-the-limit">
       <span class="ml-1">Exceeded maximum number of assets</span>
     </div>
+    <VDialog v-model="dialogVisible">
+      <v-card class="dialog-content">
+        <v-card-title>Scaleflex DAM</v-card-title>
+        <v-card-text>Are you sure you would like to delete all? Please confirm your decision to proceed.</v-card-text>
+        <v-card-actions>
+        <VButton
+          @click="removeAllAssets"
+          :warning="true"
+        >
+          Yes
+        </VButton>
+
+        <VButton
+          @click="closeDialog"
+          :secondary="true"
+        >
+          No
+        </VButton>
+        </v-card-actions>
+      </v-card>
+    </VDialog>
   </div>
 
   <div class="toolbar">
@@ -126,7 +147,7 @@
       <VButton
           style="margin-left: 5px"
           type="button"
-          @click="removeAllAssets()"
+          @click="clickRemoveAllAssets()"
           v-if="getTotalAssets() > 0"
           :danger="true"
       >
@@ -225,6 +246,7 @@ export default {
     const limitType = ref([]);
     const isOverLimit = ref(false);
     const endpoint = ref('');
+    const dialogVisible = ref(false);
 
     onMounted(() => {
       init();
@@ -242,7 +264,10 @@ export default {
       refreshAssets,
       getIsLoading,
       removeAllAssets,
-      log
+      log,
+      closeDialog,
+      clickRemoveAllAssets,
+      dialogVisible
     };
 
     function log() {
@@ -438,9 +463,14 @@ export default {
       }
     };
 
+    function clickRemoveAllAssets() {
+      dialogVisible.value = true;
+    };
+
     function removeAllAssets() {
       emit('input', []);
       isOverLimit.value = false;
+      dialogVisible.value = false;
     };
 
     function removeURLParameter(url, parameter) {
@@ -479,6 +509,10 @@ export default {
 
     function getTotalAssets() {
       return props.value ? props.value.length : 0;
+    }
+
+    function closeDialog () {
+      dialogVisible.value = false;
     }
 
     function renderWidget(frConfig) {

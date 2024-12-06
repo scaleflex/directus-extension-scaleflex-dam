@@ -1,5 +1,4 @@
 import ModuleComponent from './module.vue';
-import damLogo from './logo.vue'
 
 export default {
 	id: 'scaleflex-dam-setting',
