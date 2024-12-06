@@ -3,10 +3,14 @@
     <template #navigation>
       <div style="margin-top: 20px">
           <div style="display: flex; flex-direction: column; align-content: center">
-            <div style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 10px; color: var(--theme--primary);">
+            <div style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 10px;">
               <VIcon name="settings" :small="true" style="margin-top: 2px"/>
-              <span style="margin-left: 4px; font-size: 14px;  display: block">Dam Configuration</span>
+              <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex DAM</span>
             </div>
+            <a href="#" target="_blank" style="display: flex; padding: 5px 10px;">
+              <VIcon name="description" :small="true" style="margin-top: 2px"/>
+              <span style="margin-left: 4px; font-size: 14px;  display: block">Document</span>
+            </a>
           </div>
       </div>
     </template>
@@ -22,6 +26,10 @@
           Scaleflex DAM(Filerobot) is a scalable and performance-oriented Digital Asset Management platform with integrated image and video optimizers to store, organize,
           optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.
         </div>
+        <a href="https://www.scaleflex.com" target="_blank" class="homepage">
+          <VIcon name="house" :small="true" style="margin-top: 2px"/>
+          <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex Home</span>
+        </a>
         <img src="https://frzjaqrbb.filerobot.com/plugins_assets/dam.svg" style="position: absolute; right: 10px; top: -40px; width: 180px; z-index: 1; opacity: 0.4;" />
       </VCardText>
     </VCard>
@@ -358,13 +366,20 @@ export default {
   padding: 0 32px 32px;
 }
 
-#check_token_content {
-  position: relative;
-}
-
 .guide-text {
   font-size: 13px;
   margin-top: 5px;
+  color: #285c72;
+}
+
+.homepage{
+  margin-top: 10px;
+  display: flex;
+  transition: color 500ms ease;
+  cursor: pointer;
+}
+
+.homepage:hover{
   color: #285c72;
 }
 </style>
