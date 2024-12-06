@@ -1,39 +1,47 @@
 <template>
-  <private-view title="Scaleflex DAM Settings">
+  <private-view title="Scaleflex DAM Configuration">
     <div class="sfx-padding-box">
       <div style="margin-bottom: 1rem">
         <label for="sfx_token"><b>Token</b></label>
-        <VInput v-model="token" />
+        <VInput v-model="token"/>
+        <p class="guide-text">Scaleflex DAM token from your account, you can obtain a token by fill in <a
+            href="https://www.scaleflex.com/contact-us">Scaleflex contact page</a></p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="sfx_sec"><b>Security Template</b></label>
-        <VInput v-model="sec" />
+        <VInput v-model="sec"/>
+        <p class="guide-text">To load the Scaleflex DAM Widget or Scaleflex DAM Image Editor, you you need to create a
+          Security Template in your Asset Hub first,
+          in order for your Directus instantiation of the Widget to obtain proper credentials and access your
+          storage</p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="sfx_token"><b>Root Directory</b></label>
-        <VInput v-model="directory" />
+        <VInput v-model="directory"/>
+        <p class="guide-text">The directory in your Hub, where the files will be stored</p>
       </div>
-      <div id="check_token_content">
-        <VButton
-          @click="checkToken()"
-          :small="true"
-          style="margin-bottom: 1rem"
-          :loading="getCheckTokenLoading()"
-          :disabled="getCheckTokenLoading()"
-        >
-          Check Token
-        </VButton>
-        <div style="display: inline-block" v-html="isValidStatus()"></div>
-      </div>
+      <!--      <div id="check_token_content">-->
+      <!--        <VButton-->
+      <!--          @click="checkToken()"-->
+      <!--          :small="true"-->
+      <!--          style="margin-bottom: 1rem"-->
+      <!--          :loading="getCheckTokenLoading()"-->
+      <!--          :disabled="getCheckTokenLoading()"-->
+      <!--        >-->
+      <!--          Check Token-->
+      <!--        </VButton>-->
+      <!--        <div style="display: inline-block" v-html="isValidStatus()"></div>-->
+      <!--      </div>-->
       <div style="margin-bottom: 1rem">
         <label for="limit"><b>Limit</b></label>
-        <VInput v-model="limit" type="number" />
+        <VInput v-model="limit" type="number"/>
+        <p class="guide-text">The max number of files that can be added to a single field</p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="attributes"><b>Attributes</b></label>
         <VSelect
-          v-model="attributes"
-          :items="[
+            v-model="attributes"
+            :items="[
             {
               text: 'Meta',
               value: 'meta',
@@ -47,17 +55,19 @@
               value: 'info',
             },
           ]"
-          :multiplePreviewThreshold="4"
-          :multiple="true"
+            :multiplePreviewThreshold="4"
+            :multiple="true"
         />
+        <p class="guide-text">A string containing information (JSON attributes) that you want to store in a Directus
+          field</p>
       </div>
-      
+
       <div style="margin-bottom: 1rem">
         <label for="limitType"><b>Limit Type</b></label>
         <VSelect
-          v-model="limitType"
-          :multiplePreviewThreshold="5"
-          :items="[
+            v-model="limitType"
+            :multiplePreviewThreshold="5"
+            :items="[
             {
               text: 'Image',
               value: 'image',
@@ -75,28 +85,32 @@
               value: 'audio',
             },
           ]"
-          :multiple="true"
+            :multiple="true"
         />
+        <p class="guide-text">File types limit when use Widget</p>
+      </div>
+      <div v-if="!isValid" style="margin-bottom: 1rem">
+        Config như shit
       </div>
       <VButton :disabled="loading" @click="saveSfxToken">
         <span v-if="loading">Processing...</span>
-        <span v-else>Save</span>
+        <span v-else>Update</span>
       </VButton>
     </div>
   </private-view>
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useApi, useStores } from '@directus/extensions-sdk';
+import {ref} from 'vue';
+import {useApi, useStores} from '@directus/extensions-sdk';
 
 export default {
   props: {
-    collection: { type: String, default: 'scaleflex_dam_settings' },
-    id: { type: Number, default: 1 },
+    collection: {type: String, default: 'scaleflex_dam_settings'},
+    id: {type: Number, default: 1},
   },
   setup(props) {
-    const { useCollectionsStore } = useStores();
+    const {useCollectionsStore} = useStores();
     const api = useApi();
     const collectionsStore = useCollectionsStore();
 
@@ -109,7 +123,7 @@ export default {
     const isValid = ref(null);
     const loading = ref(false);
     const collectionExists = ref(false);
-    const checkTokenLoading = ref(false);
+
     async function ensureCollectionExists() {
       loading.value = true;
       const collectionName = props.collection;
@@ -122,7 +136,7 @@ export default {
           // Tạo collection mới nếu chưa tồn tại
           await collectionsStore.upsertCollection(collectionName, {
             collection: collectionName,
-            meta: { note: 'Scaleflex DAM' },
+            meta: {note: 'Scaleflex DAM'},
             schema: {
               fields: [
                 {
@@ -157,32 +171,32 @@ export default {
       const fieldsPayload = [
         {
           type: 'string',
-          meta: { interface: 'input', special: null },
+          meta: {interface: 'input', special: null},
           field: 'token',
         },
         {
           type: 'string',
-          meta: { interface: 'input', special: null },
+          meta: {interface: 'input', special: null},
           field: 'sec',
         },
         {
           type: 'string',
-          meta: { interface: 'input', special: null },
+          meta: {interface: 'input', special: null},
           field: 'directory',
         },
         {
           type: 'integer',
-          meta: { interface: 'input', special: null },
+          meta: {interface: 'input', special: null},
           field: 'limit',
         },
         {
           type: 'string',
-          meta: { interface: 'input', special: null },
+          meta: {interface: 'input', special: null},
           field: 'attributes',
         },
         {
           type: 'string',
-          meta: { interface: 'input', special: null },
+          meta: {interface: 'input', special: null},
           field: 'limitType',
         },
       ];
@@ -203,7 +217,7 @@ export default {
     }
 
     async function createFirstData() {
-      const payload = { token: '', sec: '', directory: '/', limit: null, limitType: '', attributes: '' }
+      const payload = {token: '', sec: '', directory: '/', limit: null, limitType: '', attributes: ''}
       try {
         await api.post(`/items/${props.collection}`, payload);
       } catch (error) {
@@ -212,7 +226,7 @@ export default {
     }
 
     function isNull(value) {
-      return value === '' || value === null 
+      return value === '' || value === null
     }
 
     async function loadData() {
@@ -234,58 +248,58 @@ export default {
 
     async function saveSfxToken() {
       loading.value = true;
-      try {
-        let limitTypeString = limitType.value ? limitType.value.toString() : null;
-        let attributesString = attributes.value ? attributes.value.toString() : null;
-      
-        const payload = { token: token.value, sec: sec.value, directory: directory.value, limit: limit.value, attributes: attributesString, limitType: limitTypeString };
-        await api.patch(`/items/${props.collection}/${props.id}`, payload);
-        alert('Settings saved successfully!');
-      } catch (error) {
-        alert('Failed to save settings. Please try again.');
-        console.error(`Error saving data: ${error.message}`);
-      } finally {
-        loading.value = false;
+      isValid.value = checkToken();
+
+      if (!isValid.value) {
+
+      } else {
+        try {
+          let limitTypeString = limitType.value ? limitType.value.toString() : null;
+          let attributesString = attributes.value ? attributes.value.toString() : null;
+
+          const payload = {
+            token: token.value,
+            sec: sec.value,
+            directory: directory.value,
+            limit: limit.value,
+            attributes: attributesString,
+            limitType: limitTypeString
+          };
+          await api.patch(`/items/${props.collection}/${props.id}`, payload);
+          alert('Settings saved successfully!');
+        } catch (error) {
+          alert('Failed to save settings. Please try again.');
+          console.error(`Error saving data: ${error.message}`);
+        } finally {
+          loading.value = false;
+        }
       }
+      loading.value = false;
     }
 
-    async function checkToken()
-    {
+    async function checkToken() {
       const url = `https://api.filerobot.com/${token.value}/v4/key/${sec.value}`;
       try {
-        checkTokenLoading.value = true;
-        isValid.value = null;
         const response = await fetch(url);
-
-        if (response.status == 200) isValid.value = true;
-        else isValid.value = false;
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        
+        return response.status === 200;
       } catch (err) {
-        checkTokenLoading.value = false;
-        return null; // Return null in case of error
-      } finally {
-        checkTokenLoading.value = false;
+        return false
       }
-    }
-
-    function getCheckTokenLoading() {
-      return checkTokenLoading.value
-    }
-
-    function isValidStatus()
-    {
-      if (isValid.value == true) return '<span style="margin-left: 10px;color: green;">Validated</span>';
-      else if (isValid.value == false) return '<span style="margin-left: 10px;color: red;">invalidated</span>';
-      else return '';
     }
 
     ensureCollectionExists().then(loadData);
 
-    return { token, sec, directory, saveSfxToken, loading, limit, attributes, limitType, checkToken, getCheckTokenLoading, isValidStatus };
+    return {
+      token,
+      sec,
+      directory,
+      saveSfxToken,
+      loading,
+      limit,
+      attributes,
+      limitType,
+      isValid,
+    };
   },
 };
 </script>
@@ -294,7 +308,14 @@ export default {
 .sfx-padding-box {
   padding: 0 32px 32px;
 }
+
 #check_token_content {
   position: relative;
+}
+
+.guide-text {
+  font-size: 13px;
+  margin-top: 5px;
+  color: #285c72;
 }
 </style>
