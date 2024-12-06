@@ -21,23 +21,23 @@
 		"entries": [
 			{
 				"type": "interface",
-				"name": "DAM Interface",
-				"source": "src/DAM Interface/index.js"
+				"name": "dam_interface",
+				"source": "src/dam_interface/index.js"
 			},
 			{
 				"type": "module",
-				"name": "DAM Module",
-				"source": "src/DAM Module/index.js"
+				"name": "dam_module",
+				"source": "src/dam_module/index.js"
 			},
 			{
 				"type": "hook",
-				"name": "DAM Hook",
-				"source": "src/DAM Hook/index.js"
+				"name": "dam_hook",
+				"source": "src/dam_hook/index.js"
 			},
 			{
 				"type": "display",
-				"name": "DAM Display",
-				"source": "src/DAM Display/index.js"
+				"name": "dam_display",
+				"source": "src/dam_display/index.js"
 			}
 		],
 		"host": "^10.10.0"
