@@ -324,6 +324,7 @@ export default {
 
     async function updatFiles (updatedFiles, isRefresh = false) {
       isLoading.value = true;
+     
       const fetchPromises = updatedFiles.map(async (file, index) => {
           try {
             
@@ -333,7 +334,6 @@ export default {
             else uuid = file.file.uuid;
 
             const response = await fetchfileData(uuid);
-           
             const tempFile = {
               uuid: response?.file?.uuid + '_' + makeIndexFiles(index),
               name: response?.file?.name,
@@ -357,13 +357,15 @@ export default {
       // Wait for all fetch operations to complete and collect all results
       try {
         const results = await Promise.all(fetchPromises);
-        
+       
         const tempFiles = results.filter(file => file);
         let updatedFiles = null;
-
-        if (isRefresh) updatedFiles = [...tempFiles];
-        else updatedFiles = [...props.value, ...tempFiles];
        
+        if (isRefresh || !props.value) updatedFiles = [...tempFiles];
+        else updatedFiles = [...props.value, ...tempFiles];
+        
+        
+        
         checkLimit(updatedFiles)
 
         if (limitFiles() > 0) updatedFiles = updatedFiles.slice(0, limitFiles())
@@ -388,7 +390,8 @@ export default {
     }
 
     function makeIndexFiles (index) {
-      return index + props.value.length
+      if (props.value) return index + props.value.length
+      else return index
     }
 
     async function fetchfileData (uuid) {
