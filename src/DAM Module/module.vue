@@ -37,7 +37,7 @@
       </div>
       <div style="margin-bottom: 1rem">
         <label for="limit"><b>Limit</b></label>
-        <VInput v-model="limit" type="number"/>
+        <VInput min="0" v-model="limit" type="number"/>
         <p class="guide-text">The max number of files that can be added to a single field, <b style="color:tomato">default: 0(unlimited)</b></p>
       </div>
       <div style="margin-bottom: 1rem">
@@ -61,8 +61,7 @@
             :multiplePreviewThreshold="4"
             :multiple="true"
         />
-        <p class="guide-text">A string containing information (JSON attributes) that you want to store in a Directus
-          field</p>
+        <p class="guide-text">Attribute from Scaleflex DAM asset that you want to include in Client response</p>
       </div>
 
       <div style="margin-bottom: 1rem">
