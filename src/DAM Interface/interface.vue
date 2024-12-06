@@ -194,7 +194,11 @@ export default {
     title: {
       type: String,
       default: 'Scaleflex DAM',
-    }
+    },
+    custom: {type: Boolean, default: false},
+    limit: {type: Number, default: 0},
+    limitTypes: {type: String, default: null},
+    attributes: {type: String, default: null},
   },
   methods: {
     isImage(type) {
@@ -253,7 +257,6 @@ export default {
     });
 
     return {
-      openSfxDAM,
       openModal,
       closeModal,
       deleteItem,
@@ -275,7 +278,7 @@ export default {
     }
 
     function addAssetsDisabled() {
-      if (limit.value == getTotalAssets() && getTotalAssets() > 0) return true;
+      if (limit.value === getTotalAssets() && getTotalAssets() > 0) return true;
       return isLoading.value;
     }
 
@@ -329,9 +332,16 @@ export default {
         token.value = data.token || '';
         sec.value = data.sec || '';
         directory.value = data.directory || '';
-        limit.value = data.limit || null;
-        limitType.value = data.limitType ? data.limitType.split(",") : [];
-        attributes.value = data.attributes ? data.attributes.split(",") : [];
+
+        if (props.custom) {
+          limit.value = props.limit || null;
+          limitType.value = props.limitTypes ? props.limitTypes : [];
+          attributes.value = props.attributes ? props.attributes : [];
+        } else {
+          limit.value = data.limit || null;
+          limitType.value = data.limitType ? data.limitType.split(",") : [];
+          attributes.value = data.attributes ? data.attributes.split(",") : [];
+        }
       } catch (error) {
         console.error(`Error loading data: ${error.message}`);
         alert('Failed to load Filerobot settings. Please check your configuration.');
@@ -374,7 +384,7 @@ export default {
       return uuidArray[0];
     }
 
-    async function updatFiles(updatedFiles, isRefresh = false) {
+    async function updateFiles(updatedFiles, isRefresh = false) {
       isLoading.value = true;
 
       const fetchPromises = updatedFiles.map(async (file, index) => {
@@ -499,8 +509,8 @@ export default {
     };
 
     async function refreshAssets() {
-      if (isProxy(props.value)) await updatFiles(toRaw(props.value), true)
-      else await updatFiles(props.value, true)
+      if (isProxy(props.value)) await updateFiles(toRaw(props.value), true)
+      else await updateFiles(props.value, true)
     };
 
     function getIsOverLimit() {
@@ -564,7 +574,7 @@ export default {
           })
           .use(XHRUpload)
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
-            await updatFiles(files)
+            await updateFiles(files)
             closeModal();
           })
           .on('complete', ({failed, uploadID, successful}) => {
