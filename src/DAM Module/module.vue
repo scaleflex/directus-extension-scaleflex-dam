@@ -86,9 +86,6 @@
         />
         <p class="guide-text">File types limit when use Widget</p>
       </div>
-      <div v-if="!isValid" style="margin-bottom: 1rem">
-        Config is not validate
-      </div>
       <VButton :disabled="loading" @click="saveSfxToken">
         <span v-if="loading">Processing...</span>
         <span v-else>Update</span>
@@ -161,7 +158,6 @@ export default {
             },
           });
 
-          console.log(`Collection ${collectionName} created.`);
 
           // Sau khi tạo collection xong, hidden collection
           await hiddenCollection();
@@ -171,11 +167,10 @@ export default {
 
           collectionExists.value = false; // Đánh dấu rằng collection vừa được tạo
         } else {
-          console.log(`Collection ${collectionName} already exists.`);
           collectionExists.value = true;
         }
       } catch (error) {
-        console.error(`Error ensuring collection exists: ${error.message}`);
+        // Nothing to handle
       } finally {
         loading.value = false;
       }
@@ -278,7 +273,7 @@ export default {
       isValid.value = await checkToken();
       dialogVisible.value = true;
       if (!isValid.value) {
-        dialogText.value = 'Config is not validate'
+        dialogText.value = 'Please verify your token and security template. The current configuration is incorrect and requires adjustment.'
       } else {
         try {
           let limitTypeString = limitType.value ? limitType.value.toString() : null;
@@ -293,12 +288,9 @@ export default {
             limitType: limitTypeString
           };
           await api.patch(`/items/${props.collection}/${props.id}`, payload);
-          // alert('Settings saved successfully!');
-          dialogText.value = 'Settings saved successfully!';
+          dialogText.value = 'Your updates have been saved and are now active. You can now add the Scaleflex DAM Field to your schema and begin using it immediately.';
         } catch (error) {
-          // alert('Failed to save settings. Please try again.');
           dialogText.value = 'Failed to save settings. Please try again.';
-          console.error(`Error saving data: ${error.message}`);
         } finally {
           loading.value = false;
         }

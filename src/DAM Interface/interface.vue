@@ -1,124 +1,139 @@
 <template>
-  <link rel="stylesheet" type="text/css" href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css" />
-	<input :value="JSON.stringify(value)" type="hidden" id="sfx_value" />
+  <link rel="stylesheet" type="text/css"
+        href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
+  <input :value="JSON.stringify(value)" type="hidden" id="sfx_value"/>
 
   <div id="sfx-result">
-    <div class="remove-all" v-if="getTotalAssets() > 0">
-      <span @click="removeAllAssets()">
-        Remove all assets
-      </span>
-    </div>
-
     <draggable class="asset-content" :list="value" @change="log">
       <div v-for="(item, index) in value" :key="index" class="media-container">
         <!-- Kiểm tra loại file và hiển thị phù hợp -->
         <template v-if="isImage(item.type)">
-          <div class="sfx-item sfx-clear">
-            <div class="sfx-media-icon">
-              <img :src="createThumbnail(item.cdn)" :alt="item.name" class="media-item" />
+          <div class="sfx-item">
+            <div class="sfx-item-inner">
+              <div class="btn-drag-item">
+                <VIcon name="drag_handle"/>
+              </div>
+              <div class="sfx-media-icon" target="_blank">
+                <a :href="item.cdn">
+                  <img :src="createThumbnail(item.cdn)" :alt="item.name" class="media-item"/>
+                </a>
+              </div>
+              <div class="item-info">
+                <span>{{ trimText(item.name) }}</span>
+              </div>
             </div>
-            <div class="item-info">
-              <strong>Filename: </strong>{{ item.name }} <br>
-              <strong>Type: </strong>{{ item.type }} <br>
-              <a :href="item.cdn" target="_blank"><strong>View Imgage</strong></a>
+            <div class="btn-delete-item" @click="deleteItem(index)">
+              <VIcon name="close"/>
             </div>
-            <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
-<div class="btn-drag-item" @click="deleteItem(index)"><VIcon name="drag_indicator" /></div>
           </div>
         </template>
         <template v-else-if="isVideo(item.type)">
-          <div class="sfx-item sfx-clear">
-            <div class="sfx-media-icon">
-              <div class="icon">
-                <VIcon name="movie" />
+          <div class="sfx-item">
+            <div class="sfx-item-inner">
+              <div class="btn-drag-item">
+                <VIcon name="drag_handle"/>
+              </div>
+              <div class="sfx-media-icon" target="_blank">
+                <a :href="item.cdn">
+                  <VIcon class="item-icon" name="videocam"/>
+                </a>
+              </div>
+              <div class="item-info">
+                <span>{{ trimText(item.name) }}</span>
               </div>
             </div>
-            <div class="item-info">
-              <strong>Filename: </strong>{{ item.name }} <br>
-              <strong>Type: </strong>{{ item.type }} <br>
-              <a :href="item.cdn" target="_blank"><strong>Watch Video</strong></a>
+            <div class="btn-delete-item" @click="deleteItem(index)">
+              <VIcon name="close"/>
             </div>
-            <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
-<div class="btn-drag-item" @click="deleteItem(index)"><VIcon name="drag_indicator" /></div>
           </div>
         </template>
         <template v-else-if="isAudio(item.type)">
-          <div class="sfx-item sfx-clear">
-            <div class="sfx-media-icon">
-              <div class="icon">
-                <VIcon name="volume_up" />
+          <div class="sfx-item">
+            <div class="sfx-item-inner">
+              <div class="btn-drag-item">
+                <VIcon name="drag_handle"/>
+              </div>
+              <div class="sfx-media-icon" target="_blank">
+                <a :href="item.cdn">
+                  <VIcon class="item-icon" name="play_circle"/>
+                </a>
+              </div>
+              <div class="item-info">
+                <span>{{ trimText(item.name) }}</span>
               </div>
             </div>
-            <div class="item-info">
-              <strong>Filename: </strong>{{ item.name }} <br>
-              <strong>Type: </strong>{{ item.type }} <br>
-              <a :href="item.cdn" target="_blank"><strong>Listen Audio</strong></a>
+            <div class="btn-delete-item" @click="deleteItem(index)">
+              <VIcon name="close"/>
             </div>
-            <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
-<div class="btn-drag-item" @click="deleteItem(index)"><VIcon name="drag_indicator" /></div>
           </div>
         </template>
         <template v-else>
-          <div class="sfx-item sfx-clear">
-            <div class="sfx-media-icon">
-              <div class="icon">
-                <VIcon name="draft" />
+          <div class="sfx-item">
+            <div class="sfx-item-inner">
+              <div class="btn-drag-item">
+                <VIcon name="drag_handle"/>
+              </div>
+              <div class="sfx-media-icon" target="_blank">
+                <a :href="item.cdn">
+                  <VIcon class="item-icon" name="draft"/>
+                </a>
+              </div>
+              <div class="item-info">
+                <span>{{ trimText(item.name) }}</span>
               </div>
             </div>
-            <div class="item-info">
-              <strong>Filename: </strong>{{ item.name }} <br>
-              <strong>Type: </strong>{{ item.type }} <br>
-              <a :href="item.cdn" target="_blank"><strong>View File</strong></a>
+            <div class="btn-delete-item" @click="deleteItem(index)">
+              <VIcon name="close"/>
             </div>
-            <div class="btn-delete-item" @click="deleteItem(index)"><VIcon name="delete" /></div>
-<div class="btn-drag-item" @click="deleteItem(index)"><VIcon name="drag_indicator" /></div>
           </div>
         </template>
       </div>
     </draggable>
 
-    <div class="flex">    
-      <div v-if="getTotalAssets() > 0" class="column align-left text-small-size">
-        <span>Total: {{getTotalAssets()}}</span>
-        <span v-if="limitFiles() > 0"> / Limit: {{limitFiles()}}</span>
+    <div class="bottom-message">
+      <div v-if="getTotalAssets() > 0" class="column align-left">
+        <span>Total: {{ getTotalAssets() }}</span>
+        <span v-if="limitFiles() > 0"> / Limit {{ limitFiles() }}</span>
       </div>
-        
-      <div v-if="getIsOverLimit()" class="column exceeds-the-limit">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="red" version="1.1"  width="12px" height="12px" viewBox="0 0 478.125 478.125">
-          <g>
-            <g>
-              <g>
-                <circle cx="239.904" cy="314.721" r="35.878"/>
-                <path d="M256.657,127.525h-31.9c-10.557,0-19.125,8.645-19.125,19.125v101.975c0,10.48,8.645,19.125,19.125,19.125h31.9     c10.48,0,19.125-8.645,19.125-19.125V146.65C275.782,136.17,267.138,127.525,256.657,127.525z"/>
-                <path d="M239.062,0C106.947,0,0,106.947,0,239.062s106.947,239.062,239.062,239.062c132.115,0,239.062-106.947,239.062-239.062     S371.178,0,239.062,0z M239.292,409.734c-94.171,0-170.595-76.348-170.595-170.596c0-94.248,76.347-170.595,170.595-170.595     s170.595,76.347,170.595,170.595C409.887,333.387,333.464,409.734,239.292,409.734z"/>
-              </g>
-            </g>
-          </g>
-        </svg>
-        <span class="ml-1">Exceeded maximum number of assets</span>
-      </div> 
+    </div>
+    <div style="display: flex; align-items: center; justify-content: end;" v-if="getIsOverLimit()"
+         class="exceeds-the-limit">
+      <span class="ml-1">Exceeded maximum number of assets</span>
     </div>
   </div>
 
-  <div class="flex flex-justify-content-end">
+  <div class="toolbar">
     <VButton
-      @click="openModal"
-      :disabled="addAssetsDisabled()"
-      :xSmall="true"
+        @click="openModal"
+        :disabled="addAssetsDisabled()"
     >
-      Add Assets
+      <VIcon name="image"/>
+      <span style="margin-left: 5px">Browse assets</span>
     </VButton>
-    
-    <VButton
-        type="button"
-        @click="refreshAssets()"
-        :disabled="getTotalAssets() === 0"
-        :loading="getIsLoading()"
-        :xSmall="true"
-        :outlined="true"
+
+    <div>
+      <VButton
+          type="button"
+          @click="refreshAssets()"
+          v-if="getTotalAssets() > 0"
+          :loading="getIsLoading()"
+          :outlined="true"
       >
-      Refresh Assets
-    </VButton>
+        <VIcon name="refresh"/>
+        <span style="margin-left: 5px">Refresh</span>
+      </VButton>
+
+      <VButton
+          style="margin-left: 5px"
+          type="button"
+          @click="removeAllAssets()"
+          v-if="getTotalAssets() > 0"
+          :danger="true"
+      >
+        <VIcon name="delete"/>
+        <span style="margin-left: 5px">Remove all</span>
+      </VButton>
+    </div>
   </div>
 
   <div :style="{ display: isOpen ? 'block' : 'none' }" class="modal-overlay" id="sfx-modal">
@@ -140,26 +155,26 @@
 </template>
 
 <script>
-import { ref, onMounted, toRaw, isProxy } from "vue";
+import {ref, onMounted, toRaw, isProxy} from "vue";
 import {useApi} from "@directus/extensions-sdk";
-import { VueDraggableNext } from "vue-draggable-next";
+import {VueDraggableNext} from "vue-draggable-next";
 
 export default {
   components: {
     draggable: VueDraggableNext,
   },
-	props: {
-		value: {
-			type: String,
-			default: null,
-		},
-    collection: { type: String, default: 'scaleflex_dam_settings' },
-    id: { type: Number, default: 1 },
+  props: {
+    value: {
+      type: String,
+      default: null,
+    },
+    collection: {type: String, default: 'scaleflex_dam_settings'},
+    id: {type: Number, default: 1},
     title: {
       type: String,
-      default: 'Scaleflex DAM Widget',
+      default: 'Scaleflex DAM',
     }
-	},
+  },
   methods: {
     isImage(type) {
       return type.startsWith("image");
@@ -170,7 +185,7 @@ export default {
     isAudio(type) {
       return type.startsWith("audio");
     },
-    hasQueryString (url) {
+    hasQueryString(url) {
       try {
         const urlObject = new URL(url);
         return urlObject.search.length > 0;
@@ -179,12 +194,24 @@ export default {
       }
     },
     createThumbnail(url) {
-      if (!this.hasQueryString(url)) return url + '?width=80&height=80'
-      else return url + '&width=80&height=80'
+      if (!this.hasQueryString(url)) return url + '?width=100&height=100'
+      else return url + '&width=100&height=100'
+    },
+    trimText(filename) {
+      const maxLength = 50;
+      if (filename.length <= maxLength) {
+        return filename;
+      }
+      const lastDotIndex = filename.lastIndexOf(".");
+      const baseName = lastDotIndex !== -1 ? filename.substring(0, lastDotIndex) : filename;
+      const extension = lastDotIndex !== -1 ? filename.substring(lastDotIndex) : "";
+      const baseMaxLength = maxLength - extension.length - 3; // 3 for "..."
+      const truncatedBaseName = baseName.substring(0, Math.max(baseMaxLength, 0));
+      return truncatedBaseName + "..." + extension;
     }
   },
-	emits: ['input', 'close'],
-	setup(props, { emit }) {
+  emits: ['input', 'close'],
+  setup(props, {emit}) {
     const isOpen = ref(false);
 
     const api = useApi();
@@ -203,7 +230,7 @@ export default {
       init();
     });
 
-		return { 
+    return {
       openSfxDAM,
       openModal,
       closeModal,
@@ -218,11 +245,11 @@ export default {
       log
     };
 
-    function log () {    
+    function log() {
       emit('input', toRaw(props.value));
     }
 
-    function addAssetsDisabled () {
+    function addAssetsDisabled() {
       if (limit.value == getTotalAssets() && getTotalAssets() > 0) return true;
       return isLoading.value;
     }
@@ -239,25 +266,25 @@ export default {
     }
 
     function closeModal() {
-      document.getElementById("sfx-modal").setAttribute("style","display: none");
+      document.getElementById("sfx-modal").setAttribute("style", "display: none");
       emit('close');
       isOpen.value = false;
     }
 
     function openModal() {
-      document.getElementById("sfx-modal").setAttribute("style","display: block");
+      document.getElementById("sfx-modal").setAttribute("style", "display: block");
       isOpen.value = true;
       openSfxDAM();
     }
 
     async function openSfxDAM() {
-        const frConfig = {
-          token: token.value,
-          sec: sec.value,
-          directory: directory.value,  
-          limitType: limitType.value,
-        }
-        renderWidget(frConfig);
+      const frConfig = {
+        token: token.value,
+        sec: sec.value,
+        directory: directory.value,
+        limitType: limitType.value,
+      }
+      renderWidget(frConfig);
     }
 
     async function init() {
@@ -286,9 +313,9 @@ export default {
       }
     }
 
-    function getAttributesData (file) {
+    function getAttributesData(file) {
       let r = {};
-      if (attributes.value.length > 0 ) {
+      if (attributes.value.length > 0) {
         let arr = attributes.value
         for (let value of arr) {
           let valueTrim = value.trim();
@@ -298,7 +325,7 @@ export default {
       }
     }
 
-    function checkLimit (updatedFiles) {
+    function checkLimit(updatedFiles) {
       if (limitFiles() > 0 && updatedFiles.length > limitFiles()) {
         isOverLimit.value = true
       } else {
@@ -306,12 +333,12 @@ export default {
       }
     }
 
-    function getTypeAssets (type) {
+    function getTypeAssets(type) {
       let arr = type.split("/");
       return arr[0]
     }
 
-    function getFilesByLimitType (updatedFiles, limitType) {
+    function getFilesByLimitType(updatedFiles, limitType) {
       const limitTypeArr = limitType;
       if (limitTypeArr.includes('document')) return updatedFiles.filter((file) => limitTypeArr.includes(getTypeAssets(file.type)) || !['image', 'video', 'audio'].includes(getTypeAssets(file.type)))
       else return updatedFiles.filter((file) => limitTypeArr.includes(getTypeAssets(file.type)))
@@ -322,55 +349,54 @@ export default {
       return uuidArray[0];
     }
 
-    async function updatFiles (updatedFiles, isRefresh = false) {
+    async function updatFiles(updatedFiles, isRefresh = false) {
       isLoading.value = true;
-     
+
       const fetchPromises = updatedFiles.map(async (file, index) => {
-          try {
-            
-            // Call fetchfileData for each file's uuid (assuming file has a 'uuid' property)
-            let uuid = '';
-            if (isRefresh) uuid = getFileUuid(file)
-            else uuid = file.file.uuid;
+        try {
 
-            const response = await fetchfileData(uuid);
-            const tempFile = {
-              uuid: response?.file?.uuid + '_' + makeIndexFiles(index),
-              name: response?.file?.name,
-              cdn: removeURLParameter(response?.file?.url?.cdn, 'vh'),
-              extension: response?.file?.extension,
-              source: 'filerobot',
-              type: response?.file?.type,
-              ownerName: response?.file?.owner?.name,
-            };
+          // Call fetchfileData for each file's uuid (assuming file has a 'uuid' property)
+          let uuid = '';
+          if (isRefresh) uuid = getFileUuid(file)
+          else uuid = file.file.uuid;
 
-            if (attributes.value.length > 0 ) {
-              tempFile.attributes = getAttributesData(response?.file);
-            }
+          const response = await fetchfileData(uuid);
+          const tempFile = {
+            uuid: response?.file?.uuid + '_' + makeIndexFiles(index),
+            name: response?.file?.name,
+            cdn: removeURLParameter(response?.file?.url?.cdn, 'vh'),
+            extension: response?.file?.extension,
+            source: 'filerobot',
+            type: response?.file?.type,
+            ownerName: response?.file?.owner?.name,
+          };
 
-            return tempFile; // Return the data for each file
-          } catch (err) {
-            return null; // Return null in case of error for this file
+          if (attributes.value.length > 0) {
+            tempFile.attributes = getAttributesData(response?.file);
           }
+
+          return tempFile; // Return the data for each file
+        } catch (err) {
+          return null; // Return null in case of error for this file
+        }
       });
 
       // Wait for all fetch operations to complete and collect all results
       try {
         const results = await Promise.all(fetchPromises);
-       
+
         const tempFiles = results.filter(file => file);
         let updatedFiles = null;
-       
+
         if (isRefresh || !props.value) updatedFiles = [...tempFiles];
         else updatedFiles = [...props.value, ...tempFiles];
-        
-        
-        
+
+
         checkLimit(updatedFiles)
 
         if (limitFiles() > 0) updatedFiles = updatedFiles.slice(0, limitFiles())
 
-        if (limitType.value.length > 0 ) {
+        if (limitType.value.length > 0) {
           updatedFiles = getFilesByLimitType(updatedFiles, limitType.value)
         }
 
@@ -389,12 +415,12 @@ export default {
       return -1
     }
 
-    function makeIndexFiles (index) {
+    function makeIndexFiles(index) {
       if (props.value) return index + props.value.length
       else return index
     }
 
-    async function fetchfileData (uuid) {
+    async function fetchfileData(uuid) {
       isLoading.value = true;
       const url = endpoint.value + '/files/' + uuid + '?format=select:human';
 
@@ -412,46 +438,46 @@ export default {
       }
     };
 
-    function removeAllAssets () {
+    function removeAllAssets() {
       emit('input', []);
       isOverLimit.value = false;
     };
 
-    function removeURLParameter (url, parameter) {
+    function removeURLParameter(url, parameter) {
       //prefer to use l.search if you have a location/link object
-      var urlparts = url.split('?');   
+      var urlparts = url.split('?');
       if (urlparts.length >= 2) {
 
-          var prefix = encodeURIComponent(parameter) + '=';
-          var pars = urlparts[1].split(/[&;]/g);
+        var prefix = encodeURIComponent(parameter) + '=';
+        var pars = urlparts[1].split(/[&;]/g);
 
-          //reverse iteration as may be destructive
-          for (var i = pars.length; i-- > 0;) {    
-              //idiom for string.startsWith
-              if (pars[i].lastIndexOf(prefix, 0) !== -1) {  
-                  pars.splice(i, 1);
-              }
+        //reverse iteration as may be destructive
+        for (var i = pars.length; i-- > 0;) {
+          //idiom for string.startsWith
+          if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+            pars.splice(i, 1);
           }
+        }
 
-          return urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
+        return urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
       }
       return url;
     }
 
-    function checkExist (file) {
+    function checkExist(file) {
       return props.value.some((item) => item.uuid === file.uuid);
     };
 
-    async function refreshAssets () {
-      if (isProxy(props.value))  await updatFiles(toRaw(props.value), true)
+    async function refreshAssets() {
+      if (isProxy(props.value)) await updatFiles(toRaw(props.value), true)
       else await updatFiles(props.value, true)
     };
 
-    function getIsOverLimit () {
+    function getIsOverLimit() {
       return isOverLimit.value
     }
 
-    function getTotalAssets () {
+    function getTotalAssets() {
       return props.value ? props.value.length : 0;
     }
 
@@ -520,27 +546,15 @@ export default {
             }
           });
 
-     
+
     }
-	}
+  }
 };
 </script>
 
 <style>
-.text-small-size {
-  font-size: 12px;
-}
-
 .exceeds-the-limit {
-  font-size: 12px;
   color: red;
-  text-align: right;
-}
-
-.column {
-  flex: 1; /* This makes the columns take equal space */
-  padding: 8px;
-  box-sizing: border-box; /* Ensures padding doesn't affect the total width */
 }
 
 .ml-1 {
@@ -606,56 +620,65 @@ export default {
   text-align: right;
 }
 
-.sfx-clear {
-  zoom: 1;
-}
-
-.sfx-clear:after {
-  clear: both;
-  content: ".";
-  display: block;
-  height: 0;
-  line-height: 0;
-  visibility: hidden;
-}
-
 .sfx-media-icon {
   float: left;
 }
 
 .sfx-media-icon img {
-  width: 80px;
+  width: 34px;
+  height: 34px;
   display: block;
   margin: 0 auto;
-  height: 80px;
   object-fit: cover;
+  border-radius: 100%;
 }
+
 
 .sfx-item .item-info {
   margin-left: 12px;
-  float: left;
 }
 
 .sfx-item .item-info a {
   color: var(--theme--primary);
 }
 
-.sfx-item {
-  margin-bottom: 15px;
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  position: relative;
+.sfx-item-inner {
+  display: flex;
+  align-items: center;
 }
 
-.mb-3 {
-  margin-bottom: 1rem !important;
+.bottom-message {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-top: var(--v-list-item-margin, 4px);
+}
+
+.sfx-item {
+  padding: 6px;
+  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));
+  border-radius: var(--theme--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));
+  margin-top: var(--v-list-item-margin, 4px);
+  cursor: pointer;
+  transition: border-color 500ms ease;
+}
+
+.sfx-item:hover {
+  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));
 }
 
 .sfx-media-icon .icon {
   width: 80px;
   height: 80px;
   position: relative;
+}
+
+.btn-delete-item:hover {
+  color: var(--theme--danger);
 }
 
 .sfx-media-icon .icon i {
@@ -666,49 +689,51 @@ export default {
   font-size: 35px;
 }
 
-.btn-delete-item {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  cursor: pointer;
-  padding: 2px;
+.item-icon{
+  width: 34px!important;
+  text-align: center;
+  padding: 0 var(--v-list-item-margin, 4px);
 }
 
-.btn-drag-item {
-  position: absolute;
-  top: 60px;
-  right: 2px;
-  cursor: grab;
-  padding: 2px;
-}
-
-.remove-all {
-  text-align: right;
-}
 .remove-all span {
   color: red;
   font-size: 12px;
-  border:none;
+  border: none;
   background: none;
   width: 100%;
 }
+
 .remove-all span:hover {
   cursor: pointer;
   color: rgb(185, 37, 37);
 }
+
 .asset-content {
   max-height: 545px;
   overflow-y: scroll;
-  padding: 0 10px;
 }
 
-.thumb-wrapper:first-of-type { margin-top: 0; }
+.btn-drag-item {
+  margin-right: 8px;
+  cursor: move;
+  cursor: grab;
+}
 
-.asset-content::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);
-	border-radius: 10px;
-	background-color: #F5F5F5;
+.btn-drag-item:active {
+  cursor: grabbing;
+}
+
+.asset-content::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.toolbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--v-list-item-margin, 4px);
 }
 
 </style>
