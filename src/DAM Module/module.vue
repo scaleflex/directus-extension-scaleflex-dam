@@ -149,6 +149,9 @@ export default {
 
           console.log(`Collection ${collectionName} created.`);
 
+          // Sau khi tạo collection xong, hidden collection
+          await hiddenCollection();
+
           // Sau khi tạo collection xong, tạo các fields
           await createFields();
 
@@ -161,6 +164,19 @@ export default {
         console.error(`Error ensuring collection exists: ${error.message}`);
       } finally {
         loading.value = false;
+      }
+    }
+
+    async function hiddenCollection() {
+      try {
+        let meta = {
+          "meta": {
+            "hidden": true
+          }
+        }
+        await api.patch(`/collections/${props.collection}`, meta);
+      } catch (error) {
+        console.error(`Failed to hidden collection: ${error.message}`);
       }
     }
 
