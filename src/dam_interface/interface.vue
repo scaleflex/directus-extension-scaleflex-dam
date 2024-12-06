@@ -123,7 +123,7 @@
     </VDialog>
   </div>
 
-  <div class="toolbar">
+  <div v-if="isTokenAndSecExists" class="toolbar">
     <VButton
         @click="openModal"
         :disabled="addAssetsDisabled()"
@@ -155,6 +155,9 @@
         <span style="margin-left: 5px">Remove all</span>
       </VButton>
     </div>
+  </div>
+  <div v-else>
+    <a href="/admin/scaleflex-dam-setting" target="_blank">Please setting config</a>
   </div>
 
   <div :style="{ display: isOpen ? 'block' : 'none' }" class="modal-overlay" id="sfx-modal">
@@ -251,6 +254,7 @@ export default {
     const isOverLimit = ref(false);
     const endpoint = ref('');
     const dialogVisible = ref(false);
+    const isTokenAndSecExists = ref(false);
 
     onMounted(() => {
       init();
@@ -270,7 +274,8 @@ export default {
       log,
       closeDialog,
       clickRemoveAllAssets,
-      dialogVisible
+      dialogVisible,
+      isTokenAndSecExists
     };
 
     function log() {
@@ -328,10 +333,15 @@ export default {
         const data = response.data.data;
 
         if (!data) throw new Error('Data not found');
-        endpoint.value = `https://api.filerobot.com/${data.token}/v5`;
-        token.value = data.token || '';
-        sec.value = data.sec || '';
-        directory.value = data.directory || '';
+        if (data.token && data.sec) {
+          endpoint.value = `https://api.filerobot.com/${data.token}/v5`;
+          token.value = data.token || '';
+          sec.value = data.sec || '';
+          directory.value = data.directory || '';
+          isTokenAndSecExists.value = true;
+        } else {
+          isTokenAndSecExists.value = false;
+        }
 
         if (props.custom) {
           limit.value = props.limit || null;

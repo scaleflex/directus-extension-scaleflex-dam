@@ -328,8 +328,7 @@ export default {
       isValid,
       dialogVisible,
       closeDialog,
-      dialogText,
-      Scaleflex
+      dialogText
     };
   },
 };
