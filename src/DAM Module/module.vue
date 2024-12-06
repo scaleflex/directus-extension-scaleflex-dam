@@ -94,6 +94,18 @@
         <span v-else>Update</span>
       </VButton>
     </div>
+    <VDialog v-model="dialogVisible">
+      <template #activator="{ on }">
+        <button @click="on">Open Dialog</button>
+      </template>
+      <v-card class="dialog-content">
+        <v-card-title>Dialog Title</v-card-title>
+        <v-card-text>Centered dialog content goes here.</v-card-text>
+        <v-card-actions>
+          <button @click="dialogVisible = false">Close</button>
+        </v-card-actions>
+      </v-card>
+    </VDialog>
   </private-view>
 </template>
 
@@ -301,7 +313,7 @@ export default {
     }
 
     ensureCollectionExists().then(loadData);
-
+    const dialogVisible = true;
     return {
       token,
       sec,
@@ -312,6 +324,7 @@ export default {
       attributes,
       limitType,
       isValid,
+      dialogVisible
     };
   },
 };
