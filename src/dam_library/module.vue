@@ -11,12 +11,8 @@
 <script>
 import {ref, onMounted} from "vue";
 import {useApi} from "@directus/extensions-sdk";
-import {VueDraggableNext} from "vue-draggable-next";
 
 export default {
-  components: {
-    draggable: VueDraggableNext,
-  },
   props: {
     id: {type: Number, default: 1},
     custom: {type: Boolean, default: false},
@@ -127,7 +123,7 @@ export default {
             hideExportButtonIcon: true,
             preventExportDefaultBehavior: true,
             dismissUrlPathQueryUpdate: true,
-            disableDownloadButton: false,
+            disableDownloadButton: true,
             hideDownloadButtonIcon: true,
             preventDownloadDefaultBehavior: true,
             locale: {
