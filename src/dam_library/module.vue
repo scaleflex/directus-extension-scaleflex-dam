@@ -2,7 +2,7 @@
 	<private-view title="Scaleflex DAM">
     <link rel="stylesheet" type="text/css"
           href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
-    <div style="margin: 30px 0">
+    <div style="margin: 32px">
       <div id="sfx-dam-widget"></div>
     </div>
   </private-view>
