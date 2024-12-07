@@ -38,6 +38,11 @@
 				"type": "display",
 				"name": "dam_display",
 				"source": "src/dam_display/index.js"
+			},
+			{
+				"type": "module",
+				"name": "dam_library",
+				"source": "src/dam_library/index.js"
 			}
 		],
 		"host": "^10.10.0"
