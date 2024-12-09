@@ -414,22 +414,61 @@ export default {
       return uuidArray[0];
     }
 
+    function replaceURLParameters(oldUrl, newUrl) {
+      // Function to get all param from URL convert to object
+      function getURLParameters(url) {
+        const queryString = url.split('?')[1];
+        if (!queryString) return {};
+        const params = queryString.split('&');
+        const result = {};
+        params.forEach(param => {
+          const [key, value] = param.split('=');
+          result[decodeURIComponent(key)] = decodeURIComponent(value || '');
+        });
+        return result;
+      }
+
+      // Function create the new URL with the new param
+      function buildURLWithParameters(baseUrl, params) {
+        const queryString = Object.entries(params)
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+            .join('&');
+        return baseUrl.split('?')[0] + '?' + queryString;
+      }
+
+      // get param from old url
+      const oldParams = getURLParameters(oldUrl);
+      // build the new url
+      return buildURLWithParameters(newUrl, oldParams);
+    }
+
     async function updateFiles(updatedFiles, isRefresh = false) {
       isLoading.value = true;
 
       const fetchPromises = updatedFiles.map(async (file, index) => {
         try {
-
           // Call fetchfileData for each file's uuid (assuming file has a 'uuid' property)
           let uuid = '';
-          if (isRefresh) uuid = getFileUuid(file)
+
+          if (isRefresh) uuid = getFileUuid(file);
           else uuid = file.file.uuid;
 
           const response = await fetchfileData(uuid);
+          let cdnLink = '';
+
+          cdnLink = response?.file?.url.cdn;
+          if (file.file?.url.download !== undefined) {
+            cdnLink = file.file?.url.download;
+          }
+
+          if (isRefresh) {
+            cdnLink = replaceURLParameters(file.cdn, cdnLink)
+          }
+
           const tempFile = {
             uuid: response?.file?.uuid + '_' + makeIndexFiles(index),
             name: response?.file?.name,
-            cdn: removeURLParameter(response?.file?.url?.cdn, 'vh'),
+            cdn: removeURLParameter(cdnLink, 'vh'),
             extension: response?.file?.extension,
             source: 'filerobot',
             type: response?.file?.type,
