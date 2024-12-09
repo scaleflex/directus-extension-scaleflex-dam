@@ -20,8 +20,20 @@
     </template>
     <link rel="stylesheet" type="text/css"
           href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
-    <div style="margin: 32px">
+    <div v-if="isTokenAndSecExists" style="margin: 32px">
       <div id="sfx-dam-widget"></div>
+    </div>
+    <div v-if="!isTokenAndSecExists" style="padding: 32px">
+      <VCard style="max-width: 100%;">
+        <VCardTitle style="color: tomato; display: flex; align-items: center;">
+          <VIcon name="report" />
+          <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
+        </VCardTitle>
+        <VCardText style="max-width: 100%; padding-bottom: 25px">
+          Please visit the <span style="text-decoration: underline; color: dodgerblue; cursor: pointer" @click="toDamSetting" target="_blank">Scaleflex DAM Configuration</span>
+          to add your Token and Template ID before browsing assets.
+        </VCardText>
+      </VCard>
     </div>
   </private-view>
 </template>
@@ -72,7 +84,8 @@ export default {
 
     return {
       getIsLoading,
-      toDamSetting
+      toDamSetting,
+      isTokenAndSecExists
     };
 
     function getIsLoading() {
