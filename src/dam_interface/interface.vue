@@ -162,8 +162,8 @@
   </div>
   <div v-else>
     <VCard style="max-width: 100%; margin-top: 20px">
-      <VCardTitle style="color: tomato">
-        <VIcon name="report" :small="true"/>
+      <VCardTitle style="color: tomato; display: flex; align-items: center;">
+        <VIcon name="report" />
         <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
       </VCardTitle>
       <VCardText style="max-width: 100%; padding-bottom: 25px">
