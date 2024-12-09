@@ -69,7 +69,7 @@
       <div style="margin-bottom: 1rem">
         <label for="limit"><b>Limit</b></label>
         <VInput :disabled="loading" min="0" v-model="limit" type="number"/>
-        <p class="guide-text">The max number of files that can be added to a single field, <b style="color:tomato">default: 0(unlimited)</b></p>
+        <p class="guide-text">The max number of files that can be added to a single field, <b style="color: var(--theme--primary)">default: 0(unlimited)</b></p>
       </div>
       <div style="margin-bottom: 1rem">
         <label for="attributes"><b>Attributes</b></label>

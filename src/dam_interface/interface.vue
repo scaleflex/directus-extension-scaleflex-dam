@@ -167,7 +167,7 @@
         <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
       </VCardTitle>
       <VCardText style="max-width: 100%; padding-bottom: 25px">
-        Please visit the <a style="text-decoration: underline; color: dodgerblue" href="/admin/scaleflex-dam-setting" target="_blank">Scaleflex DAM Configuration</a>
+        Please visit the <span style="text-decoration: underline; color: dodgerblue; cursor: pointer" @click="toDamSetting" target="_blank">Scaleflex DAM Configuration</span>
         to add your Token and Template ID before browsing assets.
       </VCardText>
     </VCard>
@@ -273,6 +273,13 @@ export default {
       init();
     });
 
+    function toDamSetting(){
+      const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
+      if (damButton) {
+        damButton.click();
+      }
+    }
+
     return {
       openModal,
       closeModal,
@@ -288,7 +295,8 @@ export default {
       closeDialog,
       clickRemoveAllAssets,
       dialogVisible,
-      isTokenAndSecExists
+      isTokenAndSecExists,
+      toDamSetting
     };
 
     function log() {
