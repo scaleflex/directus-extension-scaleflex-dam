@@ -1,5 +1,23 @@
 <template>
 	<private-view title="Scaleflex DAM">
+    <template #navigation>
+      <div style="margin-top: 20px; padding: 0 10px">
+        <div style="display: flex; flex-direction: column; align-content: center">
+          <div @click="toDamSetting" class="external-link">
+            <VIcon name="settings" style="color: var(--theme--primary)" />
+            <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex DAM</span>
+          </div>
+          <div style="display: flex; align-items: center; background: var(--theme--navigation--project--background); padding: 5px 8px; border-radius: 4px; margin-top: 8px;">
+            <VIcon name="gallery_thumbnail" style="color: var(--theme--primary)"/>
+            <span style="margin-left: 4px; font-size: 14px;  display: block">Assets Library</span>
+          </div>
+          <a href="#" target="_blank" class="external-link" style="margin-top: 8px;">
+            <VIcon name="description" style="color: var(--theme--primary)" />
+            <span style="margin-left: 4px; font-size: 14px;  display: block">Document</span>
+          </a>
+        </div>
+      </div>
+    </template>
     <link rel="stylesheet" type="text/css"
           href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
     <div style="margin: 32px">
@@ -45,8 +63,16 @@ export default {
       });
     });
 
+    function toDamSetting(){
+      const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
+      if (damButton) {
+        damButton.click();
+      }
+    }
+
     return {
       getIsLoading,
+      toDamSetting
     };
 
     function getIsLoading() {
@@ -170,5 +196,17 @@ export default {
 
 .filerobot-common-Search-searchInput {
   background: #FFF;
+}
+
+.external-link{
+  display: flex;
+  padding: 5px 8px;
+  border-radius: 4px;
+  transition: background 500ms ease;
+  align-items: center;
+}
+
+.external-link:hover{
+  background: var(--theme--navigation--project--background);
 }
 </style>

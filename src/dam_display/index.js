@@ -4,7 +4,7 @@ export default {
 	id: 'scaleflex-dam-display',
 	name: 'DAM Assets',
 	icon: 'image',
-	description: 'Display DAM assets',
+	description: 'Display DAM assets with beautiful UI',
 	component: DisplayComponent,
 	options: [
 		{

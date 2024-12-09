@@ -3,7 +3,7 @@ import ModuleComponent from './module.vue';
 export default {
 	id: 'scaleflex-dam-setting',
 	name: 'Scaleflex DAM Setting',
-	icon: 'settings_system_daydream',
+	icon: 'filter',
 	routes: [
 		{
 			path: '',

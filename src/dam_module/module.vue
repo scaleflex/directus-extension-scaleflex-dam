@@ -1,14 +1,18 @@
 <template>
   <private-view title="Scaleflex DAM">
     <template #navigation>
-      <div style="margin-top: 20px">
+      <div style="margin-top: 20px; padding: 0 10px">
           <div style="display: flex; flex-direction: column; align-content: center">
-            <div style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 10px;">
-              <VIcon name="settings" :small="true" style="margin-top: 2px"/>
+            <div style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 8px; border-radius: 4px; align-items: center;">
+              <VIcon name="settings" style="color: var(--theme--primary)"/>
               <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex DAM</span>
             </div>
-            <a href="#" target="_blank" style="display: flex; padding: 5px 10px;">
-              <VIcon name="description" :small="true" style="margin-top: 2px"/>
+            <div @click="toDam" class="external-link" style="margin-top: 8px">
+              <VIcon name="gallery_thumbnail" style="color: var(--theme--primary)"/>
+              <span style="margin-left: 4px; font-size: 14px;  display: block">Assets Library</span>
+            </div>
+            <a href="#" target="_blank" class="external-link"  style="margin-top: 8px">
+              <VIcon name="description" style="color: var(--theme--primary)" />
               <span style="margin-left: 4px; font-size: 14px;  display: block">Document</span>
             </a>
           </div>
@@ -416,6 +420,13 @@ export default {
       dialogVisible.value = false;
     }
 
+    function toDam() {
+      const damButton = document.querySelector('a[href="/admin/scaleflex-dam"]');
+      if (damButton) {
+        damButton.click();
+      }
+    }
+
     ensureCollectionExists().then(loadData);
     return {
       token,
@@ -434,7 +445,8 @@ export default {
       dialogType,
       confirmResetAllSettings,
       dialogReset,
-      resetAllSettings
+      resetAllSettings,
+      toDam
     };
   },
 };
@@ -460,5 +472,18 @@ export default {
 
 .homepage:hover{
   color: #285c72;
+}
+
+.external-link{
+  display: flex;
+  padding: 5px 8px;
+  border-radius: 4px;
+  transition: background 500ms ease;
+  align-items: center;
+  cursor: pointer;
+}
+
+.external-link:hover{
+  background: var(--theme--navigation--project--background);
 }
 </style>
