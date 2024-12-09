@@ -11,9 +11,9 @@
             <VIcon name="gallery_thumbnail" style="color: var(--theme--primary)"/>
             <span style="margin-left: 4px; font-size: 14px;  display: block">Assets Library</span>
           </div>
-          <a href="#" target="_blank" class="external-link" style="margin-top: 8px;">
+          <a href="https://docs.scaleflex.com/digital-asset-management-dam/plugins-and-connectors/plugins/directus" target="_blank" class="external-link" style="margin-top: 8px;">
             <VIcon name="description" style="color: var(--theme--primary)" />
-            <span style="margin-left: 4px; font-size: 14px;  display: block">Document</span>
+            <span style="margin-left: 4px; font-size: 14px;  display: block">Documentation</span>
           </a>
         </div>
       </div>
