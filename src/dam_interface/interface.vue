@@ -27,6 +27,14 @@
               <VIcon name="close"/>
             </div>
           </div>
+          <div v-if="configVariantsExist">
+            <div v-for="variant in item.variants">
+              <div>{{variant.name}}</div>
+              <div>
+                <img :src="variant.img_url" />
+              </div>
+            </div>
+          </div>
         </template>
         <template v-else-if="isVideo(item.type)">
           <div class="sfx-item">
@@ -215,6 +223,7 @@ export default {
     limit: {type: Number, default: 0},
     limitTypes: {type: String, default: null},
     attributes: {type: String, default: null},
+    config: {type: Object, default: null},
   },
   methods: {
     isImage(type) {
@@ -268,6 +277,7 @@ export default {
     const endpoint = ref('');
     const dialogVisible = ref(false);
     const isTokenAndSecExists = ref(false);
+    const configVariantsExist = ref(false);
 
     onMounted(() => {
       init();
@@ -296,13 +306,14 @@ export default {
       clickRemoveAllAssets,
       dialogVisible,
       isTokenAndSecExists,
+      configVariantsExist,
       toDamSetting
     };
 
     function log() {
       emit('input', toRaw(props.value));
     }
-
+    
     function addAssetsDisabled() {
       if (limit.value === getTotalAssets() && getTotalAssets() > 0) return true;
       return isLoading.value;
@@ -373,6 +384,9 @@ export default {
           limitType.value = data.limitType ? data.limitType.split(",") : [];
           attributes.value = data.attributes ? data.attributes.split(",") : [];
         }
+
+        if (props.config && 'variants' in props.config) configVariantsExist.value = true
+        
       } catch (error) {
 
       }
@@ -474,6 +488,21 @@ export default {
             type: response?.file?.type,
             ownerName: response?.file?.owner?.name,
           };
+          
+          if (configVariantsExist && tempFile.type.startsWith("image")) {
+            const imageUrls = []
+            const variants = props.config.variants
+            for (let value of variants) {
+              const params = new URLSearchParams(value.preset);
+              const updatedUrl = `${tempFile.cdn}?${params.toString()}`;
+              imageUrls.push({
+                "code": value.code,
+                "name": value.name,
+                "img_url": updatedUrl
+              })
+            }
+            tempFile['variants'] = imageUrls
+          }
 
           if (attributes.value.length > 0) {
             tempFile.attributes = getAttributesData(response?.file);
