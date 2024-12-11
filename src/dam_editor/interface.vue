@@ -2,7 +2,31 @@
   <link rel="stylesheet" type="text/css"
         href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
   <div>
-    <textarea id="tinymce-editor" :value="value"></textarea>
+    <Editor
+        api-key="qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc"
+        :init="{
+          plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
+          toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
+           'outdent indent link removeformat blockquote fullscreen code | sfxDAM',
+          setup: (editor) => {
+            editor.on('init', () => {
+              editor.setContent(value);
+            });
+
+            editor.ui.registry.addToggleButton('sfxDAM', {
+              text: 'DAM',
+              onAction: (api) => {
+                openModal(editor.id);
+              }
+            });
+
+            editor.on('input', () => {
+              const content = editor.getContent();
+              emit('input', content);
+            });
+          }
+        }"
+    />
   </div>
 
   <div :style="{ display: isOpen ? 'block' : 'none' }" class="modal-overlay" id="sfx-editor-modal">
@@ -25,8 +49,9 @@
 
 <script>
 
-import {onMounted, ref, toRaw} from "vue";
+import {onMounted, ref} from "vue";
 import {useApi} from "@directus/extensions-sdk";
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
   props: {
@@ -39,6 +64,7 @@ export default {
       default: () => ({}),
     },
   },
+  components: { Editor },
   data() {
     return {
       editor: null,
@@ -57,52 +83,12 @@ export default {
     const limit = ref(null);
     const attributes = ref([]);
     const limitType = ref([]);
-    const isOverLimit = ref(false);
     const endpoint = ref('');
-    const dialogVisible = ref(false);
     const isTokenAndSecExists = ref(false);
 
     onMounted(() => {
       init();
     });
-
-    setTimeout(function () {
-      tinymce.init({
-        selector: '#tinymce-editor',
-        plugins: [
-          'media',
-          'table',
-          'lists',
-          'image',
-          'link',
-          'pagebreak',
-          'code',
-          'insertdatetime',
-          'autoresize',
-          'preview',
-          'fullscreen',
-          'directionality',
-        ],
-        toolbar: "h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify " +
-            "bullist numlist outdent indent removeformat blockquote fullscreen | sfxDAM",
-        setup: (editor) => {
-          this.editor = editor;
-
-          editor.ui.registry.addToggleButton('sfxDAM', {
-            text: 'DAM',
-            onAction: (api) => {
-              console.log('open DAM');
-              openModal();
-            }
-          });
-
-          editor.on('input', () => {
-            const content = editor.getContent();
-            emit('input', content);
-          });
-        },
-      });
-    }, 1000);
 
     function closeModal() {
       document.getElementById("sfx-editor-modal").setAttribute("style", "display: none");
@@ -110,20 +96,20 @@ export default {
       isOpen.value = false;
     }
 
-    function openModal() {
+    function openModal(id) {
       document.getElementById("sfx-editor-modal").setAttribute("style", "display: block");
       isOpen.value = true;
-      openSfxDAM();
+      openSfxDAM(id);
     }
 
-    async function openSfxDAM() {
+    async function openSfxDAM(editor_id) {
       const frConfig = {
         token: token.value,
         sec: sec.value,
         directory: directory.value,
         limitType: limitType.value,
       }
-      renderWidget(frConfig);
+      renderWidget(frConfig, editor_id);
     }
 
     async function init() {
@@ -163,7 +149,20 @@ export default {
       }
     }
 
-    function renderWidget(frConfig) {
+    function isImage(type) {
+      return type.startsWith("image");
+    }
+
+    function isVideo(type) {
+      return type.startsWith("video");
+    }
+
+    function isAudio(type) {
+      return type.startsWith("audio");
+    }
+
+
+    function renderWidget(frConfig, editor_id) {
       if (!window.Filerobot) {
         return;
       }
@@ -212,6 +211,8 @@ export default {
           .use(XHRUpload)
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
             console.dir(files);
+            const htmlRender = renderHTMLFromJSON(files);
+            tinymce.get(editor_id).insertContent(htmlRender)
             closeModal();
           })
           .on('complete', ({failed, uploadID, successful}) => {
@@ -228,8 +229,44 @@ export default {
           });
     }
 
+    // Function to render HTML from JSON data
+    function renderHTMLFromJSON(data) {
+      let result = "";
+
+      data.forEach(item => {
+        // Extract necessary properties from the JSON structure
+        const file = item.file;
+        const type = file.type;
+        const title = file.meta?.title?.en || "No Title";
+        const cdnLink = file.url?.cdn || "";
+
+        if (file.url?.download !== undefined) {
+          cdnLink.value = file.url?.download;
+        }
+
+        // Create HTML content based on the file type
+        let itemContent = `<div>`;
+        if (type === 'image/jpeg' || type === 'image/png') {
+          itemContent += `<img src='${cdnLink}' alt='${title}' />`;
+        } else if (type === 'video/mp4' || type.startsWith('video/')) {
+          itemContent += `<video src='${cdnLink}' controls></video>`;
+        } else if (type === 'audio/mpeg' || type.startsWith('audio/')) {
+          itemContent += `<audio src='${cdnLink}' controls></audio>`;
+        }
+        itemContent += `</div>`;
+
+        // Append to result string
+        result += itemContent;
+      });
+
+      // Return the result string
+      return result;
+    }
+
     return {
-      closeModal
+      closeModal,
+      openModal,
+      emit,
     }
   },
   beforeDestroy() {
@@ -294,5 +331,4 @@ export default {
 .modal-footer {
   text-align: right;
 }
-
 </style>
