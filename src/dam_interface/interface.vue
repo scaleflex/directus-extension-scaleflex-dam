@@ -29,10 +29,7 @@
           </div>
           <div v-if="configVariantsExist">
             <div v-for="variant in item.variants">
-              <div>{{variant.name}}</div>
-              <div>
-                <img :src="variant.img_url" />
-              </div>
+              <div @click="showVariantDialog(item, variant)">{{variant.name}}</div>
             </div>
           </div>
         </template>
@@ -129,6 +126,23 @@
           :secondary="true"
         >
           No
+        </VButton>
+        </v-card-actions>
+      </v-card>
+    </VDialog>
+
+    <VDialog v-model="isShowVariantDialog">
+      <v-card class="dialog-content">
+      
+        <img :src="currentVariantShow" />
+        <v-card-actions>
+      
+
+        <VButton
+          @click="closeVariantDialog"
+          :secondary="true"
+        >
+          Close
         </VButton>
         </v-card-actions>
       </v-card>
@@ -278,10 +292,25 @@ export default {
     const dialogVisible = ref(false);
     const isTokenAndSecExists = ref(false);
     const configVariantsExist = ref(false);
+    const isShowVariantDialog = ref(false);
+    const currentVariantShow = ref(null);
 
     onMounted(() => {
       init();
     });
+
+    function closeVariantDialog()
+    {
+      isShowVariantDialog.value = false
+      currentVariantShow.value = null
+    }
+
+    function showVariantDialog(item, variant)
+    {
+      isShowVariantDialog.value = true
+      currentVariantShow.value = variant.img_url
+    }
+
 
     function toDamSetting(){
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
@@ -307,7 +336,11 @@ export default {
       dialogVisible,
       isTokenAndSecExists,
       configVariantsExist,
-      toDamSetting
+      toDamSetting,
+      closeVariantDialog,
+      showVariantDialog,
+      isShowVariantDialog,
+      currentVariantShow
     };
 
     function log() {
@@ -488,7 +521,7 @@ export default {
             type: response?.file?.type,
             ownerName: response?.file?.owner?.name,
           };
-          
+
           if (configVariantsExist && tempFile.type.startsWith("image")) {
             const imageUrls = []
             const variants = props.config.variants

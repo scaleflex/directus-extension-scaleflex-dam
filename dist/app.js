@@ -3430,6 +3430,7 @@ const _sfc_main$4 = {
     limit: {type: Number, default: 0},
     limitTypes: {type: String, default: null},
     attributes: {type: String, default: null},
+    config: {type: Object, default: null},
   },
   methods: {
     isImage(type) {
@@ -3483,10 +3484,26 @@ const _sfc_main$4 = {
     const endpoint = ref('');
     const dialogVisible = ref(false);
     const isTokenAndSecExists = ref(false);
+    const configVariantsExist = ref(false);
+    const isShowVariantDialog = ref(false);
+    const currentVariantShow = ref(null);
 
     onMounted(() => {
       init();
     });
+
+    function closeVariantDialog()
+    {
+      isShowVariantDialog.value = false;
+      currentVariantShow.value = null;
+    }
+
+    function showVariantDialog(item, variant)
+    {
+      isShowVariantDialog.value = true;
+      currentVariantShow.value = variant.img_url;
+    }
+
 
     function toDamSetting(){
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
@@ -3511,13 +3528,18 @@ const _sfc_main$4 = {
       clickRemoveAllAssets,
       dialogVisible,
       isTokenAndSecExists,
-      toDamSetting
+      configVariantsExist,
+      toDamSetting,
+      closeVariantDialog,
+      showVariantDialog,
+      isShowVariantDialog,
+      currentVariantShow
     };
 
     function log() {
       emit('input', toRaw(props.value));
     }
-
+    
     function addAssetsDisabled() {
       if (limit.value === getTotalAssets() && getTotalAssets() > 0) return true;
       return isLoading.value;
@@ -3588,6 +3610,9 @@ const _sfc_main$4 = {
           limitType.value = data.limitType ? data.limitType.split(",") : [];
           attributes.value = data.attributes ? data.attributes.split(",") : [];
         }
+
+        if (props.config && 'variants' in props.config) configVariantsExist.value = true;
+        
       } catch (error) {
 
       }
@@ -3689,6 +3714,21 @@ const _sfc_main$4 = {
             type: response?.file?.type,
             ownerName: response?.file?.owner?.name,
           };
+
+          if (configVariantsExist && tempFile.type.startsWith("image")) {
+            const imageUrls = [];
+            const variants = props.config.variants;
+            for (let value of variants) {
+              const params = new URLSearchParams(value.preset);
+              const updatedUrl = `${tempFile.cdn}?${params.toString()}`;
+              imageUrls.push({
+                "code": value.code,
+                "name": value.name,
+                "img_url": updatedUrl
+              });
+            }
+            tempFile['variants'] = imageUrls;
+          }
 
           if (attributes.value.length > 0) {
             tempFile.attributes = getAttributesData(response?.file);
@@ -3870,10 +3910,7 @@ const _sfc_main$4 = {
 
 const _hoisted_1$4 = ["value"];
 const _hoisted_2$4 = { id: "sfx-result" };
-const _hoisted_3$4 = {
-  key: 0,
-  class: "sfx-item"
-};
+const _hoisted_3$4 = { class: "sfx-item" };
 const _hoisted_4$4 = { class: "sfx-item-inner" };
 const _hoisted_5$4 = { class: "btn-drag-item" };
 const _hoisted_6$3 = {
@@ -3884,65 +3921,68 @@ const _hoisted_7$2 = ["href"];
 const _hoisted_8$1 = ["src", "alt"];
 const _hoisted_9$1 = { class: "item-info" };
 const _hoisted_10$1 = ["onClick"];
-const _hoisted_11$1 = {
+const _hoisted_11$1 = { key: 0 };
+const _hoisted_12$1 = ["onClick"];
+const _hoisted_13$1 = {
   key: 1,
   class: "sfx-item"
 };
-const _hoisted_12$1 = { class: "sfx-item-inner" };
-const _hoisted_13$1 = { class: "btn-drag-item" };
-const _hoisted_14$1 = {
+const _hoisted_14$1 = { class: "sfx-item-inner" };
+const _hoisted_15 = { class: "btn-drag-item" };
+const _hoisted_16 = {
   class: "sfx-media-icon",
   target: "_blank"
 };
-const _hoisted_15 = ["href"];
-const _hoisted_16 = { class: "item-info" };
-const _hoisted_17 = ["onClick"];
-const _hoisted_18 = {
+const _hoisted_17 = ["href"];
+const _hoisted_18 = { class: "item-info" };
+const _hoisted_19 = ["onClick"];
+const _hoisted_20 = {
   key: 2,
   class: "sfx-item"
 };
-const _hoisted_19 = { class: "sfx-item-inner" };
-const _hoisted_20 = { class: "btn-drag-item" };
-const _hoisted_21 = {
+const _hoisted_21 = { class: "sfx-item-inner" };
+const _hoisted_22 = { class: "btn-drag-item" };
+const _hoisted_23 = {
   class: "sfx-media-icon",
   target: "_blank"
 };
-const _hoisted_22 = ["href"];
-const _hoisted_23 = { class: "item-info" };
-const _hoisted_24 = ["onClick"];
-const _hoisted_25 = {
+const _hoisted_24 = ["href"];
+const _hoisted_25 = { class: "item-info" };
+const _hoisted_26 = ["onClick"];
+const _hoisted_27 = {
   key: 3,
   class: "sfx-item"
 };
-const _hoisted_26 = { class: "sfx-item-inner" };
-const _hoisted_27 = { class: "btn-drag-item" };
-const _hoisted_28 = {
+const _hoisted_28 = { class: "sfx-item-inner" };
+const _hoisted_29 = { class: "btn-drag-item" };
+const _hoisted_30 = {
   class: "sfx-media-icon",
   target: "_blank"
 };
-const _hoisted_29 = ["href"];
-const _hoisted_30 = { class: "item-info" };
-const _hoisted_31 = ["onClick"];
-const _hoisted_32 = { class: "bottom-message" };
-const _hoisted_33 = {
+const _hoisted_31 = ["href"];
+const _hoisted_32 = { class: "item-info" };
+const _hoisted_33 = ["onClick"];
+const _hoisted_34 = { class: "bottom-message" };
+const _hoisted_35 = {
   key: 0,
   class: "column align-left"
 };
-const _hoisted_34 = { key: 0 };
-const _hoisted_35 = {
+const _hoisted_36 = { key: 0 };
+const _hoisted_37 = {
   key: 0,
   style: {"display":"flex","align-items":"center","justify-content":"end"},
   class: "exceeds-the-limit"
 };
-const _hoisted_36 = {
+const _hoisted_38 = ["src"];
+const _hoisted_39 = {
   key: 0,
   class: "toolbar"
 };
-const _hoisted_37 = { key: 1 };
-const _hoisted_38 = { class: "modal" };
-const _hoisted_39 = { class: "modal-header" };
-const _hoisted_40 = { class: "modal-body" };
-const _hoisted_41 = { class: "modal-footer" };
+const _hoisted_40 = { key: 1 };
+const _hoisted_41 = { class: "modal" };
+const _hoisted_42 = { class: "modal-header" };
+const _hoisted_43 = { class: "modal-body" };
+const _hoisted_44 = { class: "modal-footer" };
 
 function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_VIcon = resolveComponent("VIcon");
@@ -3958,7 +3998,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_VCard = resolveComponent("VCard");
 
   return (openBlock(), createElementBlock(Fragment, null, [
-    _cache[18] || (_cache[18] = createElementVNode("link", {
+    _cache[20] || (_cache[20] = createElementVNode("link", {
       rel: "stylesheet",
       type: "text/css",
       href: "https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"
@@ -3982,47 +4022,60 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
             }, [
               createCommentVNode(" Kiểm tra loại file và hiển thị phù hợp "),
               ($options.isImage(item.type))
-                ? (openBlock(), createElementBlock("div", _hoisted_3$4, [
-                    createElementVNode("div", _hoisted_4$4, [
-                      createElementVNode("div", _hoisted_5$4, [
-                        createVNode(_component_VIcon, { name: "drag_handle" })
-                      ]),
-                      createElementVNode("div", _hoisted_6$3, [
-                        createElementVNode("a", {
-                          href: item.cdn,
-                          target: "_blank"
-                        }, [
-                          createElementVNode("img", {
-                            src: $options.createThumbnail(item.cdn),
-                            alt: item.name,
-                            class: "media-item"
-                          }, null, 8 /* PROPS */, _hoisted_8$1),
-                          createVNode(_component_VIcon, {
-                            color: "white",
-                            name: "visibility",
-                            xsmall: true,
-                            class: "media-item-icon"
-                          })
-                        ], 8 /* PROPS */, _hoisted_7$2)
-                      ]),
-                      createElementVNode("div", _hoisted_9$1, [
-                        createElementVNode("span", null, toDisplayString($options.trimText(item.name)), 1 /* TEXT */)
-                      ])
-                    ]),
-                    createElementVNode("div", {
-                      class: "btn-delete-item",
-                      onClick: $event => ($setup.deleteItem(index))
-                    }, [
-                      createVNode(_component_VIcon, { name: "close" })
-                    ], 8 /* PROPS */, _hoisted_10$1)
-                  ]))
-                : ($options.isVideo(item.type))
-                  ? (openBlock(), createElementBlock("div", _hoisted_11$1, [
-                      createElementVNode("div", _hoisted_12$1, [
-                        createElementVNode("div", _hoisted_13$1, [
+                ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [
+                    createElementVNode("div", _hoisted_3$4, [
+                      createElementVNode("div", _hoisted_4$4, [
+                        createElementVNode("div", _hoisted_5$4, [
                           createVNode(_component_VIcon, { name: "drag_handle" })
                         ]),
-                        createElementVNode("div", _hoisted_14$1, [
+                        createElementVNode("div", _hoisted_6$3, [
+                          createElementVNode("a", {
+                            href: item.cdn,
+                            target: "_blank"
+                          }, [
+                            createElementVNode("img", {
+                              src: $options.createThumbnail(item.cdn),
+                              alt: item.name,
+                              class: "media-item"
+                            }, null, 8 /* PROPS */, _hoisted_8$1),
+                            createVNode(_component_VIcon, {
+                              color: "white",
+                              name: "visibility",
+                              xsmall: true,
+                              class: "media-item-icon"
+                            })
+                          ], 8 /* PROPS */, _hoisted_7$2)
+                        ]),
+                        createElementVNode("div", _hoisted_9$1, [
+                          createElementVNode("span", null, toDisplayString($options.trimText(item.name)), 1 /* TEXT */)
+                        ])
+                      ]),
+                      createElementVNode("div", {
+                        class: "btn-delete-item",
+                        onClick: $event => ($setup.deleteItem(index))
+                      }, [
+                        createVNode(_component_VIcon, { name: "close" })
+                      ], 8 /* PROPS */, _hoisted_10$1)
+                    ]),
+                    ($setup.configVariantsExist)
+                      ? (openBlock(), createElementBlock("div", _hoisted_11$1, [
+                          (openBlock(true), createElementBlock(Fragment, null, renderList(item.variants, (variant) => {
+                            return (openBlock(), createElementBlock("div", null, [
+                              createElementVNode("div", {
+                                onClick: $event => ($setup.showVariantDialog(item, variant))
+                              }, toDisplayString(variant.name), 9 /* TEXT, PROPS */, _hoisted_12$1)
+                            ]))
+                          }), 256 /* UNKEYED_FRAGMENT */))
+                        ]))
+                      : createCommentVNode("v-if", true)
+                  ], 64 /* STABLE_FRAGMENT */))
+                : ($options.isVideo(item.type))
+                  ? (openBlock(), createElementBlock("div", _hoisted_13$1, [
+                      createElementVNode("div", _hoisted_14$1, [
+                        createElementVNode("div", _hoisted_15, [
+                          createVNode(_component_VIcon, { name: "drag_handle" })
+                        ]),
+                        createElementVNode("div", _hoisted_16, [
                           createElementVNode("a", {
                             href: item.cdn,
                             target: "_blank"
@@ -4037,9 +4090,9 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                               xsmall: true,
                               class: "media-item-icon"
                             })
-                          ], 8 /* PROPS */, _hoisted_15)
+                          ], 8 /* PROPS */, _hoisted_17)
                         ]),
-                        createElementVNode("div", _hoisted_16, [
+                        createElementVNode("div", _hoisted_18, [
                           createElementVNode("span", null, toDisplayString($options.trimText(item.name)), 1 /* TEXT */)
                         ])
                       ]),
@@ -4048,15 +4101,15 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                         onClick: $event => ($setup.deleteItem(index))
                       }, [
                         createVNode(_component_VIcon, { name: "close" })
-                      ], 8 /* PROPS */, _hoisted_17)
+                      ], 8 /* PROPS */, _hoisted_19)
                     ]))
                   : ($options.isAudio(item.type))
-                    ? (openBlock(), createElementBlock("div", _hoisted_18, [
-                        createElementVNode("div", _hoisted_19, [
-                          createElementVNode("div", _hoisted_20, [
+                    ? (openBlock(), createElementBlock("div", _hoisted_20, [
+                        createElementVNode("div", _hoisted_21, [
+                          createElementVNode("div", _hoisted_22, [
                             createVNode(_component_VIcon, { name: "drag_handle" })
                           ]),
-                          createElementVNode("div", _hoisted_21, [
+                          createElementVNode("div", _hoisted_23, [
                             createElementVNode("a", {
                               href: item.cdn,
                               target: "_blank"
@@ -4071,9 +4124,9 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                                 xsmall: true,
                                 class: "media-item-icon"
                               })
-                            ], 8 /* PROPS */, _hoisted_22)
+                            ], 8 /* PROPS */, _hoisted_24)
                           ]),
-                          createElementVNode("div", _hoisted_23, [
+                          createElementVNode("div", _hoisted_25, [
                             createElementVNode("span", null, toDisplayString($options.trimText(item.name)), 1 /* TEXT */)
                           ])
                         ]),
@@ -4082,14 +4135,14 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                           onClick: $event => ($setup.deleteItem(index))
                         }, [
                           createVNode(_component_VIcon, { name: "close" })
-                        ], 8 /* PROPS */, _hoisted_24)
+                        ], 8 /* PROPS */, _hoisted_26)
                       ]))
-                    : (openBlock(), createElementBlock("div", _hoisted_25, [
-                        createElementVNode("div", _hoisted_26, [
-                          createElementVNode("div", _hoisted_27, [
+                    : (openBlock(), createElementBlock("div", _hoisted_27, [
+                        createElementVNode("div", _hoisted_28, [
+                          createElementVNode("div", _hoisted_29, [
                             createVNode(_component_VIcon, { name: "drag_handle" })
                           ]),
-                          createElementVNode("div", _hoisted_28, [
+                          createElementVNode("div", _hoisted_30, [
                             createElementVNode("a", {
                               href: item.cdn,
                               target: "_blank"
@@ -4104,9 +4157,9 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                                 xsmall: true,
                                 class: "media-item-icon"
                               })
-                            ], 8 /* PROPS */, _hoisted_29)
+                            ], 8 /* PROPS */, _hoisted_31)
                           ]),
-                          createElementVNode("div", _hoisted_30, [
+                          createElementVNode("div", _hoisted_32, [
                             createElementVNode("span", null, toDisplayString($options.trimText(item.name)), 1 /* TEXT */)
                           ])
                         ]),
@@ -4115,25 +4168,25 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                           onClick: $event => ($setup.deleteItem(index))
                         }, [
                           createVNode(_component_VIcon, { name: "close" })
-                        ], 8 /* PROPS */, _hoisted_31)
+                        ], 8 /* PROPS */, _hoisted_33)
                       ]))
             ]))
           }), 128 /* KEYED_FRAGMENT */))
         ]),
         _: 1 /* STABLE */
       }, 8 /* PROPS */, ["list", "onChange"]),
-      createElementVNode("div", _hoisted_32, [
+      createElementVNode("div", _hoisted_34, [
         ($setup.getTotalAssets() > 0)
-          ? (openBlock(), createElementBlock("div", _hoisted_33, [
+          ? (openBlock(), createElementBlock("div", _hoisted_35, [
               createElementVNode("span", null, "Total: " + toDisplayString($setup.getTotalAssets()), 1 /* TEXT */),
               ($setup.limitFiles() > 0)
-                ? (openBlock(), createElementBlock("span", _hoisted_34, " / Limit " + toDisplayString($setup.limitFiles()), 1 /* TEXT */))
+                ? (openBlock(), createElementBlock("span", _hoisted_36, " / Limit " + toDisplayString($setup.limitFiles()), 1 /* TEXT */))
                 : createCommentVNode("v-if", true)
             ]))
           : createCommentVNode("v-if", true)
       ]),
       ($setup.getIsOverLimit())
-        ? (openBlock(), createElementBlock("div", _hoisted_35, _cache[6] || (_cache[6] = [
+        ? (openBlock(), createElementBlock("div", _hoisted_37, _cache[7] || (_cache[7] = [
             createElementVNode("span", { class: "ml-1" }, "Exceeded maximum number of assets", -1 /* HOISTED */)
           ])))
         : createCommentVNode("v-if", true),
@@ -4145,13 +4198,13 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
           createVNode(_component_v_card, { class: "dialog-content" }, {
             default: withCtx(() => [
               createVNode(_component_v_card_title, null, {
-                default: withCtx(() => _cache[7] || (_cache[7] = [
+                default: withCtx(() => _cache[8] || (_cache[8] = [
                   createTextVNode("Scaleflex DAM")
                 ])),
                 _: 1 /* STABLE */
               }),
               createVNode(_component_v_card_text, null, {
-                default: withCtx(() => _cache[8] || (_cache[8] = [
+                default: withCtx(() => _cache[9] || (_cache[9] = [
                   createTextVNode("Are you sure you want to delete everything? Please confirm to proceed.")
                 ])),
                 _: 1 /* STABLE */
@@ -4162,7 +4215,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                     onClick: $setup.removeAllAssets,
                     warning: true
                   }, {
-                    default: withCtx(() => _cache[9] || (_cache[9] = [
+                    default: withCtx(() => _cache[10] || (_cache[10] = [
                       createTextVNode(" Yes ")
                     ])),
                     _: 1 /* STABLE */
@@ -4171,8 +4224,36 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                     onClick: $setup.closeDialog,
                     secondary: true
                   }, {
-                    default: withCtx(() => _cache[10] || (_cache[10] = [
+                    default: withCtx(() => _cache[11] || (_cache[11] = [
                       createTextVNode(" No ")
+                    ])),
+                    _: 1 /* STABLE */
+                  }, 8 /* PROPS */, ["onClick"])
+                ]),
+                _: 1 /* STABLE */
+              })
+            ]),
+            _: 1 /* STABLE */
+          })
+        ]),
+        _: 1 /* STABLE */
+      }, 8 /* PROPS */, ["modelValue"]),
+      createVNode(_component_VDialog, {
+        modelValue: $setup.isShowVariantDialog,
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => (($setup.isShowVariantDialog) = $event))
+      }, {
+        default: withCtx(() => [
+          createVNode(_component_v_card, { class: "dialog-content" }, {
+            default: withCtx(() => [
+              createElementVNode("img", { src: $setup.currentVariantShow }, null, 8 /* PROPS */, _hoisted_38),
+              createVNode(_component_v_card_actions, null, {
+                default: withCtx(() => [
+                  createVNode(_component_VButton, {
+                    onClick: $setup.closeVariantDialog,
+                    secondary: true
+                  }, {
+                    default: withCtx(() => _cache[12] || (_cache[12] = [
+                      createTextVNode(" Close ")
                     ])),
                     _: 1 /* STABLE */
                   }, 8 /* PROPS */, ["onClick"])
@@ -4187,14 +4268,14 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8 /* PROPS */, ["modelValue"])
     ]),
     ($setup.isTokenAndSecExists)
-      ? (openBlock(), createElementBlock("div", _hoisted_36, [
+      ? (openBlock(), createElementBlock("div", _hoisted_39, [
           createVNode(_component_VButton, {
             onClick: $setup.openModal,
             disabled: $setup.addAssetsDisabled()
           }, {
             default: withCtx(() => [
               createVNode(_component_VIcon, { name: "image" }),
-              _cache[11] || (_cache[11] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Browse assets", -1 /* HOISTED */))
+              _cache[13] || (_cache[13] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Browse assets", -1 /* HOISTED */))
             ]),
             _: 1 /* STABLE */
           }, 8 /* PROPS */, ["onClick", "disabled"]),
@@ -4203,13 +4284,13 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
               ? (openBlock(), createBlock(_component_VButton, {
                   key: 0,
                   type: "button",
-                  onClick: _cache[1] || (_cache[1] = $event => ($setup.refreshAssets())),
+                  onClick: _cache[2] || (_cache[2] = $event => ($setup.refreshAssets())),
                   loading: $setup.getIsLoading(),
                   outlined: true
                 }, {
                   default: withCtx(() => [
                     createVNode(_component_VIcon, { name: "refresh" }),
-                    _cache[12] || (_cache[12] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Refresh", -1 /* HOISTED */))
+                    _cache[14] || (_cache[14] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Refresh", -1 /* HOISTED */))
                   ]),
                   _: 1 /* STABLE */
                 }, 8 /* PROPS */, ["loading"]))
@@ -4219,37 +4300,37 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                   key: 1,
                   style: {"margin-left":"5px"},
                   type: "button",
-                  onClick: _cache[2] || (_cache[2] = $event => ($setup.clickRemoveAllAssets())),
+                  onClick: _cache[3] || (_cache[3] = $event => ($setup.clickRemoveAllAssets())),
                   danger: true
                 }, {
                   default: withCtx(() => [
                     createVNode(_component_VIcon, { name: "delete" }),
-                    _cache[13] || (_cache[13] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Remove all", -1 /* HOISTED */))
+                    _cache[15] || (_cache[15] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Remove all", -1 /* HOISTED */))
                   ]),
                   _: 1 /* STABLE */
                 }))
               : createCommentVNode("v-if", true)
           ])
         ]))
-      : (openBlock(), createElementBlock("div", _hoisted_37, [
+      : (openBlock(), createElementBlock("div", _hoisted_40, [
           createVNode(_component_VCard, { style: {"max-width":"100%","margin-top":"20px"} }, {
             default: withCtx(() => [
               createVNode(_component_VCardTitle, { style: {"color":"tomato","display":"flex","align-items":"center"} }, {
                 default: withCtx(() => [
                   createVNode(_component_VIcon, { name: "report" }),
-                  _cache[14] || (_cache[14] = createElementVNode("span", { style: {"font-size":"14px","margin-left":"5px"} }, "Scaleflex DAM Notice", -1 /* HOISTED */))
+                  _cache[16] || (_cache[16] = createElementVNode("span", { style: {"font-size":"14px","margin-left":"5px"} }, "Scaleflex DAM Notice", -1 /* HOISTED */))
                 ]),
                 _: 1 /* STABLE */
               }),
               createVNode(_component_VCardText, { style: {"max-width":"100%","padding-bottom":"25px"} }, {
                 default: withCtx(() => [
-                  _cache[15] || (_cache[15] = createTextVNode(" Please visit the ")),
+                  _cache[17] || (_cache[17] = createTextVNode(" Please visit the ")),
                   createElementVNode("span", {
                     style: {"text-decoration":"underline","color":"dodgerblue","cursor":"pointer"},
-                    onClick: _cache[3] || (_cache[3] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args))),
+                    onClick: _cache[4] || (_cache[4] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args))),
                     target: "_blank"
                   }, "Scaleflex DAM Configuration"),
-                  _cache[16] || (_cache[16] = createTextVNode(" to add your Token and Template ID before browsing assets. "))
+                  _cache[18] || (_cache[18] = createTextVNode(" to add your Token and Template ID before browsing assets. "))
                 ]),
                 _: 1 /* STABLE */
               })
@@ -4262,22 +4343,22 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
       class: "modal-overlay",
       id: "sfx-modal"
     }, [
-      createElementVNode("div", _hoisted_38, [
-        createElementVNode("div", _hoisted_39, [
+      createElementVNode("div", _hoisted_41, [
+        createElementVNode("div", _hoisted_42, [
           createElementVNode("h3", null, toDisplayString($props.title), 1 /* TEXT */),
           createElementVNode("button", {
-            onClick: _cache[4] || (_cache[4] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+            onClick: _cache[5] || (_cache[5] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
             class: "modal-close-btn"
           }, "×")
         ]),
-        createElementVNode("div", _hoisted_40, [
+        createElementVNode("div", _hoisted_43, [
           renderSlot(_ctx.$slots, "default", {}, () => [
-            _cache[17] || (_cache[17] = createElementVNode("div", { id: "sfx-dam-widget" }, null, -1 /* HOISTED */))
+            _cache[19] || (_cache[19] = createElementVNode("div", { id: "sfx-dam-widget" }, null, -1 /* HOISTED */))
           ])
         ]),
-        createElementVNode("div", _hoisted_41, [
+        createElementVNode("div", _hoisted_44, [
           createElementVNode("button", {
-            onClick: _cache[5] || (_cache[5] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+            onClick: _cache[6] || (_cache[6] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
             class: "btn"
           }, "Close")
         ])
