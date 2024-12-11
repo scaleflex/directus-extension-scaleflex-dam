@@ -89,6 +89,15 @@ export default {
 				width: 'half',
 			},
 		},
+		{
+			field: 'config',
+			type: 'json',
+			name: 'Configuration',
+			meta: {
+				interface: 'input-code',
+				width: 'full',
+			}
+		}
 	],
     types: ['json'],
 };
