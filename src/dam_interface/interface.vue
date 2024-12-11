@@ -132,20 +132,54 @@
     </VDialog>
 
     <VDialog v-model="isShowVariantDialog">
-      <v-card class="dialog-content">
-      
-        <img :src="currentVariantShow" />
-        <v-card-actions>
-      
-
-        <VButton
-          @click="closeVariantDialog"
-          :secondary="true"
-        >
-          Close
-        </VButton>
-        </v-card-actions>
-      </v-card>
+      <VCard style="width: 70%" class="dialog-content">
+        <VCardTitle>
+          Edit Image Variants
+        </VCardTitle>
+        <VCardText>
+          <div style="display: flex; justify-content: space-between; border: 1px solid lightgray; height: 500px">
+            <div id="variants-toolbar" style="width: 50px; padding: 5px; display: flex; align-items: center; justify-content: start; flex-direction: column; border-right: 1px solid lightgray;">
+              <div
+                  @click="changeToolbar('size')"
+                  :class="{ toolbar_item_active: currentToolbar === 'size'}"
+                  class="toolbar-item"><VIcon :small="true" name="width_wide"/></div>
+              <div
+                  @click="changeToolbar('crop')"
+                  :class="{ toolbar_item_active: currentToolbar === 'crop'}"
+                  class="toolbar-item"><VIcon :small="true" name="crop"/></div>
+              <div
+                  @click="changeToolbar('addition')"
+                  :class="{ toolbar_item_active: currentToolbar === 'addition'}"
+                  class="toolbar-item"><VIcon :small="true" name="flip"/></div>
+            </div>
+            <div id="variants-toolbar-config"  style="width: 250px; border-right: 1px solid lightgray; padding: 10px; display: flex; flex-direction: column;" >
+              <div id="variants-toolbar-config-size" v-if="currentToolbar === 'size'">
+                <div style="display: flex; justify-content: start;">
+                  <VCheckbox :small="true" v-model="currentVariantConfigs['org_if_sml']" />
+                  <span>Prevent enlargement</span>
+                </div>
+                <div>
+                  <span>Width</span>
+                  <VInput :small="true" v-model="currentVariantConfigs['width']" />
+                </div>
+                <div style="margin-top: 15px">
+                  <span>Height</span>
+                  <VInput :small="true" v-model="currentVariantConfigs['height']" />
+                </div>
+              </div>
+              <div id="variants-toolbar-config-crop" v-if="currentToolbar === 'crop'">
+                Crop
+              </div>
+              <div id="variants-toolbar-config-addition" v-if="currentToolbar === 'addition'">
+                Addition
+              </div>
+            </div>
+            <div id="variants-toolbar-image"  style="width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; max-height: 80%">
+              <img style="height: 70%; width: auto" :src="currentVariantShow" />
+            </div>
+          </div>
+        </VCardText>
+      </VCard>
     </VDialog>
   </div>
 
@@ -239,6 +273,20 @@ export default {
     attributes: {type: String, default: null},
     config: {type: Object, default: null},
   },
+  watch: {
+    currentVariantConfigs: {
+      handler(newConfigs, oldConfigs) {
+        this.updateCurrentVariantShow();
+      },
+      deep: true,
+    },
+    "currentVariantConfigs.width"(newW, oldW) {
+      this.updateCurrentVariantShow();
+    },
+    "currentVariantConfigs.height"(newH, oldH) {
+      this.updateCurrentVariantShow();
+    },
+  },
   methods: {
     isImage(type) {
       return type.startsWith("image");
@@ -272,7 +320,17 @@ export default {
       const baseMaxLength = maxLength - extension.length - 3; // 3 for "..."
       const truncatedBaseName = baseName.substring(0, Math.max(baseMaxLength, 0));
       return truncatedBaseName + "..." + extension;
-    }
+    },
+    updateCurrentVariantShow() {
+      const baseUrl = this.currentVariantShow.split("?")[0];
+      const query = new URLSearchParams({
+        width: this.currentVariantConfigs.width,
+        height: this.currentVariantConfigs.height,
+      }).toString();
+
+      this.currentVariantShow = `${baseUrl}?${query}`;
+      console.log("Updated currentVariantShow:", this.currentVariantShow);
+    },
   },
   emits: ['input', 'close'],
   setup(props, {emit}) {
@@ -294,6 +352,12 @@ export default {
     const configVariantsExist = ref(false);
     const isShowVariantDialog = ref(false);
     const currentVariantShow = ref(null);
+    const currentToolbar = ref("size");
+    const currentVariantConfigs = ref({
+      width: null,
+      height: null,
+      org_if_sml: false,
+    });
 
     onMounted(() => {
       init();
@@ -305,10 +369,20 @@ export default {
       currentVariantShow.value = null
     }
 
-    function showVariantDialog(item, variant)
-    {
-      isShowVariantDialog.value = true
-      currentVariantShow.value = variant.img_url
+    function showVariantDialog(item, variant) {
+      isShowVariantDialog.value = true;
+      currentVariantShow.value = variant.img_url;
+
+      const url = new URL(variant.img_url);
+      const width = url.searchParams.get("width");
+      const height = url.searchParams.get("height");
+
+      currentVariantConfigs.value = {
+        width: width,
+        height: height,
+      };
+
+      console.log(`${variant.img_url} Width: ${width}, Height: ${height}`);
     }
 
 
@@ -317,6 +391,10 @@ export default {
       if (damButton) {
         damButton.click();
       }
+    }
+
+    function changeToolbar(toolbar) {
+      currentToolbar.value = toolbar;
     }
 
     return {
@@ -340,7 +418,10 @@ export default {
       closeVariantDialog,
       showVariantDialog,
       isShowVariantDialog,
-      currentVariantShow
+      currentVariantShow,
+      currentToolbar,
+      changeToolbar,
+      currentVariantConfigs
     };
 
     function log() {
@@ -933,6 +1014,32 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-top: var(--v-list-item-margin, 4px);
+}
+
+
+.container .v-card{
+  max-width: 80%;
+}
+
+.toolbar-item{
+  margin-top: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--v-list-item-margin, 4px);
+  transition: background-color 500ms ease, text-color 500ms ease;
+  border-radius: var(--v-list-item-border-radius, var(--theme--border-radius));
+}
+
+.toolbar_item_active{
+  background: var(--theme--primary);
+  color: white;
+}
+
+.toolbar-item:hover{
+  background: var(--theme--primary);
+  color: white;
 }
 
 </style>

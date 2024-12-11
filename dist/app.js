@@ -1,4 +1,4 @@
-import { defineComponent, h, resolveComponent, ref, onMounted, toRaw, isProxy, openBlock, createElementBlock, Fragment, createElementVNode, createVNode, withCtx, renderList, createCommentVNode, toDisplayString, createTextVNode, createBlock, normalizeStyle, renderSlot, normalizeClass } from 'vue';
+import { defineComponent, h, resolveComponent, ref, onMounted, toRaw, isProxy, openBlock, createElementBlock, Fragment, createElementVNode, createVNode, withCtx, renderList, createCommentVNode, toDisplayString, createTextVNode, normalizeClass, createBlock, normalizeStyle, renderSlot } from 'vue';
 import { useApi, useStores } from '@directus/extensions-sdk';
 
 /*!
@@ -3400,7 +3400,7 @@ const VueDraggableNext = defineComponent({
 
 var e=[],t=[];function n(n,r){if(n&&"undefined"!=typeof document){var a,s=!0===r.prepend?"prepend":"append",d=!0===r.singleTag,i="string"==typeof r.container?document.querySelector(r.container):document.getElementsByTagName("head")[0];if(d){var u=e.indexOf(i);-1===u&&(u=e.push(i)-1,t[u]={}),a=t[u]&&t[u][s]?t[u][s]:t[u][s]=c();}else a=c();65279===n.charCodeAt(0)&&(n=n.substring(1)),a.styleSheet?a.styleSheet.cssText+=n:a.appendChild(document.createTextNode(n));}function c(){var e=document.createElement("style");if(e.setAttribute("type","text/css"),r.attributes)for(var t=Object.keys(r.attributes),n=0;n<t.length;n++)e.setAttribute(t[n],r.attributes[t[n]]);var a="prepend"===s?"afterbegin":"beforeend";return i.insertAdjacentElement(a,e),e}}
 
-var css$4 = "\n.exceeds-the-limit {\n  color: red;\n}\n.ml-1 {\n  margin-left: 0.5rem;\n}\n#sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {\n  top: 0;\n}\n.modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.5);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 1000;\n}\n.modal {\n  background: white;\n  border-radius: 8px;\n  padding: 1rem;\n  width: 80%;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);\n  overflow-y: auto;\n  max-height: 80vh;\n  margin: 1.75rem auto;\n}\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.modal-close-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.5rem;\n  cursor: pointer;\n}\n.modal-body {\n  margin: 1rem 0;\n}\n.modal-footer {\n  text-align: right;\n}\n.sfx-media-icon {\n  width: 34px;\n  height: 34px;\n  border-radius: 25%;\n  position: relative; /* Ensure the pseudo-element is positioned relative to this container */\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.media-item-icon {\n  position: absolute!important;\n  top: 7px;\n  left: 5px;\n  opacity: 0;\n  transition: opacity 0.3s ease;\n  z-index: 9999;\n}\n.sfx-media-icon::after {\n  content: ''; /* Empty content to create the pseudo-element */\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  z-index: 100;\n  height: 100%;\n  background-color: #0c3745;\n  opacity: 0; /* Start with no visibility */\n  transition: opacity 0.3s ease; /* Smooth fade in/out effect */\n  backdrop-filter: blur(5px); /* Apply blur effect */\n}\n.sfx-media-icon:hover .media-item-icon{\n  opacity: 1;\n}\n.sfx-media-icon:hover::after {\n  opacity: 0.85; /* Show the white blur overlay on hover */\n}\n.sfx-media-icon img {\n  width: 34px;\n  height: 34px;\n  display: block;\n  margin: 0 auto;\n  object-fit: cover;\n  border-radius: 25%;\n}\n.sfx-item .item-info {\n  margin-left: 12px;\n}\n.sfx-item .item-info a {\n  color: var(--theme--primary);\n}\n.sfx-item-inner {\n  display: flex;\n  align-items: center;\n}\n.bottom-message {\n  display: flex;\n  align-items: center;\n  justify-content: end;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.sfx-item {\n  padding: 6px;\n  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));\n  border-radius: var(--theme--border-radius);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));\n  margin-top: var(--v-list-item-margin, 4px);\n  cursor: pointer;\n  transition: border-color 500ms ease;\n}\n.sfx-item:hover {\n  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));\n}\n.sfx-media-icon .icon {\n  width: 80px;\n  height: 80px;\n  position: relative;\n}\n.btn-delete-item:hover {\n  color: var(--theme--danger);\n}\n.sfx-media-icon .icon i {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(50%, 50%);\n  font-size: 35px;\n}\n.item-icon{\n  width: 34px!important;\n  text-align: center;\n  padding: 0 var(--v-list-item-margin, 4px);\n}\n.remove-all span {\n  color: red;\n  font-size: 12px;\n  border: none;\n  background: none;\n  width: 100%;\n}\n.remove-all span:hover {\n  cursor: pointer;\n  color: rgb(185, 37, 37);\n}\n.asset-content {\n  max-height: 545px;\n  overflow-y: scroll;\n}\n.btn-drag-item {\n  margin-right: 8px;\n  cursor: move;\n  cursor: grab;\n}\n.btn-drag-item:active {\n  cursor: grabbing;\n}\n.asset-content::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n.toolbar{\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n\n";
+var css$4 = "\n.exceeds-the-limit {\n  color: red;\n}\n.ml-1 {\n  margin-left: 0.5rem;\n}\n#sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {\n  top: 0;\n}\n.modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.5);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 1000;\n}\n.modal {\n  background: white;\n  border-radius: 8px;\n  padding: 1rem;\n  width: 80%;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);\n  overflow-y: auto;\n  max-height: 80vh;\n  margin: 1.75rem auto;\n}\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.modal-close-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.5rem;\n  cursor: pointer;\n}\n.modal-body {\n  margin: 1rem 0;\n}\n.modal-footer {\n  text-align: right;\n}\n.sfx-media-icon {\n  width: 34px;\n  height: 34px;\n  border-radius: 25%;\n  position: relative; /* Ensure the pseudo-element is positioned relative to this container */\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.media-item-icon {\n  position: absolute!important;\n  top: 7px;\n  left: 5px;\n  opacity: 0;\n  transition: opacity 0.3s ease;\n  z-index: 9999;\n}\n.sfx-media-icon::after {\n  content: ''; /* Empty content to create the pseudo-element */\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  z-index: 100;\n  height: 100%;\n  background-color: #0c3745;\n  opacity: 0; /* Start with no visibility */\n  transition: opacity 0.3s ease; /* Smooth fade in/out effect */\n  backdrop-filter: blur(5px); /* Apply blur effect */\n}\n.sfx-media-icon:hover .media-item-icon{\n  opacity: 1;\n}\n.sfx-media-icon:hover::after {\n  opacity: 0.85; /* Show the white blur overlay on hover */\n}\n.sfx-media-icon img {\n  width: 34px;\n  height: 34px;\n  display: block;\n  margin: 0 auto;\n  object-fit: cover;\n  border-radius: 25%;\n}\n.sfx-item .item-info {\n  margin-left: 12px;\n}\n.sfx-item .item-info a {\n  color: var(--theme--primary);\n}\n.sfx-item-inner {\n  display: flex;\n  align-items: center;\n}\n.bottom-message {\n  display: flex;\n  align-items: center;\n  justify-content: end;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.sfx-item {\n  padding: 6px;\n  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));\n  border-radius: var(--theme--border-radius);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));\n  margin-top: var(--v-list-item-margin, 4px);\n  cursor: pointer;\n  transition: border-color 500ms ease;\n}\n.sfx-item:hover {\n  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));\n}\n.sfx-media-icon .icon {\n  width: 80px;\n  height: 80px;\n  position: relative;\n}\n.btn-delete-item:hover {\n  color: var(--theme--danger);\n}\n.sfx-media-icon .icon i {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(50%, 50%);\n  font-size: 35px;\n}\n.item-icon{\n  width: 34px!important;\n  text-align: center;\n  padding: 0 var(--v-list-item-margin, 4px);\n}\n.remove-all span {\n  color: red;\n  font-size: 12px;\n  border: none;\n  background: none;\n  width: 100%;\n}\n.remove-all span:hover {\n  cursor: pointer;\n  color: rgb(185, 37, 37);\n}\n.asset-content {\n  max-height: 545px;\n  overflow-y: scroll;\n}\n.btn-drag-item {\n  margin-right: 8px;\n  cursor: move;\n  cursor: grab;\n}\n.btn-drag-item:active {\n  cursor: grabbing;\n}\n.asset-content::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n.toolbar{\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.container .v-card{\n  max-width: 80%;\n}\n.toolbar-item{\n  margin-top: 10px;\n  cursor: pointer;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: var(--v-list-item-margin, 4px);\n  transition: background-color 500ms ease, text-color 500ms ease;\n  border-radius: var(--v-list-item-border-radius, var(--theme--border-radius));\n}\n.toolbar_item_active{\n  background: var(--theme--primary);\n  color: white;\n}\n.toolbar-item:hover{\n  background: var(--theme--primary);\n  color: white;\n}\n\n";
 n(css$4,{});
 
 var _export_sfc = (sfc, props) => {
@@ -3431,6 +3431,20 @@ const _sfc_main$4 = {
     limitTypes: {type: String, default: null},
     attributes: {type: String, default: null},
     config: {type: Object, default: null},
+  },
+  watch: {
+    currentVariantConfigs: {
+      handler(newConfigs, oldConfigs) {
+        this.updateCurrentVariantShow();
+      },
+      deep: true,
+    },
+    "currentVariantConfigs.width"(newW, oldW) {
+      this.updateCurrentVariantShow();
+    },
+    "currentVariantConfigs.height"(newH, oldH) {
+      this.updateCurrentVariantShow();
+    },
   },
   methods: {
     isImage(type) {
@@ -3465,7 +3479,17 @@ const _sfc_main$4 = {
       const baseMaxLength = maxLength - extension.length - 3; // 3 for "..."
       const truncatedBaseName = baseName.substring(0, Math.max(baseMaxLength, 0));
       return truncatedBaseName + "..." + extension;
-    }
+    },
+    updateCurrentVariantShow() {
+      const baseUrl = this.currentVariantShow.split("?")[0];
+      const query = new URLSearchParams({
+        width: this.currentVariantConfigs.width,
+        height: this.currentVariantConfigs.height,
+      }).toString();
+
+      this.currentVariantShow = `${baseUrl}?${query}`;
+      console.log("Updated currentVariantShow:", this.currentVariantShow);
+    },
   },
   emits: ['input', 'close'],
   setup(props, {emit}) {
@@ -3487,6 +3511,12 @@ const _sfc_main$4 = {
     const configVariantsExist = ref(false);
     const isShowVariantDialog = ref(false);
     const currentVariantShow = ref(null);
+    const currentToolbar = ref("size");
+    const currentVariantConfigs = ref({
+      width: null,
+      height: null,
+      org_if_sml: false,
+    });
 
     onMounted(() => {
       init();
@@ -3498,10 +3528,20 @@ const _sfc_main$4 = {
       currentVariantShow.value = null;
     }
 
-    function showVariantDialog(item, variant)
-    {
+    function showVariantDialog(item, variant) {
       isShowVariantDialog.value = true;
       currentVariantShow.value = variant.img_url;
+
+      const url = new URL(variant.img_url);
+      const width = url.searchParams.get("width");
+      const height = url.searchParams.get("height");
+
+      currentVariantConfigs.value = {
+        width: width,
+        height: height,
+      };
+
+      console.log(`${variant.img_url} Width: ${width}, Height: ${height}`);
     }
 
 
@@ -3510,6 +3550,10 @@ const _sfc_main$4 = {
       if (damButton) {
         damButton.click();
       }
+    }
+
+    function changeToolbar(toolbar) {
+      currentToolbar.value = toolbar;
     }
 
     return {
@@ -3533,7 +3577,10 @@ const _sfc_main$4 = {
       closeVariantDialog,
       showVariantDialog,
       isShowVariantDialog,
-      currentVariantShow
+      currentVariantShow,
+      currentToolbar,
+      changeToolbar,
+      currentVariantConfigs
     };
 
     function log() {
@@ -3973,16 +4020,43 @@ const _hoisted_37 = {
   style: {"display":"flex","align-items":"center","justify-content":"end"},
   class: "exceeds-the-limit"
 };
-const _hoisted_38 = ["src"];
+const _hoisted_38 = { style: {"display":"flex","justify-content":"space-between","border":"1px solid lightgray","height":"500px"} };
 const _hoisted_39 = {
+  id: "variants-toolbar",
+  style: {"width":"50px","padding":"5px","display":"flex","align-items":"center","justify-content":"start","flex-direction":"column","border-right":"1px solid lightgray"}
+};
+const _hoisted_40 = {
+  id: "variants-toolbar-config",
+  style: {"width":"250px","border-right":"1px solid lightgray","padding":"10px","display":"flex","flex-direction":"column"}
+};
+const _hoisted_41 = {
+  key: 0,
+  id: "variants-toolbar-config-size"
+};
+const _hoisted_42 = { style: {"display":"flex","justify-content":"start"} };
+const _hoisted_43 = { style: {"margin-top":"15px"} };
+const _hoisted_44 = {
+  key: 1,
+  id: "variants-toolbar-config-crop"
+};
+const _hoisted_45 = {
+  key: 2,
+  id: "variants-toolbar-config-addition"
+};
+const _hoisted_46 = {
+  id: "variants-toolbar-image",
+  style: {"width":"100%","display":"flex","justify-content":"center","align-items":"center","overflow":"hidden","max-height":"80%"}
+};
+const _hoisted_47 = ["src"];
+const _hoisted_48 = {
   key: 0,
   class: "toolbar"
 };
-const _hoisted_40 = { key: 1 };
-const _hoisted_41 = { class: "modal" };
-const _hoisted_42 = { class: "modal-header" };
-const _hoisted_43 = { class: "modal-body" };
-const _hoisted_44 = { class: "modal-footer" };
+const _hoisted_49 = { key: 1 };
+const _hoisted_50 = { class: "modal" };
+const _hoisted_51 = { class: "modal-header" };
+const _hoisted_52 = { class: "modal-body" };
+const _hoisted_53 = { class: "modal-footer" };
 
 function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_VIcon = resolveComponent("VIcon");
@@ -3994,11 +4068,13 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_v_card = resolveComponent("v-card");
   const _component_VDialog = resolveComponent("VDialog");
   const _component_VCardTitle = resolveComponent("VCardTitle");
+  const _component_VCheckbox = resolveComponent("VCheckbox");
+  const _component_VInput = resolveComponent("VInput");
   const _component_VCardText = resolveComponent("VCardText");
   const _component_VCard = resolveComponent("VCard");
 
   return (openBlock(), createElementBlock(Fragment, null, [
-    _cache[20] || (_cache[20] = createElementVNode("link", {
+    _cache[29] || (_cache[29] = createElementVNode("link", {
       rel: "stylesheet",
       type: "text/css",
       href: "https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"
@@ -4186,7 +4262,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
           : createCommentVNode("v-if", true)
       ]),
       ($setup.getIsOverLimit())
-        ? (openBlock(), createElementBlock("div", _hoisted_37, _cache[7] || (_cache[7] = [
+        ? (openBlock(), createElementBlock("div", _hoisted_37, _cache[13] || (_cache[13] = [
             createElementVNode("span", { class: "ml-1" }, "Exceeded maximum number of assets", -1 /* HOISTED */)
           ])))
         : createCommentVNode("v-if", true),
@@ -4198,13 +4274,13 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
           createVNode(_component_v_card, { class: "dialog-content" }, {
             default: withCtx(() => [
               createVNode(_component_v_card_title, null, {
-                default: withCtx(() => _cache[8] || (_cache[8] = [
+                default: withCtx(() => _cache[14] || (_cache[14] = [
                   createTextVNode("Scaleflex DAM")
                 ])),
                 _: 1 /* STABLE */
               }),
               createVNode(_component_v_card_text, null, {
-                default: withCtx(() => _cache[9] || (_cache[9] = [
+                default: withCtx(() => _cache[15] || (_cache[15] = [
                   createTextVNode("Are you sure you want to delete everything? Please confirm to proceed.")
                 ])),
                 _: 1 /* STABLE */
@@ -4215,7 +4291,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                     onClick: $setup.removeAllAssets,
                     warning: true
                   }, {
-                    default: withCtx(() => _cache[10] || (_cache[10] = [
+                    default: withCtx(() => _cache[16] || (_cache[16] = [
                       createTextVNode(" Yes ")
                     ])),
                     _: 1 /* STABLE */
@@ -4224,7 +4300,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                     onClick: $setup.closeDialog,
                     secondary: true
                   }, {
-                    default: withCtx(() => _cache[11] || (_cache[11] = [
+                    default: withCtx(() => _cache[17] || (_cache[17] = [
                       createTextVNode(" No ")
                     ])),
                     _: 1 /* STABLE */
@@ -4240,23 +4316,95 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8 /* PROPS */, ["modelValue"]),
       createVNode(_component_VDialog, {
         modelValue: $setup.isShowVariantDialog,
-        "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => (($setup.isShowVariantDialog) = $event))
+        "onUpdate:modelValue": _cache[7] || (_cache[7] = $event => (($setup.isShowVariantDialog) = $event))
       }, {
         default: withCtx(() => [
-          createVNode(_component_v_card, { class: "dialog-content" }, {
+          createVNode(_component_VCard, {
+            style: {"width":"70%"},
+            class: "dialog-content"
+          }, {
             default: withCtx(() => [
-              createElementVNode("img", { src: $setup.currentVariantShow }, null, 8 /* PROPS */, _hoisted_38),
-              createVNode(_component_v_card_actions, null, {
+              createVNode(_component_VCardTitle, null, {
+                default: withCtx(() => _cache[18] || (_cache[18] = [
+                  createTextVNode(" Edit Image Variants ")
+                ])),
+                _: 1 /* STABLE */
+              }),
+              createVNode(_component_VCardText, null, {
                 default: withCtx(() => [
-                  createVNode(_component_VButton, {
-                    onClick: $setup.closeVariantDialog,
-                    secondary: true
-                  }, {
-                    default: withCtx(() => _cache[12] || (_cache[12] = [
-                      createTextVNode(" Close ")
-                    ])),
-                    _: 1 /* STABLE */
-                  }, 8 /* PROPS */, ["onClick"])
+                  createElementVNode("div", _hoisted_38, [
+                    createElementVNode("div", _hoisted_39, [
+                      createElementVNode("div", {
+                        onClick: _cache[1] || (_cache[1] = $event => ($setup.changeToolbar('size'))),
+                        class: normalizeClass([{ toolbar_item_active: $setup.currentToolbar === 'size'}, "toolbar-item"])
+                      }, [
+                        createVNode(_component_VIcon, {
+                          small: true,
+                          name: "width_wide"
+                        })
+                      ], 2 /* CLASS */),
+                      createElementVNode("div", {
+                        onClick: _cache[2] || (_cache[2] = $event => ($setup.changeToolbar('crop'))),
+                        class: normalizeClass([{ toolbar_item_active: $setup.currentToolbar === 'crop'}, "toolbar-item"])
+                      }, [
+                        createVNode(_component_VIcon, {
+                          small: true,
+                          name: "crop"
+                        })
+                      ], 2 /* CLASS */),
+                      createElementVNode("div", {
+                        onClick: _cache[3] || (_cache[3] = $event => ($setup.changeToolbar('addition'))),
+                        class: normalizeClass([{ toolbar_item_active: $setup.currentToolbar === 'addition'}, "toolbar-item"])
+                      }, [
+                        createVNode(_component_VIcon, {
+                          small: true,
+                          name: "flip"
+                        })
+                      ], 2 /* CLASS */)
+                    ]),
+                    createElementVNode("div", _hoisted_40, [
+                      ($setup.currentToolbar === 'size')
+                        ? (openBlock(), createElementBlock("div", _hoisted_41, [
+                            createElementVNode("div", _hoisted_42, [
+                              createVNode(_component_VCheckbox, {
+                                small: true,
+                                modelValue: $setup.currentVariantConfigs['org_if_sml'],
+                                "onUpdate:modelValue": _cache[4] || (_cache[4] = $event => (($setup.currentVariantConfigs['org_if_sml']) = $event))
+                              }, null, 8 /* PROPS */, ["modelValue"]),
+                              _cache[19] || (_cache[19] = createElementVNode("span", null, "Prevent enlargement", -1 /* HOISTED */))
+                            ]),
+                            createElementVNode("div", null, [
+                              _cache[20] || (_cache[20] = createElementVNode("span", null, "Width", -1 /* HOISTED */)),
+                              createVNode(_component_VInput, {
+                                small: true,
+                                modelValue: $setup.currentVariantConfigs['width'],
+                                "onUpdate:modelValue": _cache[5] || (_cache[5] = $event => (($setup.currentVariantConfigs['width']) = $event))
+                              }, null, 8 /* PROPS */, ["modelValue"])
+                            ]),
+                            createElementVNode("div", _hoisted_43, [
+                              _cache[21] || (_cache[21] = createElementVNode("span", null, "Height", -1 /* HOISTED */)),
+                              createVNode(_component_VInput, {
+                                small: true,
+                                modelValue: $setup.currentVariantConfigs['height'],
+                                "onUpdate:modelValue": _cache[6] || (_cache[6] = $event => (($setup.currentVariantConfigs['height']) = $event))
+                              }, null, 8 /* PROPS */, ["modelValue"])
+                            ])
+                          ]))
+                        : createCommentVNode("v-if", true),
+                      ($setup.currentToolbar === 'crop')
+                        ? (openBlock(), createElementBlock("div", _hoisted_44, " Crop "))
+                        : createCommentVNode("v-if", true),
+                      ($setup.currentToolbar === 'addition')
+                        ? (openBlock(), createElementBlock("div", _hoisted_45, " Addition "))
+                        : createCommentVNode("v-if", true)
+                    ]),
+                    createElementVNode("div", _hoisted_46, [
+                      createElementVNode("img", {
+                        style: {"height":"70%","width":"auto"},
+                        src: $setup.currentVariantShow
+                      }, null, 8 /* PROPS */, _hoisted_47)
+                    ])
+                  ])
                 ]),
                 _: 1 /* STABLE */
               })
@@ -4268,14 +4416,14 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8 /* PROPS */, ["modelValue"])
     ]),
     ($setup.isTokenAndSecExists)
-      ? (openBlock(), createElementBlock("div", _hoisted_39, [
+      ? (openBlock(), createElementBlock("div", _hoisted_48, [
           createVNode(_component_VButton, {
             onClick: $setup.openModal,
             disabled: $setup.addAssetsDisabled()
           }, {
             default: withCtx(() => [
               createVNode(_component_VIcon, { name: "image" }),
-              _cache[13] || (_cache[13] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Browse assets", -1 /* HOISTED */))
+              _cache[22] || (_cache[22] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Browse assets", -1 /* HOISTED */))
             ]),
             _: 1 /* STABLE */
           }, 8 /* PROPS */, ["onClick", "disabled"]),
@@ -4284,13 +4432,13 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
               ? (openBlock(), createBlock(_component_VButton, {
                   key: 0,
                   type: "button",
-                  onClick: _cache[2] || (_cache[2] = $event => ($setup.refreshAssets())),
+                  onClick: _cache[8] || (_cache[8] = $event => ($setup.refreshAssets())),
                   loading: $setup.getIsLoading(),
                   outlined: true
                 }, {
                   default: withCtx(() => [
                     createVNode(_component_VIcon, { name: "refresh" }),
-                    _cache[14] || (_cache[14] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Refresh", -1 /* HOISTED */))
+                    _cache[23] || (_cache[23] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Refresh", -1 /* HOISTED */))
                   ]),
                   _: 1 /* STABLE */
                 }, 8 /* PROPS */, ["loading"]))
@@ -4300,37 +4448,37 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                   key: 1,
                   style: {"margin-left":"5px"},
                   type: "button",
-                  onClick: _cache[3] || (_cache[3] = $event => ($setup.clickRemoveAllAssets())),
+                  onClick: _cache[9] || (_cache[9] = $event => ($setup.clickRemoveAllAssets())),
                   danger: true
                 }, {
                   default: withCtx(() => [
                     createVNode(_component_VIcon, { name: "delete" }),
-                    _cache[15] || (_cache[15] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Remove all", -1 /* HOISTED */))
+                    _cache[24] || (_cache[24] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Remove all", -1 /* HOISTED */))
                   ]),
                   _: 1 /* STABLE */
                 }))
               : createCommentVNode("v-if", true)
           ])
         ]))
-      : (openBlock(), createElementBlock("div", _hoisted_40, [
+      : (openBlock(), createElementBlock("div", _hoisted_49, [
           createVNode(_component_VCard, { style: {"max-width":"100%","margin-top":"20px"} }, {
             default: withCtx(() => [
               createVNode(_component_VCardTitle, { style: {"color":"tomato","display":"flex","align-items":"center"} }, {
                 default: withCtx(() => [
                   createVNode(_component_VIcon, { name: "report" }),
-                  _cache[16] || (_cache[16] = createElementVNode("span", { style: {"font-size":"14px","margin-left":"5px"} }, "Scaleflex DAM Notice", -1 /* HOISTED */))
+                  _cache[25] || (_cache[25] = createElementVNode("span", { style: {"font-size":"14px","margin-left":"5px"} }, "Scaleflex DAM Notice", -1 /* HOISTED */))
                 ]),
                 _: 1 /* STABLE */
               }),
               createVNode(_component_VCardText, { style: {"max-width":"100%","padding-bottom":"25px"} }, {
                 default: withCtx(() => [
-                  _cache[17] || (_cache[17] = createTextVNode(" Please visit the ")),
+                  _cache[26] || (_cache[26] = createTextVNode(" Please visit the ")),
                   createElementVNode("span", {
                     style: {"text-decoration":"underline","color":"dodgerblue","cursor":"pointer"},
-                    onClick: _cache[4] || (_cache[4] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args))),
+                    onClick: _cache[10] || (_cache[10] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args))),
                     target: "_blank"
                   }, "Scaleflex DAM Configuration"),
-                  _cache[18] || (_cache[18] = createTextVNode(" to add your Token and Template ID before browsing assets. "))
+                  _cache[27] || (_cache[27] = createTextVNode(" to add your Token and Template ID before browsing assets. "))
                 ]),
                 _: 1 /* STABLE */
               })
@@ -4343,22 +4491,22 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
       class: "modal-overlay",
       id: "sfx-modal"
     }, [
-      createElementVNode("div", _hoisted_41, [
-        createElementVNode("div", _hoisted_42, [
+      createElementVNode("div", _hoisted_50, [
+        createElementVNode("div", _hoisted_51, [
           createElementVNode("h3", null, toDisplayString($props.title), 1 /* TEXT */),
           createElementVNode("button", {
-            onClick: _cache[5] || (_cache[5] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+            onClick: _cache[11] || (_cache[11] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
             class: "modal-close-btn"
           }, "×")
         ]),
-        createElementVNode("div", _hoisted_43, [
+        createElementVNode("div", _hoisted_52, [
           renderSlot(_ctx.$slots, "default", {}, () => [
-            _cache[19] || (_cache[19] = createElementVNode("div", { id: "sfx-dam-widget" }, null, -1 /* HOISTED */))
+            _cache[28] || (_cache[28] = createElementVNode("div", { id: "sfx-dam-widget" }, null, -1 /* HOISTED */))
           ])
         ]),
-        createElementVNode("div", _hoisted_44, [
+        createElementVNode("div", _hoisted_53, [
           createElementVNode("button", {
-            onClick: _cache[6] || (_cache[6] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+            onClick: _cache[12] || (_cache[12] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
             class: "btn"
           }, "Close")
         ])
