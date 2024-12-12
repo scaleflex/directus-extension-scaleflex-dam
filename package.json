@@ -65,6 +65,7 @@
 	},
 	"dependencies": {
 		"@tinymce/tinymce-vue": "^5.1.1",
+		"vue-advanced-cropper": "^2.8.9",
 		"vue-plugin-load-script": "^2.1.1"
 	}
 }

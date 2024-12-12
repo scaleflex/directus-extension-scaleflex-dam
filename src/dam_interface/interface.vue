@@ -23,13 +23,51 @@
                 <span>{{ trimText(item.name) }}</span>
               </div>
             </div>
-            <div class="btn-delete-item" @click="deleteItem(index)">
-              <VIcon name="close"/>
+            <div style="display: flex; align-items: center; justify-content: end;">
+              <div  v-if="configVariantsExist"
+                  style="color: #285c72; margin-right: 20px"
+                   @click="showVariants(item.uuid)">
+                <VButton style="margin-right: 10px; display: flex; justify-content: center; align-items: center"
+                         :xSmall="true"
+                         :warning="showVariantsList.indexOf(item.uuid) > -1"
+                         :outlined="true">
+                  <VIcon style="margin-right: 5px" v-if="showVariantsList.indexOf(item.uuid) === -1" name="visibility" :xSmall="true" />
+                  <VIcon style="margin-right: 5px" v-if="showVariantsList.indexOf(item.uuid) > -1" name="visibility_off" :xSmall="true" />
+                  <span v-if="showVariantsList.indexOf(item.uuid) === -1">Show variants</span>
+                  <span v-if="showVariantsList.indexOf(item.uuid) > -1">Hide variants</span>
+                </VButton>
+              </div>
+              <div class="btn-delete-item" @click="deleteItem(index)">
+                <VIcon name="close"/>
+              </div>
             </div>
           </div>
-          <div v-if="configVariantsExist">
-            <div v-for="variant in item.variants">
-              <div @click="showVariantDialog(item, variant)">{{variant.name}}</div>
+          <div
+              style="display: flex; flex-direction: column; justify-content: start; margin-top: 5px"
+              v-if="configVariantsExist && showVariantsList.indexOf(item.uuid) > -1">
+            <div class="sfx-item" style="margin-left: 30px; padding: 3px 10px; display: flex; justify-content: space-between; align-items: center;"
+                 @click="showVariantsList.indexOf(item.uuid) > -1"
+                :small="true"
+                v-for="(variant, index) in item.variants"
+                :key="index"
+            >
+              <div style="display: flex; justify-content: start; align-items: center;">
+                <img :src="variant.img_url" :alt="item.name" style="border-radius: 25%; border: 1px solid lightgray" class="media-item" width="30" height="30"/>
+                <span style="margin-left: 10px">{{ variant.name }}</span>
+              </div>
+              <div style="display: flex; justify-content: end; align-items: center;">
+                <VButton style="margin-right: 10px"
+                          :xSmall="true"
+                         :outlined="true"
+                         @click="showVariantDialog(item, variant)">
+                  Edit
+                </VButton>
+                <VButton :xSmall="true"
+                         :secondary="true"
+                         @click="showVariantDialog(item, variant)">
+                  Replace
+                </VButton>
+              </div>
             </div>
           </div>
         </template>
@@ -62,7 +100,7 @@
               </div>
               <div class="sfx-media-icon" target="_blank">
                 <a :href="item.cdn" target="_blank">
-                  <VIcon  class="item-icon" name="play_circle"/>
+                  <VIcon class="item-icon" name="play_circle"/>
                   <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
                 </a>
               </div>
@@ -114,19 +152,19 @@
         <v-card-title>Scaleflex DAM</v-card-title>
         <v-card-text>Are you sure you want to delete everything? Please confirm to proceed.</v-card-text>
         <v-card-actions>
-        <VButton
-          @click="removeAllAssets"
-          :warning="true"
-        >
-          Yes
-        </VButton>
+          <VButton
+              @click="removeAllAssets"
+              :warning="true"
+          >
+            Yes
+          </VButton>
 
-        <VButton
-          @click="closeDialog"
-          :secondary="true"
-        >
-          No
-        </VButton>
+          <VButton
+              @click="closeDialog"
+              :secondary="true"
+          >
+            No
+          </VButton>
         </v-card-actions>
       </v-card>
     </VDialog>
@@ -138,44 +176,94 @@
         </VCardTitle>
         <VCardText>
           <div style="display: flex; justify-content: space-between; border: 1px solid lightgray; height: 500px">
-            <div id="variants-toolbar" style="width: 50px; padding: 5px; display: flex; align-items: center; justify-content: start; flex-direction: column; border-right: 1px solid lightgray;">
+            <div id="variants-toolbar"
+                 style="width: 50px; padding: 5px; display: flex; align-items: center; justify-content: start; flex-direction: column; border-right: 1px solid lightgray;">
               <div
                   @click="changeToolbar('size')"
                   :class="{ toolbar_item_active: currentToolbar === 'size'}"
-                  class="toolbar-item"><VIcon :small="true" name="width_wide"/></div>
+                  class="toolbar-item">
+                <VIcon :small="true" name="width_wide"/>
+              </div>
+              <div
+                  @click="changeToolbar('enlargement')"
+                  :class="{ toolbar_item_active: currentToolbar === 'enlargement'}"
+                  class="toolbar-item">
+                <VIcon :small="true" name="photo_library"/>
+              </div>
               <div
                   @click="changeToolbar('crop')"
                   :class="{ toolbar_item_active: currentToolbar === 'crop'}"
-                  class="toolbar-item"><VIcon :small="true" name="crop"/></div>
+                  class="toolbar-item">
+                <VIcon :small="true" name="crop"/>
+              </div>
               <div
                   @click="changeToolbar('addition')"
                   :class="{ toolbar_item_active: currentToolbar === 'addition'}"
-                  class="toolbar-item"><VIcon :small="true" name="flip"/></div>
+                  class="toolbar-item">
+                <VIcon :small="true" name="flip"/>
+              </div>
             </div>
-            <div id="variants-toolbar-config"  style="width: 250px; border-right: 1px solid lightgray; padding: 10px; display: flex; flex-direction: column;" >
+
+            <div id="variants-toolbar-config"
+                 style="width: 300px; border-right: 1px solid lightgray; padding: 10px; display: flex; flex-direction: column;">
               <div id="variants-toolbar-config-size" v-if="currentToolbar === 'size'">
-                <div style="display: flex; justify-content: start;">
-                  <VCheckbox :small="true" v-model="currentVariantConfigs['org_if_sml']" />
-                  <span>Prevent enlargement</span>
+                <div style="margin-bottom: 15px">
+                  <span style="font-size: 16px;">Size</span>
+                  <p style="font-size: 12px; text-align: justify;  hyphens: auto;">Change width and height of the image</p>
                 </div>
                 <div>
                   <span>Width</span>
-                  <VInput :small="true" v-model="currentVariantConfigs['width']" />
+                  <VInput :small="true" v-model="currentVariantConfigs['width']"/>
                 </div>
                 <div style="margin-top: 15px">
                   <span>Height</span>
-                  <VInput :small="true" v-model="currentVariantConfigs['height']" />
+                  <VInput :small="true" v-model="currentVariantConfigs['height']"/>
+                </div>
+              </div>
+              <div id="variants-toolbar-config-enlargement" v-if="currentToolbar === 'enlargement'">
+                <div style="margin-bottom: 15px">
+                  <span style="font-size: 16px;">Enlargement</span>
+                  <p style="font-size: 12px; text-align: justify; hyphens: auto;">When resizing with width or height operation,
+                    Scaleflex Dam either reduces or increases the dimensions of the image to keep proportions.</p>
+                </div>
+                <div style="display: flex; justify-content: start;">
+                  <VCheckbox :small="true" v-model="currentVariantConfigs['org_if_sml']"/>
+                  <span>No enlargement</span>
                 </div>
               </div>
               <div id="variants-toolbar-config-crop" v-if="currentToolbar === 'crop'">
-                Crop
+                <div style="margin-bottom: 15px">
+                  <span style="font-size: 16px;">Crop image</span>
+                  <p style="font-size: 12px; text-align: justify; hyphens: auto;">Resize and crop to achieve the desired width and heigh</p>
+                </div>
+                <div style="display: flex; justify-content: start;">
+
+                </div>
               </div>
               <div id="variants-toolbar-config-addition" v-if="currentToolbar === 'addition'">
                 Addition
               </div>
             </div>
-            <div id="variants-toolbar-image"  style="width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; max-height: 80%">
-              <img style="height: 70%; width: auto" :src="currentVariantShow" />
+            <div id="variants-toolbar-image" class="grid-bg"
+                 style="width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; max-height: 100%; position: relative; padding: 30px">
+              <div style="position: absolute; top: 5px; right: 5px; display: flex; justify-content: end; align-items: center;">
+                <VButton @click="toggleCrop" :icon="true" :xSmall="true" :secondary="true">
+                  <VIcon name="crop" :xSmall="true" />
+                </VButton>
+                <VButton v-if="showCrop" @click="updateVariantByCrop":xSmall="true" style="margin-left: 8px">
+                  <VIcon name="save" :xSmall="true" />
+                  <span>Update</span>
+                </VButton>
+              </div>
+              <img v-if="!showCrop" style="height: 80%; width: auto" :src="currentVariantShow"/>
+              <div v-if="showCrop">
+                <cropper
+                    @change="updateVariantConfigByCrop"
+                    class="cropper"
+                    ref="cropper"
+                    :src="currentVariantOrigin"
+                />
+              </div>
             </div>
           </div>
         </VCardText>
@@ -219,11 +307,12 @@
   <div v-else>
     <VCard style="max-width: 100%; margin-top: 20px">
       <VCardTitle style="color: tomato; display: flex; align-items: center;">
-        <VIcon name="report" />
+        <VIcon name="report"/>
         <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
       </VCardTitle>
       <VCardText style="max-width: 100%; padding-bottom: 25px">
-        Please visit the <span style="text-decoration: underline; color: dodgerblue; cursor: pointer" @click="toDamSetting" target="_blank">Scaleflex DAM Configuration</span>
+        Please visit the <span style="text-decoration: underline; color: dodgerblue; cursor: pointer"
+                               @click="toDamSetting" target="_blank">Scaleflex DAM Configuration</span>
         to add your Token and Template ID before browsing assets.
       </VCardText>
     </VCard>
@@ -251,10 +340,14 @@
 import {ref, onMounted, toRaw, isProxy} from "vue";
 import {useApi} from "@directus/extensions-sdk";
 import {VueDraggableNext} from "vue-draggable-next";
+import { Cropper } from 'vue-advanced-cropper'
+import 'vue-advanced-cropper/dist/style.css';
+import 'vue-advanced-cropper/dist/theme.compact.css';
 
 export default {
   components: {
     draggable: VueDraggableNext,
+    Cropper,
   },
   props: {
     value: {
@@ -279,15 +372,39 @@ export default {
         this.updateCurrentVariantShow();
       },
       deep: true,
-    },
-    "currentVariantConfigs.width"(newW, oldW) {
-      this.updateCurrentVariantShow();
-    },
-    "currentVariantConfigs.height"(newH, oldH) {
-      this.updateCurrentVariantShow();
-    },
+    }
   },
   methods: {
+    showVariants(itemUUID) {
+      const index = this.showVariantsList.indexOf(itemUUID);
+      if (index > -1) {
+        this.showVariantsList.splice(index, 1);
+      } else {
+        this.showVariantsList.push(itemUUID);
+      }
+    },
+    updateVariantByCrop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.showCrop = false;
+      this.currentVariantConfigs.width = coordinates.width;
+      this.currentVariantConfigs.height = coordinates.height;
+      const tl_px = `${coordinates.left},${coordinates.top}`;
+      const br_px = `${coordinates.left + coordinates.width},${coordinates.top + coordinates.height}`;
+      this.currentVariantConfigs.tl_px = tl_px;
+      this.currentVariantConfigs.br_px = br_px;
+    },
+    updateVariantConfigByCrop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.currentVariantConfigs.width = coordinates.width;
+      this.currentVariantConfigs.height = coordinates.height;
+      const tl_px = `${coordinates.left},${coordinates.top}`;
+      const br_px = `${coordinates.left + coordinates.width},${coordinates.top + coordinates.height}`;
+      this.currentVariantConfigs.tl_px = tl_px;
+      this.currentVariantConfigs.br_px = br_px;
+    },
+    toggleCrop() {
+      this.showCrop = !this.showCrop;
+    },
     isImage(type) {
       return type.startsWith("image");
     },
@@ -323,14 +440,9 @@ export default {
     },
     updateCurrentVariantShow() {
       const baseUrl = this.currentVariantShow.split("?")[0];
-      const query = new URLSearchParams({
-        width: this.currentVariantConfigs.width,
-        height: this.currentVariantConfigs.height,
-      }).toString();
-
+      const query = new URLSearchParams(this.currentVariantConfigs).toString();
       this.currentVariantShow = `${baseUrl}?${query}`;
-      console.log("Updated currentVariantShow:", this.currentVariantShow);
-    },
+    }
   },
   emits: ['input', 'close'],
   setup(props, {emit}) {
@@ -352,7 +464,10 @@ export default {
     const configVariantsExist = ref(false);
     const isShowVariantDialog = ref(false);
     const currentVariantShow = ref(null);
+    const currentVariantOrigin = ref(null);
+    const showCrop = ref(false);
     const currentToolbar = ref("size");
+    const showVariantsList = ref([]);
     const currentVariantConfigs = ref({
       width: null,
       height: null,
@@ -363,8 +478,7 @@ export default {
       init();
     });
 
-    function closeVariantDialog()
-    {
+    function closeVariantDialog() {
       isShowVariantDialog.value = false
       currentVariantShow.value = null
     }
@@ -372,6 +486,7 @@ export default {
     function showVariantDialog(item, variant) {
       isShowVariantDialog.value = true;
       currentVariantShow.value = variant.img_url;
+      currentVariantOrigin.value = item.cdn;
 
       const url = new URL(variant.img_url);
       const width = url.searchParams.get("width");
@@ -386,7 +501,7 @@ export default {
     }
 
 
-    function toDamSetting(){
+    function toDamSetting() {
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
       if (damButton) {
         damButton.click();
@@ -421,13 +536,16 @@ export default {
       currentVariantShow,
       currentToolbar,
       changeToolbar,
-      currentVariantConfigs
+      currentVariantConfigs,
+      showVariantsList,
+      currentVariantOrigin,
+      showCrop
     };
 
     function log() {
       emit('input', toRaw(props.value));
     }
-    
+
     function addAssetsDisabled() {
       if (limit.value === getTotalAssets() && getTotalAssets() > 0) return true;
       return isLoading.value;
@@ -500,7 +618,7 @@ export default {
         }
 
         if (props.config && 'variants' in props.config) configVariantsExist.value = true
-        
+
       } catch (error) {
 
       }
@@ -733,7 +851,7 @@ export default {
       return props.value ? props.value.length : 0;
     }
 
-    function closeDialog () {
+    function closeDialog() {
       dialogVisible.value = false;
     }
 
@@ -875,7 +993,7 @@ export default {
 }
 
 .media-item-icon {
-  position: absolute!important;
+  position: absolute !important;
   top: 7px;
   left: 5px;
   opacity: 0;
@@ -897,7 +1015,7 @@ export default {
   backdrop-filter: blur(5px); /* Apply blur effect */
 }
 
-.sfx-media-icon:hover .media-item-icon{
+.sfx-media-icon:hover .media-item-icon {
   opacity: 1;
 }
 
@@ -969,8 +1087,8 @@ export default {
   font-size: 35px;
 }
 
-.item-icon{
-  width: 34px!important;
+.item-icon {
+  width: 34px !important;
   text-align: center;
   padding: 0 var(--v-list-item-margin, 4px);
 }
@@ -1009,7 +1127,7 @@ export default {
   background-color: #F5F5F5;
 }
 
-.toolbar{
+.toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1017,11 +1135,11 @@ export default {
 }
 
 
-.container .v-card{
+.container .v-card {
   max-width: 80%;
 }
 
-.toolbar-item{
+.toolbar-item {
   margin-top: 10px;
   cursor: pointer;
   display: flex;
@@ -1032,14 +1150,29 @@ export default {
   border-radius: var(--v-list-item-border-radius, var(--theme--border-radius));
 }
 
-.toolbar_item_active{
+.toolbar_item_active {
   background: var(--theme--primary);
   color: white;
 }
 
-.toolbar-item:hover{
+.toolbar-item:hover {
   background: var(--theme--primary);
   color: white;
+}
+
+.grid-bg{
+  margin: 0;
+  background-color: #fff; /* White background */
+  background-image:
+      linear-gradient(to right, rgba(204, 204, 204, 0.29) 1px, transparent 1px), /* Vertical lines */
+      linear-gradient(to bottom, rgba(204, 204, 204, 0.29) 1px, transparent 1px); /* Horizontal lines */
+  background-size: 5px 5px; /* Size of the grid cell */
+}
+
+.cropper {
+  height: 600px;
+  width: 600px;
+  background: transparent;
 }
 
 </style>
