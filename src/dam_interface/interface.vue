@@ -237,7 +237,6 @@
                   <p style="font-size: 12px; text-align: justify; hyphens: auto;">Resize and crop to achieve the desired width and heigh</p>
                 </div>
                 <div style="display: flex; justify-content: start;">
-
                 </div>
               </div>
               <div id="variants-toolbar-config-addition" v-if="currentToolbar === 'addition'">
@@ -472,6 +471,7 @@ export default {
       width: null,
       height: null,
       org_if_sml: false,
+      gravity: 'smart'
     });
 
     onMounted(() => {
@@ -491,10 +491,12 @@ export default {
       const url = new URL(variant.img_url);
       const width = url.searchParams.get("width");
       const height = url.searchParams.get("height");
+      const gravity = url.searchParams.get("gravity");
 
       currentVariantConfigs.value = {
         width: width,
         height: height,
+        gravity: gravity,
       };
 
       console.log(`${variant.img_url} Width: ${width}, Height: ${height}`);
@@ -1097,7 +1099,7 @@ export default {
   left: 5px;
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 9999;
+  z-index: 9;
 }
 
 .sfx-media-icon::after {
@@ -1112,6 +1114,7 @@ export default {
   opacity: 0; /* Start with no visibility */
   transition: opacity 0.3s ease; /* Smooth fade in/out effect */
   backdrop-filter: blur(5px); /* Apply blur effect */
+  z-index: 1;
 }
 
 .sfx-media-icon:hover .media-item-icon {
