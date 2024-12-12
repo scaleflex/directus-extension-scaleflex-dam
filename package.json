@@ -20,11 +20,6 @@
 		},
 		"entries": [
 			{
-				"type": "interface",
-				"name": "dam_interface",
-				"source": "src/dam_interface/index.js"
-			},
-			{
 				"type": "module",
 				"name": "dam_module",
 				"source": "src/dam_module/index.js"
@@ -46,8 +41,18 @@
 			},
 			{
 				"type": "interface",
-				"name": "dam_editor",
-				"source": "src/dam_editor/index.js"
+				"name": "dam_tinymce",
+				"source": "src/dam_tinymce/index.js"
+			},
+			{
+				"type": "interface",
+				"name": "dam_tiptap",
+				"source": "src/dam_tiptap/index.js"
+			},
+			{
+				"type": "interface",
+				"name": "dam_interface",
+				"source": "src/dam_interface/index.js"
 			}
 		],
 		"host": "^10.10.0"
@@ -65,6 +70,11 @@
 	},
 	"dependencies": {
 		"@tinymce/tinymce-vue": "^5.1.1",
+		"@tiptap/core": "^2.10.3",
+		"@tiptap/extension-image": "^2.10.3",
+		"@tiptap/pm": "^2.10.3",
+		"@tiptap/starter-kit": "^2.10.3",
+		"@tiptap/vue-3": "^2.10.3",
 		"vue-advanced-cropper": "^2.8.9",
 		"vue-plugin-load-script": "^2.1.1"
 	}

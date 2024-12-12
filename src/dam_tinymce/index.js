@@ -1,8 +1,8 @@
 import InterfaceComponent from './interface.vue';
 
 export default {
-	id: 'dam-editor',
-	name: 'WYSIWYG With DAM',
+	id: 'dam-tinymce',
+	name: 'WYSIWYG with Scaleflex DAM',
 	icon: 'format_quote',
 	description: 'Use the WYSIWYG with Scaleflex DAM',
 	component: InterfaceComponent,
