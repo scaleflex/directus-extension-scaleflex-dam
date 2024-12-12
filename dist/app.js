@@ -3428,7 +3428,7 @@ n(css$6,{});
 var css$5 = ".vue-advanced-cropper__foreground {\n  opacity: 0.7;\n}\n\n.vue-circle-stencil__preview:after, .vue-circle-stencil__preview:before,\n.vue-rectangle-stencil__preview:after,\n.vue-rectangle-stencil__preview:before {\n  content: \"\";\n  opacity: 0;\n  -webkit-transition: opacity 0.25s;\n  transition: opacity 0.25s;\n  position: absolute;\n  pointer-events: none;\n  z-index: 1;\n}\n.vue-circle-stencil__preview:after,\n.vue-rectangle-stencil__preview:after {\n  border-left: solid 1px white;\n  border-right: solid 1px white;\n  width: 33%;\n  height: 100%;\n  -webkit-transform: translateX(-50%);\n          transform: translateX(-50%);\n  left: 50%;\n  top: 0;\n}\n.vue-circle-stencil__preview:before,\n.vue-rectangle-stencil__preview:before {\n  border-top: solid 1px white;\n  border-bottom: solid 1px white;\n  height: 33%;\n  width: 100%;\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n  top: 50%;\n  left: 0;\n}\n.vue-circle-stencil--moving .vue-rectangle-stencil__preview:after, .vue-circle-stencil--moving .vue-rectangle-stencil__preview:before,\n.vue-circle-stencil--moving .vue-circle-stencil__preview:after,\n.vue-circle-stencil--moving .vue-circle-stencil__preview:before, .vue-circle-stencil--resizing .vue-rectangle-stencil__preview:after, .vue-circle-stencil--resizing .vue-rectangle-stencil__preview:before,\n.vue-circle-stencil--resizing .vue-circle-stencil__preview:after,\n.vue-circle-stencil--resizing .vue-circle-stencil__preview:before,\n.vue-rectangle-stencil--moving .vue-rectangle-stencil__preview:after,\n.vue-rectangle-stencil--moving .vue-rectangle-stencil__preview:before,\n.vue-rectangle-stencil--moving .vue-circle-stencil__preview:after,\n.vue-rectangle-stencil--moving .vue-circle-stencil__preview:before,\n.vue-rectangle-stencil--resizing .vue-rectangle-stencil__preview:after,\n.vue-rectangle-stencil--resizing .vue-rectangle-stencil__preview:before,\n.vue-rectangle-stencil--resizing .vue-circle-stencil__preview:after,\n.vue-rectangle-stencil--resizing .vue-circle-stencil__preview:before {\n  opacity: 0.7;\n}\n\n.vue-simple-line {\n  border-color: rgba(255, 255, 255, 0.8);\n}\n\n.vue-simple-handler-wrapper {\n  width: 24px;\n  height: 24px;\n}\n.vue-simple-handler-wrapper--west-north {\n  -webkit-transform: translate(0, 0);\n          transform: translate(0, 0);\n}\n.vue-simple-handler-wrapper--east-south {\n  -webkit-transform: translate(-100%, -100%);\n          transform: translate(-100%, -100%);\n}\n.vue-simple-handler-wrapper--west-south {\n  -webkit-transform: translate(0, -100%);\n          transform: translate(0, -100%);\n}\n.vue-simple-handler-wrapper--east-north {\n  -webkit-transform: translate(-100%, 0);\n          transform: translate(-100%, 0);\n}\n\n.vue-simple-handler {\n  display: block;\n  position: relative;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  -webkit-transition: opacity 0.5s;\n  transition: opacity 0.5s;\n  border: none;\n  background: white;\n  top: auto;\n  left: auto;\n  height: 4px;\n  width: 4px;\n  opacity: 0;\n}\n.vue-simple-handler--west-north, .vue-simple-handler--east-south, .vue-simple-handler--west-south, .vue-simple-handler--east-north {\n  display: block;\n  height: 16px;\n  width: 16px;\n  background: none;\n  opacity: 0.7;\n}\n.vue-simple-handler--west-north {\n  border-left: solid 2px white;\n  border-top: solid 2px white;\n}\n.vue-simple-handler--east-south {\n  border-right: solid 2px white;\n  border-bottom: solid 2px white;\n}\n.vue-simple-handler--west-south {\n  border-left: solid 2px white;\n  border-bottom: solid 2px white;\n}\n.vue-simple-handler--east-north {\n  border-right: solid 2px white;\n  border-top: solid 2px white;\n}\n.vue-simple-handler--hover {\n  opacity: 1;\n}\n\n.vue-circle-stencil__preview {\n  border: solid 2px rgba(255, 255, 255, 0.8);\n}\n.vue-circle-stencil .vue-simple-line {\n  border-color: rgba(255, 255, 255, 0.3);\n}\n.vue-circle-stencil .vue-simple-handler--west-north, .vue-circle-stencil .vue-simple-handler--east-south, .vue-circle-stencil .vue-simple-handler--west-south, .vue-circle-stencil .vue-simple-handler--east-north {\n  opacity: 0.4;\n}\n.vue-circle-stencil .vue-simple-handler--hover {\n  opacity: 1;\n}";
 n(css$5,{});
 
-var css$4 = "\n.exceeds-the-limit {\n  color: red;\n}\n.ml-1 {\n  margin-left: 0.5rem;\n}\n#sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {\n  top: 0;\n}\n.modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.5);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 1000;\n}\n.modal {\n  background: white;\n  border-radius: 8px;\n  padding: 1rem;\n  width: 80%;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);\n  overflow-y: auto;\n  max-height: 80vh;\n  margin: 1.75rem auto;\n}\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.modal-close-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.5rem;\n  cursor: pointer;\n}\n.modal-body {\n  margin: 1rem 0;\n}\n.modal-footer {\n  text-align: right;\n}\n.sfx-media-icon {\n  width: 34px;\n  height: 34px;\n  border-radius: 25%;\n  position: relative; /* Ensure the pseudo-element is positioned relative to this container */\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.media-item-icon {\n  position: absolute !important;\n  top: 7px;\n  left: 5px;\n  opacity: 0;\n  transition: opacity 0.3s ease;\n  z-index: 9999;\n}\n.sfx-media-icon::after {\n  content: ''; /* Empty content to create the pseudo-element */\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  z-index: 100;\n  height: 100%;\n  background-color: #0c3745;\n  opacity: 0; /* Start with no visibility */\n  transition: opacity 0.3s ease; /* Smooth fade in/out effect */\n  backdrop-filter: blur(5px); /* Apply blur effect */\n}\n.sfx-media-icon:hover .media-item-icon {\n  opacity: 1;\n}\n.sfx-media-icon:hover::after {\n  opacity: 0.85; /* Show the white blur overlay on hover */\n}\n.sfx-media-icon img {\n  width: 34px;\n  height: 34px;\n  display: block;\n  margin: 0 auto;\n  object-fit: cover;\n  border-radius: 25%;\n}\n.sfx-item .item-info {\n  margin-left: 12px;\n}\n.sfx-item .item-info a {\n  color: var(--theme--primary);\n}\n.sfx-item-inner {\n  display: flex;\n  align-items: center;\n}\n.bottom-message {\n  display: flex;\n  align-items: center;\n  justify-content: end;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.sfx-item {\n  padding: 6px;\n  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));\n  border-radius: var(--theme--border-radius);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));\n  margin-top: var(--v-list-item-margin, 4px);\n  cursor: pointer;\n  transition: border-color 500ms ease;\n}\n.sfx-item:hover {\n  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));\n}\n.sfx-media-icon .icon {\n  width: 80px;\n  height: 80px;\n  position: relative;\n}\n.btn-delete-item:hover {\n  color: var(--theme--danger);\n}\n.sfx-media-icon .icon i {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(50%, 50%);\n  font-size: 35px;\n}\n.item-icon {\n  width: 34px !important;\n  text-align: center;\n  padding: 0 var(--v-list-item-margin, 4px);\n}\n.remove-all span {\n  color: red;\n  font-size: 12px;\n  border: none;\n  background: none;\n  width: 100%;\n}\n.remove-all span:hover {\n  cursor: pointer;\n  color: rgb(185, 37, 37);\n}\n.asset-content {\n  max-height: 545px;\n  overflow-y: scroll;\n}\n.btn-drag-item {\n  margin-right: 8px;\n  cursor: move;\n  cursor: grab;\n}\n.btn-drag-item:active {\n  cursor: grabbing;\n}\n.asset-content::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n.toolbar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.container .v-card {\n  max-width: 80%;\n}\n.toolbar-item {\n  margin-top: 10px;\n  cursor: pointer;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: var(--v-list-item-margin, 4px);\n  transition: background-color 500ms ease, text-color 500ms ease;\n  border-radius: var(--v-list-item-border-radius, var(--theme--border-radius));\n}\n.toolbar_item_active {\n  background: var(--theme--primary);\n  color: white;\n}\n.toolbar-item:hover {\n  background: var(--theme--primary);\n  color: white;\n}\n.grid-bg{\n  margin: 0;\n  background-color: #fff; /* White background */\n  background-image:\n      linear-gradient(to right, rgba(204, 204, 204, 0.29) 1px, transparent 1px), /* Vertical lines */\n      linear-gradient(to bottom, rgba(204, 204, 204, 0.29) 1px, transparent 1px); /* Horizontal lines */\n  background-size: 5px 5px; /* Size of the grid cell */\n}\n.cropper {\n  height: 600px;\n  width: 600px;\n  background: transparent;\n}\n\n";
+var css$4 = "\n.exceeds-the-limit {\n  color: red;\n}\n.ml-1 {\n  margin-left: 0.5rem;\n}\n#sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {\n  top: 0;\n}\n.modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.5);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 1000;\n}\n.modal {\n  background: white;\n  border-radius: 8px;\n  padding: 1rem;\n  width: 80%;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);\n  overflow-y: auto;\n  max-height: 80vh;\n  margin: 1.75rem auto;\n}\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.modal-close-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.5rem;\n  cursor: pointer;\n}\n.modal-body {\n  margin: 1rem 0;\n}\n.modal-footer {\n  text-align: right;\n}\n.sfx-media-icon {\n  width: 34px;\n  height: 34px;\n  border-radius: 25%;\n  position: relative; /* Ensure the pseudo-element is positioned relative to this container */\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.media-item-icon {\n  position: absolute !important;\n  top: 7px;\n  left: 5px;\n  opacity: 0;\n  transition: opacity 0.3s ease;\n  z-index: 9;\n}\n.sfx-media-icon::after {\n  content: ''; /* Empty content to create the pseudo-element */\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  z-index: 100;\n  height: 100%;\n  background-color: #0c3745;\n  opacity: 0; /* Start with no visibility */\n  transition: opacity 0.3s ease; /* Smooth fade in/out effect */\n  backdrop-filter: blur(5px); /* Apply blur effect */\n  z-index: 1;\n}\n.sfx-media-icon:hover .media-item-icon {\n  opacity: 1;\n}\n.sfx-media-icon:hover::after {\n  opacity: 0.85; /* Show the white blur overlay on hover */\n}\n.sfx-media-icon img {\n  width: 34px;\n  height: 34px;\n  display: block;\n  margin: 0 auto;\n  object-fit: cover;\n  border-radius: 25%;\n}\n.sfx-item .item-info {\n  margin-left: 12px;\n}\n.sfx-item .item-info a {\n  color: var(--theme--primary);\n}\n.sfx-item-inner {\n  display: flex;\n  align-items: center;\n}\n.bottom-message {\n  display: flex;\n  align-items: center;\n  justify-content: end;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.sfx-item {\n  padding: 6px;\n  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));\n  border-radius: var(--theme--border-radius);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));\n  margin-top: var(--v-list-item-margin, 4px);\n  cursor: pointer;\n  transition: border-color 500ms ease;\n}\n.sfx-item:hover {\n  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));\n}\n.sfx-media-icon .icon {\n  width: 80px;\n  height: 80px;\n  position: relative;\n}\n.btn-delete-item:hover {\n  color: var(--theme--danger);\n}\n.sfx-media-icon .icon i {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(50%, 50%);\n  font-size: 35px;\n}\n.item-icon {\n  width: 34px !important;\n  text-align: center;\n  padding: 0 var(--v-list-item-margin, 4px);\n}\n.remove-all span {\n  color: red;\n  font-size: 12px;\n  border: none;\n  background: none;\n  width: 100%;\n}\n.remove-all span:hover {\n  cursor: pointer;\n  color: rgb(185, 37, 37);\n}\n.asset-content {\n  max-height: 545px;\n  overflow-y: scroll;\n}\n.btn-drag-item {\n  margin-right: 8px;\n  cursor: move;\n  cursor: grab;\n}\n.btn-drag-item:active {\n  cursor: grabbing;\n}\n.asset-content::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n.toolbar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.container .v-card {\n  max-width: 80%;\n}\n.toolbar-item {\n  margin-top: 10px;\n  cursor: pointer;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: var(--v-list-item-margin, 4px);\n  transition: background-color 500ms ease, text-color 500ms ease;\n  border-radius: var(--v-list-item-border-radius, var(--theme--border-radius));\n}\n.toolbar_item_active {\n  background: var(--theme--primary);\n  color: white;\n}\n.toolbar-item:hover {\n  background: var(--theme--primary);\n  color: white;\n}\n.grid-bg{\n  margin: 0;\n  background-color: #fff; /* White background */\n  background-image:\n      linear-gradient(to right, rgba(204, 204, 204, 0.29) 1px, transparent 1px), /* Vertical lines */\n      linear-gradient(to bottom, rgba(204, 204, 204, 0.29) 1px, transparent 1px); /* Horizontal lines */\n  background-size: 5px 5px; /* Size of the grid cell */\n}\n.cropper {\n  height: 600px;\n  width: 600px;\n  background: transparent;\n}\n\n";
 n(css$4,{});
 
 var _export_sfc = (sfc, props) => {
@@ -3567,6 +3567,7 @@ const _sfc_main$4 = {
       width: null,
       height: null,
       org_if_sml: false,
+      gravity: 'smart'
     });
 
     onMounted(() => {
@@ -3586,13 +3587,25 @@ const _sfc_main$4 = {
       const url = new URL(variant.img_url);
       const width = url.searchParams.get("width");
       const height = url.searchParams.get("height");
+      const gravity = url.searchParams.get("gravity");
 
       currentVariantConfigs.value = {
         width: width,
         height: height,
+        gravity: gravity,
       };
 
       console.log(`${variant.img_url} Width: ${width}, Height: ${height}`);
+    }
+
+    async function relaceVariantDialog(item, variant) {
+      const frConfig = {
+        token: token.value,
+        sec: sec.value,
+        directory: directory.value,
+        limitType: limitType.value,
+      };
+      renderEditWidget(frConfig, item, variant);
     }
 
 
@@ -3634,7 +3647,8 @@ const _sfc_main$4 = {
       currentVariantConfigs,
       showVariantsList,
       currentVariantOrigin,
-      showCrop
+      showCrop,
+      openEditModal
     };
 
     function log() {
@@ -3661,6 +3675,12 @@ const _sfc_main$4 = {
       document.getElementById("sfx-modal").setAttribute("style", "display: none");
       emit('close');
       isOpen.value = false;
+    }
+
+    function openEditModal(item, variant) {
+      document.getElementById("sfx-modal").setAttribute("style", "display: block");
+      isOpen.value = true;
+      relaceVariantDialog(item, variant);
     }
 
     function openModal() {
@@ -3938,6 +3958,21 @@ const _sfc_main$4 = {
       return props.value ? props.value.length : 0;
     }
 
+    function editFile(file, item, variant) {
+      let currentFiles = toRaw(props.value);
+      const fileIndex = currentFiles.findIndex(file => file.uuid === item.uuid);
+      const currentFileEdit = currentFiles[fileIndex];
+      const currentVariantIndexEdit  = currentFileEdit.variants.findIndex(currentVariant => currentVariant.code === variant.code);
+      const currentVariant = props.config.variants.find(currentVariant => currentVariant.code === variant.code);
+      const params = new URLSearchParams(currentVariant.preset);
+      let cdnLink = removeURLParameter(file.link, 'vh');
+      const updatedUrl = `${cdnLink}?${params.toString()}`;
+      currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = updatedUrl;
+      showVariantsList.value = [];
+      showVariantsList.value = [item.uuid];
+      emit('input', currentFiles);
+    }
+
     function closeDialog() {
       dialogVisible.value = false;
     }
@@ -3999,12 +4034,79 @@ const _sfc_main$4 = {
             }
 
             if (successful) {
-              // console.dir(successful);
+              console.dir(successful);
               successful.forEach((item, key) => {
                 // do something
               });
             }
           });
+    }
+
+    function renderEditWidget(frConfig, item, variant) {
+      if (!window.Filerobot) {
+        return;
+      }
+      
+      let Filerobot = window.Filerobot;
+
+      let filerobot = null;
+
+      filerobot = Filerobot.Core({
+        securityTemplateID: frConfig.sec,
+        container: frConfig.token
+      });
+
+      let frUploadDirectory = frConfig.directory;
+
+      // Plugins
+      let Explorer = Filerobot.Explorer;
+      let XHRUpload = Filerobot.XHRUpload;
+      
+      filerobot
+          .use(Explorer, {
+            config: {
+              rootFolderPath: frUploadDirectory
+            },
+            target: '#sfx-dam-widget',
+            inline: true,
+            width: "100%",
+            height: "100%",
+            disableExportButton: false,
+            hideExportButtonIcon: true,
+            preventExportDefaultBehavior: true,
+            dismissUrlPathQueryUpdate: true,
+            disableDownloadButton: false,
+            hideDownloadButtonIcon: true,
+            preventDownloadDefaultBehavior: true,
+            locale: {
+              strings: {
+                mutualizedExportButtonLabel: 'Add assets',
+                mutualizedDownloadButton: 'Add assets'
+              }
+            },
+            filters: {
+              mimeTypes: limitType.value, // Replace with an array of MIME types if needed
+            }
+          })
+          .use(XHRUpload)
+          .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
+            editFile(files[0], item, variant);
+            closeModal();
+          })
+          .on('complete', ({failed, uploadID, successful}) => {
+            if (failed) {
+              console.dir(failed);
+            }
+            
+
+            if (successful) {
+              console.dir(successful);
+              successful.forEach((item, key) => {
+                // do something
+              });
+            }
+          });
+
     }
   }
 };
@@ -4284,7 +4386,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
                                 createVNode(_component_VButton, {
                                   xSmall: true,
                                   secondary: true,
-                                  onClick: $event => ($setup.showVariantDialog(item, variant))
+                                  onClick: $event => ($setup.openEditModal(item, variant))
                                 }, {
                                   default: withCtx(() => _cache[15] || (_cache[15] = [
                                     createTextVNode(" Replace ")
