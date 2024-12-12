@@ -64,7 +64,7 @@
                 </VButton>
                 <VButton :xSmall="true"
                          :secondary="true"
-                         @click="showVariantDialog(item, variant)">
+                         @click="openEditModal(item, variant)">
                   Replace
                 </VButton>
               </div>
@@ -500,6 +500,16 @@ export default {
       console.log(`${variant.img_url} Width: ${width}, Height: ${height}`);
     }
 
+    async function relaceVariantDialog(item, variant) {
+      const frConfig = {
+        token: token.value,
+        sec: sec.value,
+        directory: directory.value,
+        limitType: limitType.value,
+      }
+      renderEditWidget(frConfig, item, variant);
+    }
+
 
     function toDamSetting() {
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
@@ -539,7 +549,8 @@ export default {
       currentVariantConfigs,
       showVariantsList,
       currentVariantOrigin,
-      showCrop
+      showCrop,
+      openEditModal
     };
 
     function log() {
@@ -566,6 +577,12 @@ export default {
       document.getElementById("sfx-modal").setAttribute("style", "display: none");
       emit('close');
       isOpen.value = false;
+    }
+
+    function openEditModal(item, variant) {
+      document.getElementById("sfx-modal").setAttribute("style", "display: block");
+      isOpen.value = true;
+      relaceVariantDialog(item, variant);
     }
 
     function openModal() {
@@ -851,6 +868,21 @@ export default {
       return props.value ? props.value.length : 0;
     }
 
+    function editFile(file, item, variant) {
+      let currentFiles = toRaw(props.value);
+      const fileIndex = currentFiles.findIndex(file => file.uuid === item.uuid);
+      const currentFileEdit = currentFiles[fileIndex]
+      const currentVariantIndexEdit  = currentFileEdit.variants.findIndex(currentVariant => currentVariant.code === variant.code);
+      const currentVariant = props.config.variants.find(currentVariant => currentVariant.code === variant.code);
+      const params = new URLSearchParams(currentVariant.preset);
+      let cdnLink = removeURLParameter(file.link, 'vh');
+      const updatedUrl = `${cdnLink}?${params.toString()}`;
+      currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = updatedUrl
+      showVariantsList.value = []
+      showVariantsList.value = [item.uuid]
+      emit('input', currentFiles);
+    }
+
     function closeDialog() {
       dialogVisible.value = false;
     }
@@ -912,12 +944,79 @@ export default {
             }
 
             if (successful) {
-              // console.dir(successful);
+              console.dir(successful);
               successful.forEach((item, key) => {
                 // do something
               });
             }
           });
+    }
+
+    function renderEditWidget(frConfig, item, variant) {
+      if (!window.Filerobot) {
+        return;
+      }
+      
+      let Filerobot = window.Filerobot;
+
+      let filerobot = null;
+
+      filerobot = Filerobot.Core({
+        securityTemplateID: frConfig.sec,
+        container: frConfig.token
+      });
+
+      let frUploadDirectory = frConfig.directory;
+
+      // Plugins
+      let Explorer = Filerobot.Explorer;
+      let XHRUpload = Filerobot.XHRUpload;
+      
+      filerobot
+          .use(Explorer, {
+            config: {
+              rootFolderPath: frUploadDirectory
+            },
+            target: '#sfx-dam-widget',
+            inline: true,
+            width: "100%",
+            height: "100%",
+            disableExportButton: false,
+            hideExportButtonIcon: true,
+            preventExportDefaultBehavior: true,
+            dismissUrlPathQueryUpdate: true,
+            disableDownloadButton: false,
+            hideDownloadButtonIcon: true,
+            preventDownloadDefaultBehavior: true,
+            locale: {
+              strings: {
+                mutualizedExportButtonLabel: 'Add assets',
+                mutualizedDownloadButton: 'Add assets'
+              }
+            },
+            filters: {
+              mimeTypes: limitType.value, // Replace with an array of MIME types if needed
+            }
+          })
+          .use(XHRUpload)
+          .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
+            editFile(files[0], item, variant)
+            closeModal();
+          })
+          .on('complete', ({failed, uploadID, successful}) => {
+            if (failed) {
+              console.dir(failed);
+            }
+            
+
+            if (successful) {
+              console.dir(successful);
+              successful.forEach((item, key) => {
+                // do something
+              });
+            }
+          });
+
     }
   }
 };
