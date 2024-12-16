@@ -12,7 +12,6 @@
         </VButton>
       </div>
     </div>
-    <input type="hidden" :value="value" id="sfx_tiptap_value">
     <editor-content :editor="editor" />
   </div>
 
@@ -35,7 +34,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -78,10 +77,7 @@ export default {
     const endpoint = ref('');
     const isTokenAndSecExists = ref(false);
 
-
     onMounted(() => {
-      init();
-
       editor.value = new Editor({
         extensions: [
           StarterKit,
@@ -89,8 +85,23 @@ export default {
             inline: true,
           }),
         ],
+        content: props.value || '<p>Default content</p>',
+        onUpdate({ editor }) {
+          emit('input', editor.getHTML());
+        },
       });
+
+      init();
     });
+
+    watch(
+        () => props.value,
+        (newValue) => {
+          if (editor.value && editor.value.getHTML() !== newValue) {
+            editor.value.commands.setContent(newValue || '<p>Default content</p>');
+          }
+        }
+    );
 
     onBeforeUnmount(() => {
       editor.value.destroy();
@@ -204,7 +215,11 @@ export default {
           .use(XHRUpload)
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
             files.forEach(item => {
-              editor.value.chain().focus().setImage({ src: item.file.url.cdn }).run();
+              if (item.file?.url.download !== undefined) {
+                editor.value.chain().focus().setImage({ src: item.file?.url.download }).run();
+              } else {
+                editor.value.chain().focus().setImage({ src: item.file?.url.cdn }).run();
+              }
             });
             emit('input', editor.value.getHTML());
             closeModal();

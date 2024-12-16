@@ -7,5 +7,5 @@ export default {
 	description: 'Use the Tiptap with Scaleflex DAM!',
 	component: InterfaceComponent,
 	options: null,
-	types: ['string'],
+	types: ['text'],
 };
