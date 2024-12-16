@@ -196,10 +196,10 @@
             <div id="variants-toolbar-image" class="grid-bg"
                  style="width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; max-height: 100%; position: relative; padding: 30px">
               <div style="position: absolute; top: 5px; right: 5px; display: flex; justify-content: end; align-items: center;">
-                <VButton  v-if="!showCrop" @click="toggleCrop" :icon="true" :xSmall="true" :secondary="true">
+                <VButton  v-if="!showCrop" @click="toggleCrop" :icon="true" :xSmall="true" :secondary="true" style="margin-left: 8px; z-index: 9;">
                   <VIcon name="crop" :xSmall="true" />
                 </VButton>
-                <VButton v-if="showCrop" @click="updateVariantByCrop" :icon="true" :xSmall="true" style="margin-left: 8px">
+                <VButton v-if="showCrop" @click="updateVariantByCrop" :icon="true" :xSmall="true" style="margin-left: 8px; z-index: 9;">
                   <VIcon name="save" :xSmall="true" />
                 </VButton>
               </div>
@@ -353,7 +353,7 @@ export default {
             }
           });
         } else {
-          //this.updateCurrentVariantShow();
+          this.updateCurrentVariantShow();
         }
         this.cropWidth = width;
         this.cropHeight = height;
@@ -476,9 +476,13 @@ export default {
       const url = new URL(variant.img_url);
       const width = url.searchParams.get("width");
       const height = url.searchParams.get("height");
+      const tl_px = url.searchParams.get("tl_px");
+      const br_px = url.searchParams.get("br_px");
       currentVariantConfigs.value = {
         width: width,
         height: height,
+        tl_px,
+        br_px
       };
       cropWidth.value = width;
       cropHeight.value = height;
@@ -712,7 +716,7 @@ export default {
           const tempFile = {
             uuid: response?.file?.uuid + '_' + makeIndexFiles(index),
             name: response?.file?.name,
-            cdn: removeURLParameter(cdnLink, 'vh'),
+            cdn: checkAndRemoveQueryMark(removeURLParameter(cdnLink, 'vh')),
             extension: response?.file?.extension,
             source: 'filerobot',
             type: response?.file?.type,
@@ -900,7 +904,7 @@ export default {
       const currentVariant = props.config.variants.find(currentVariant => currentVariant.code === variant.code);
       const params = new URLSearchParams(currentVariant.preset);
       let cdnLink = removeURLParameter(file.link, 'vh');
-      const updatedUrl = `${cdnLink}?${params.toString()}`;
+      const updatedUrl = genQueryParameters(cdnLink, params);
       currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = updatedUrl
       showVariantsList.value = []
       showVariantsList.value = [item.uuid]

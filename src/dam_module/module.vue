@@ -199,7 +199,7 @@ export default {
     });
 
     async function init() {
-      const client = createDirectus('http://localhost:8055').with(rest());
+      const client = createDirectus(process.env.PUBLIC_URL).with(rest());
       const result = await client.request(readMe({
 		    fields: ['role.policies.policy.admin_access'],
 	    }));
