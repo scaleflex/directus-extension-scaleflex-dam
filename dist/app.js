@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 import { ref, resolveComponent, openBlock, createBlock, withCtx, createElementVNode, createVNode, createTextVNode, createCommentVNode, toDisplayString, createElementBlock, Fragment as Fragment$1, renderList, normalizeClass, normalizeStyle, onMounted, watch, defineComponent, toRefs, nextTick, onBeforeUnmount, onActivated, onDeactivated, h, renderSlot, markRaw, getCurrentInstance, watchEffect, unref, customRef, resolveDynamicComponent, withDirectives, vShow, mergeProps, withModifiers, toRaw, isProxy } from 'vue';
 import { useStores, useApi } from '@directus/extensions-sdk';
 
+=======
+import { ref, onMounted, resolveComponent, openBlock, createBlock, withCtx, createElementVNode, createElementBlock, createVNode, createCommentVNode, createTextVNode, toDisplayString, Fragment as Fragment$1, renderList, normalizeClass, normalizeStyle, watch, defineComponent, toRefs, nextTick, onBeforeUnmount, onActivated, onDeactivated, h, renderSlot, markRaw, getCurrentInstance, watchEffect, unref, customRef, resolveDynamicComponent, withDirectives, vShow, mergeProps, withModifiers, toRaw, isProxy } from 'vue';
+import { useStores, useApi } from '@directus/extensions-sdk';
+
+var A$1="/",L$1=(e,t)=>(e.endsWith(A$1)&&(e=e.slice(0,-1)),t.startsWith(A$1)||(t=A$1+t),e+t),g$1=(e,t,o)=>{let a=e.pathname===A$1?t:L$1(e.pathname,t),s=new globalThis.URL(a,e);if(o)for(let[c,i]of Object.entries(J$1(o)))if(i&&typeof i=="object"&&!Array.isArray(i))for(let[p,u]of Object.entries(i))s.searchParams.set(`${c}[${p}]`,String(u));else s.searchParams.set(c,i);return s};function $$1(e){return typeof e!="object"||!e?!1:"headers"in e&&"ok"in e&&"json"in e&&typeof e.json=="function"&&"text"in e&&typeof e.json=="function"}async function k$1(e){if(!(typeof e!="object"||!e)){if($$1(e)){let t=e.headers.get("Content-Type")?.toLowerCase();if(t?.startsWith("application/json")||t?.startsWith("application/health+json")){let o=await e.json();if(!e.ok||"errors"in o)throw o;return "data"in o?o.data:o}if(t?.startsWith("text/html")||t?.startsWith("text/plain")){let o=await e.text();if(!e.ok)throw o;return o}return e}if("errors"in e)throw e;return "data"in e?e.data:e}}var b$1=async(e,t,o=globalThis.fetch)=>(t.headers=typeof t.headers=="object"&&!Array.isArray(t.headers)?t.headers:{},o(e,t).then(a=>k$1(a).catch(s=>{let c={errors:s&&typeof s=="object"&&"errors"in s?s.errors:s,response:a};return s&&typeof s=="object"&&"data"in s&&(c.data=s.data),Promise.reject(c)})));var K$1={fetch:globalThis.fetch,WebSocket:globalThis.WebSocket,URL:globalThis.URL,logger:globalThis.console},le$1=(e,t={})=>{let o=t.globals?{...K$1,...t.globals}:K$1;return {globals:o,url:new o.URL(e),with(a){return {...this,...a(this)}}}};var U$1=e=>{let t=(o,a=[])=>{if(typeof o=="object"){let s=[];for(let c in o){let i=o[c]??[];if(Array.isArray(i))for(let p of i)s.push(t(p,[...a,c]));else if(typeof i=="object")for(let p of Object.keys(i)){let u=i[p];for(let f of u)s.push(t(f,[...a,`${c}:${p}`]));}}return s.flatMap(c=>c)}return [...a,String(o)].join(".")};return e.flatMap(o=>t(o))},J$1=e=>{let t={};Array.isArray(e.fields)&&e.fields.length>0&&(t.fields=U$1(e.fields).join(",")),e.filter&&Object.keys(e.filter).length>0&&(t.filter=JSON.stringify(e.filter)),e.search&&(t.search=e.search),"sort"in e&&e.sort&&(t.sort=typeof e.sort=="string"?e.sort:e.sort.join(",")),typeof e.limit=="number"&&e.limit>=-1&&(t.limit=String(e.limit)),typeof e.offset=="number"&&e.offset>=0&&(t.offset=String(e.offset)),typeof e.page=="number"&&e.page>=1&&(t.page=String(e.page)),e.deep&&Object.keys(e.deep).length>0&&(t.deep=JSON.stringify(e.deep)),e.alias&&Object.keys(e.alias).length>0&&(t.alias=JSON.stringify(e.alias)),e.aggregate&&Object.keys(e.aggregate).length>0&&(t.aggregate=JSON.stringify(e.aggregate)),e.groupBy&&e.groupBy.length>0&&(t.groupBy=e.groupBy.join(","));for(let[o,a]of Object.entries(e))o in t||(typeof a=="string"||typeof a=="number"||typeof a=="boolean"?t[o]=String(a):t[o]=JSON.stringify(a));return t};var Vm=e=>()=>({path:"/users/me",params:e??{},method:"GET"});var B$1={},Fu=(e={})=>t=>{let o={...B$1,...e};return {async request(a){let s=a();if(s.headers||(s.headers={}),"Content-Type"in s.headers?s.headers["Content-Type"]==="multipart/form-data"&&delete s.headers["Content-Type"]:s.headers["Content-Type"]="application/json","getToken"in this&&!("Authorization"in s.headers)){let u=await this.getToken();u&&(s.headers.Authorization=`Bearer ${u}`);}let c=g$1(t.url,s.path,s.params),i={method:s.method??"GET",headers:s.headers??{}};"credentials"in o&&(i.credentials=o.credentials),s.body&&(i.body=s.body),s.onRequest&&(i=await s.onRequest(i)),o.onRequest&&(i=await o.onRequest(i));let p=await b$1(c.toString(),i,t.globals.fetch);return "onResponse"in s&&(p=await s.onResponse(p,i)),"onResponse"in e&&(p=await e.onResponse(p,i)),p}}};
+
+>>>>>>> 68a436f (update)
 var e=[],t=[];function n(n,r){if(n&&"undefined"!=typeof document){var a,s=!0===r.prepend?"prepend":"append",d=!0===r.singleTag,i="string"==typeof r.container?document.querySelector(r.container):document.getElementsByTagName("head")[0];if(d){var u=e.indexOf(i);-1===u&&(u=e.push(i)-1,t[u]={}),a=t[u]&&t[u][s]?t[u][s]:t[u][s]=c();}else a=c();65279===n.charCodeAt(0)&&(n=n.substring(1)),a.styleSheet?a.styleSheet.cssText+=n:a.appendChild(document.createTextNode(n));}function c(){var e=document.createElement("style");if(e.setAttribute("type","text/css"),r.attributes)for(var t=Object.keys(r.attributes),n=0;n<t.length;n++)e.setAttribute(t[n],r.attributes[t[n]]);var a="prepend"===s?"afterbegin":"beforeend";return i.insertAdjacentElement(a,e),e}}
 
 var css$8 = "\n.sfx-padding-box {\n  padding: 0 32px 32px;\n}\n.guide-text {\n  font-size: 13px;\n  margin-top: 5px;\n  color: #285c72;\n}\n.homepage{\n  margin-top: 10px;\n  display: flex;\n  transition: color 500ms ease;\n  cursor: pointer;\n}\n.homepage:hover{\n  color: #285c72;\n}\n.external-link{\n  display: flex;\n  padding: 5px 8px;\n  border-radius: 4px;\n  transition: background 500ms ease;\n  align-items: center;\n  cursor: pointer;\n}\n.external-link:hover{\n  background: var(--theme--navigation--project--background);\n}\n";
@@ -38,7 +46,29 @@ const _sfc_main$5 = {
     const dialogTitle = ref(null);
     const dialogText = ref(null);
     const dialogReset = ref(false);
+<<<<<<< HEAD
 
+=======
+    const isAdministrator = ref(false);
+
+    onMounted(() => {
+      init();
+    });
+
+    async function init() {
+      const client = le$1('http://localhost:8055').with(Fu());
+      const result = await client.request(Vm({
+		    fields: ['role.policies.policy.admin_access'],
+	    }));
+
+      if (result?.role?.policies) {
+        const policies =  result?.role?.policies;
+        const hasAdminAccess = policies.some(item => item.policy.admin_access);
+        isAdministrator.value = hasAdminAccess;
+        if (!hasAdminAccess) toDam();
+      }
+    }
+>>>>>>> 68a436f (update)
 
     async function ensureCollectionExists() {
       loading.value = true;
@@ -293,14 +323,26 @@ const _sfc_main$5 = {
       confirmResetAllSettings,
       dialogReset,
       resetAllSettings,
+<<<<<<< HEAD
       toDam
+=======
+      toDam,
+      isAdministrator
+>>>>>>> 68a436f (update)
     };
   },
 };
 
 const _hoisted_1$5 = { style: {"margin-top":"20px","padding":"0 10px"} };
 const _hoisted_2$5 = { style: {"display":"flex","flex-direction":"column","align-content":"center"} };
+<<<<<<< HEAD
 const _hoisted_3$5 = { style: {"display":"flex","background":"var(--theme--navigation--project--background)","padding":"5px 8px","border-radius":"4px","align-items":"center"} };
+=======
+const _hoisted_3$5 = {
+  key: 0,
+  style: {"display":"flex","background":"var(--theme--navigation--project--background)","padding":"5px 8px","border-radius":"4px","align-items":"center"}
+};
+>>>>>>> 68a436f (update)
 const _hoisted_4$5 = {
   href: "https://docs.scaleflex.com/digital-asset-management-dam/plugins-and-connectors/plugins/directus",
   target: "_blank",
@@ -342,6 +384,7 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     navigation: withCtx(() => [
       createElementVNode("div", _hoisted_1$5, [
         createElementVNode("div", _hoisted_2$5, [
+<<<<<<< HEAD
           createElementVNode("div", _hoisted_3$5, [
             createVNode(_component_VIcon, {
               name: "settings",
@@ -349,6 +392,17 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
             }),
             _cache[8] || (_cache[8] = createElementVNode("span", { style: {"margin-left":"4px","font-size":"14px","display":"block"} }, "Scaleflex DAM", -1 /* HOISTED */))
           ]),
+=======
+          ($setup.isAdministrator)
+            ? (openBlock(), createElementBlock("div", _hoisted_3$5, [
+                createVNode(_component_VIcon, {
+                  name: "settings",
+                  style: {"color":"var(--theme--primary)"}
+                }),
+                _cache[8] || (_cache[8] = createElementVNode("span", { style: {"margin-left":"4px","font-size":"14px","display":"block"} }, "Scaleflex DAM", -1 /* HOISTED */))
+              ]))
+            : createCommentVNode("v-if", true),
+>>>>>>> 68a436f (update)
           createElementVNode("div", {
             onClick: _cache[0] || (_cache[0] = (...args) => ($setup.toDam && $setup.toDam(...args))),
             class: "external-link",
@@ -857,6 +911,10 @@ const _sfc_main$3 = {
     const limitType = ref([]);
     const endpoint = ref('');
     const isTokenAndSecExists = ref(false);
+<<<<<<< HEAD
+=======
+    const isAdministrator = ref(false);
+>>>>>>> 68a436f (update)
 
     onMounted(() => {
       init().then(function () {
@@ -880,7 +938,12 @@ const _sfc_main$3 = {
     return {
       getIsLoading,
       toDamSetting,
+<<<<<<< HEAD
       isTokenAndSecExists
+=======
+      isTokenAndSecExists,
+      isAdministrator
+>>>>>>> 68a436f (update)
     };
 
     function getIsLoading() {
@@ -892,6 +955,20 @@ const _sfc_main$3 = {
         isLoading.value = false;
         loadConfigDone.value = true;
       });
+<<<<<<< HEAD
+=======
+
+      const client = le$1('http://localhost:8055').with(Fu());
+      const result = await client.request(Vm({
+		    fields: ['role.policies.policy.admin_access'],
+	    }));
+
+      if (result?.role?.policies) {
+        const policies =  result?.role?.policies;
+        const hasAdminAccess = policies.some(item => item.policy.admin_access);
+        isAdministrator.value = hasAdminAccess;
+      }
+>>>>>>> 68a436f (update)
     }
 
     async function loadData() {
@@ -1021,6 +1098,7 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     navigation: withCtx(() => [
       createElementVNode("div", _hoisted_1$3, [
         createElementVNode("div", _hoisted_2$3, [
+<<<<<<< HEAD
           createElementVNode("div", {
             onClick: _cache[0] || (_cache[0] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args))),
             class: "external-link"
@@ -1031,6 +1109,21 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
             }),
             _cache[2] || (_cache[2] = createElementVNode("span", { style: {"margin-left":"4px","font-size":"14px","display":"block"} }, "Scaleflex DAM", -1 /* HOISTED */))
           ]),
+=======
+          ($setup.isAdministrator)
+            ? (openBlock(), createElementBlock("div", {
+                key: 0,
+                onClick: _cache[0] || (_cache[0] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args))),
+                class: "external-link"
+              }, [
+                createVNode(_component_VIcon, {
+                  name: "settings",
+                  style: {"color":"var(--theme--primary)"}
+                }),
+                _cache[2] || (_cache[2] = createElementVNode("span", { style: {"margin-left":"4px","font-size":"14px","display":"block"} }, "Scaleflex DAM", -1 /* HOISTED */))
+              ]))
+            : createCommentVNode("v-if", true),
+>>>>>>> 68a436f (update)
           createElementVNode("div", _hoisted_3$3, [
             createVNode(_component_VIcon, {
               name: "gallery_thumbnail",
@@ -30141,7 +30234,11 @@ n(css$2,{});
 var css$1 = ".vue-advanced-cropper__foreground {\n  opacity: 0.7;\n}\n\n.vue-circle-stencil__preview:after, .vue-circle-stencil__preview:before,\n.vue-rectangle-stencil__preview:after,\n.vue-rectangle-stencil__preview:before {\n  content: \"\";\n  opacity: 0;\n  -webkit-transition: opacity 0.25s;\n  transition: opacity 0.25s;\n  position: absolute;\n  pointer-events: none;\n  z-index: 1;\n}\n.vue-circle-stencil__preview:after,\n.vue-rectangle-stencil__preview:after {\n  border-left: solid 1px white;\n  border-right: solid 1px white;\n  width: 33%;\n  height: 100%;\n  -webkit-transform: translateX(-50%);\n          transform: translateX(-50%);\n  left: 50%;\n  top: 0;\n}\n.vue-circle-stencil__preview:before,\n.vue-rectangle-stencil__preview:before {\n  border-top: solid 1px white;\n  border-bottom: solid 1px white;\n  height: 33%;\n  width: 100%;\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n  top: 50%;\n  left: 0;\n}\n.vue-circle-stencil--moving .vue-rectangle-stencil__preview:after, .vue-circle-stencil--moving .vue-rectangle-stencil__preview:before,\n.vue-circle-stencil--moving .vue-circle-stencil__preview:after,\n.vue-circle-stencil--moving .vue-circle-stencil__preview:before, .vue-circle-stencil--resizing .vue-rectangle-stencil__preview:after, .vue-circle-stencil--resizing .vue-rectangle-stencil__preview:before,\n.vue-circle-stencil--resizing .vue-circle-stencil__preview:after,\n.vue-circle-stencil--resizing .vue-circle-stencil__preview:before,\n.vue-rectangle-stencil--moving .vue-rectangle-stencil__preview:after,\n.vue-rectangle-stencil--moving .vue-rectangle-stencil__preview:before,\n.vue-rectangle-stencil--moving .vue-circle-stencil__preview:after,\n.vue-rectangle-stencil--moving .vue-circle-stencil__preview:before,\n.vue-rectangle-stencil--resizing .vue-rectangle-stencil__preview:after,\n.vue-rectangle-stencil--resizing .vue-rectangle-stencil__preview:before,\n.vue-rectangle-stencil--resizing .vue-circle-stencil__preview:after,\n.vue-rectangle-stencil--resizing .vue-circle-stencil__preview:before {\n  opacity: 0.7;\n}\n\n.vue-simple-line {\n  border-color: rgba(255, 255, 255, 0.8);\n}\n\n.vue-simple-handler-wrapper {\n  width: 24px;\n  height: 24px;\n}\n.vue-simple-handler-wrapper--west-north {\n  -webkit-transform: translate(0, 0);\n          transform: translate(0, 0);\n}\n.vue-simple-handler-wrapper--east-south {\n  -webkit-transform: translate(-100%, -100%);\n          transform: translate(-100%, -100%);\n}\n.vue-simple-handler-wrapper--west-south {\n  -webkit-transform: translate(0, -100%);\n          transform: translate(0, -100%);\n}\n.vue-simple-handler-wrapper--east-north {\n  -webkit-transform: translate(-100%, 0);\n          transform: translate(-100%, 0);\n}\n\n.vue-simple-handler {\n  display: block;\n  position: relative;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  -webkit-transition: opacity 0.5s;\n  transition: opacity 0.5s;\n  border: none;\n  background: white;\n  top: auto;\n  left: auto;\n  height: 4px;\n  width: 4px;\n  opacity: 0;\n}\n.vue-simple-handler--west-north, .vue-simple-handler--east-south, .vue-simple-handler--west-south, .vue-simple-handler--east-north {\n  display: block;\n  height: 16px;\n  width: 16px;\n  background: none;\n  opacity: 0.7;\n}\n.vue-simple-handler--west-north {\n  border-left: solid 2px white;\n  border-top: solid 2px white;\n}\n.vue-simple-handler--east-south {\n  border-right: solid 2px white;\n  border-bottom: solid 2px white;\n}\n.vue-simple-handler--west-south {\n  border-left: solid 2px white;\n  border-bottom: solid 2px white;\n}\n.vue-simple-handler--east-north {\n  border-right: solid 2px white;\n  border-top: solid 2px white;\n}\n.vue-simple-handler--hover {\n  opacity: 1;\n}\n\n.vue-circle-stencil__preview {\n  border: solid 2px rgba(255, 255, 255, 0.8);\n}\n.vue-circle-stencil .vue-simple-line {\n  border-color: rgba(255, 255, 255, 0.3);\n}\n.vue-circle-stencil .vue-simple-handler--west-north, .vue-circle-stencil .vue-simple-handler--east-south, .vue-circle-stencil .vue-simple-handler--west-south, .vue-circle-stencil .vue-simple-handler--east-north {\n  opacity: 0.4;\n}\n.vue-circle-stencil .vue-simple-handler--hover {\n  opacity: 1;\n}";
 n(css$1,{});
 
+<<<<<<< HEAD
 var css = "\n.exceeds-the-limit {\n  color: red;\n}\n.ml-1 {\n  margin-left: 0.5rem;\n}\n#sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {\n  top: 0;\n}\n.modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.5);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 1000;\n}\n.modal {\n  background: white;\n  border-radius: 8px;\n  padding: 1rem;\n  width: 80%;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);\n  overflow-y: auto;\n  max-height: 80vh;\n  margin: 1.75rem auto;\n}\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.modal-close-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.5rem;\n  cursor: pointer;\n}\n.modal-body {\n  margin: 1rem 0;\n}\n.modal-footer {\n  text-align: right;\n}\n.sfx-media-icon {\n  width: 34px;\n  height: 34px;\n  border-radius: 25%;\n  position: relative; /* Ensure the pseudo-element is positioned relative to this container */\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.media-item-icon {\n  position: absolute !important;\n  top: 7px;\n  left: 5px;\n  opacity: 0;\n  transition: opacity 0.3s ease;\n  z-index: 9;\n}\n.sfx-media-icon::after {\n  content: ''; /* Empty content to create the pseudo-element */\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  z-index: 100;\n  height: 100%;\n  background-color: #0c3745;\n  opacity: 0; /* Start with no visibility */\n  transition: opacity 0.3s ease; /* Smooth fade in/out effect */\n  backdrop-filter: blur(5px); /* Apply blur effect */\n  z-index: 1;\n}\n.sfx-media-icon:hover .media-item-icon {\n  opacity: 1;\n}\n.sfx-media-icon:hover::after {\n  opacity: 0.85; /* Show the white blur overlay on hover */\n}\n.sfx-media-icon img {\n  width: 34px;\n  height: 34px;\n  display: block;\n  margin: 0 auto;\n  object-fit: cover;\n  border-radius: 25%;\n}\n.sfx-item .item-info {\n  margin-left: 12px;\n}\n.sfx-item .item-info a {\n  color: var(--theme--primary);\n}\n.sfx-item-inner {\n  display: flex;\n  align-items: center;\n}\n.bottom-message {\n  display: flex;\n  align-items: center;\n  justify-content: end;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.sfx-item {\n  padding: 6px;\n  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));\n  border-radius: var(--theme--border-radius);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));\n  margin-top: var(--v-list-item-margin, 4px);\n  cursor: pointer;\n  transition: border-color 500ms ease;\n}\n.sfx-item:hover {\n  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));\n}\n.sfx-media-icon .icon {\n  width: 80px;\n  height: 80px;\n  position: relative;\n}\n.btn-delete-item:hover {\n  color: var(--theme--danger);\n}\n.sfx-media-icon .icon i {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(50%, 50%);\n  font-size: 35px;\n}\n.item-icon {\n  width: 34px !important;\n  text-align: center;\n  padding: 0 var(--v-list-item-margin, 4px);\n}\n.remove-all span {\n  color: red;\n  font-size: 12px;\n  border: none;\n  background: none;\n  width: 100%;\n}\n.remove-all span:hover {\n  cursor: pointer;\n  color: rgb(185, 37, 37);\n}\n.asset-content {\n  max-height: 545px;\n  overflow-y: scroll;\n}\n.btn-drag-item {\n  margin-right: 8px;\n  cursor: move;\n  cursor: grab;\n}\n.btn-drag-item:active {\n  cursor: grabbing;\n}\n.asset-content::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n.toolbar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.container .v-card {\n  max-width: 80%;\n}\n.grid-bg{\n  margin: 0;\n  background-color: #fff; /* White background */\n  background-image:\n      linear-gradient(to right, rgba(204, 204, 204, 0.29) 1px, transparent 1px), /* Vertical lines */\n      linear-gradient(to bottom, rgba(204, 204, 204, 0.29) 1px, transparent 1px); /* Horizontal lines */\n  background-size: 5px 5px; /* Size of the grid cell */\n}\n.cropper {\n  max-height: 500px;\n  max-width: 85%;\n  background: transparent;\n  margin: 0 auto;\n}\n.btn-close-variant {\n  position: absolute;\n  top: -59px;\n  right: 6px;\n}\n\n";
+=======
+var css = "\n.exceeds-the-limit {\n  color: red;\n}\n.ml-1 {\n  margin-left: 0.5rem;\n}\n#sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {\n  top: 0;\n}\n.modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.5);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 1000;\n}\n.modal {\n  background: white;\n  border-radius: 8px;\n  padding: 1rem;\n  width: 80%;\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);\n  overflow-y: auto;\n  max-height: 80vh;\n  margin: 1.75rem auto;\n}\n.modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.modal-close-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.5rem;\n  cursor: pointer;\n}\n.modal-body {\n  margin: 1rem 0;\n}\n.modal-footer {\n  text-align: right;\n}\n.sfx-media-icon {\n  width: 34px;\n  height: 34px;\n  border-radius: 25%;\n  position: relative; /* Ensure the pseudo-element is positioned relative to this container */\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.media-item-icon {\n  position: absolute !important;\n  top: 7px;\n  left: 5px;\n  opacity: 0;\n  transition: opacity 0.3s ease;\n  z-index: 9;\n}\n.sfx-media-icon::after {\n  content: ''; /* Empty content to create the pseudo-element */\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  z-index: 100;\n  height: 100%;\n  background-color: #0c3745;\n  opacity: 0; /* Start with no visibility */\n  transition: opacity 0.3s ease; /* Smooth fade in/out effect */\n  backdrop-filter: blur(5px); /* Apply blur effect */\n  z-index: 1;\n}\n.sfx-media-icon:hover .media-item-icon {\n  opacity: 1;\n}\n.sfx-media-icon:hover::after {\n  opacity: 0.85; /* Show the white blur overlay on hover */\n}\n.sfx-media-icon img {\n  width: 34px;\n  height: 34px;\n  display: block;\n  margin: 0 auto;\n  object-fit: cover;\n  border-radius: 25%;\n}\n.sfx-item .item-info {\n  margin-left: 12px;\n}\n.sfx-item .item-info a {\n  color: var(--theme--primary);\n}\n.sfx-item-inner {\n  display: flex;\n  align-items: center;\n}\n.bottom-message {\n  display: flex;\n  align-items: center;\n  justify-content: end;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.sfx-item {\n  padding: 6px;\n  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));\n  border-radius: var(--theme--border-radius);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));\n  margin-top: var(--v-list-item-margin, 4px);\n  cursor: pointer;\n  transition: border-color 500ms ease;\n}\n.sfx-item:hover {\n  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));\n}\n.sfx-media-icon .icon {\n  width: 80px;\n  height: 80px;\n  position: relative;\n}\n.btn-delete-item:hover {\n  color: var(--theme--danger);\n}\n.sfx-media-icon .icon i {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(50%, 50%);\n  font-size: 35px;\n}\n.item-icon {\n  width: 34px !important;\n  text-align: center;\n  padding: 0 var(--v-list-item-margin, 4px);\n}\n.remove-all span {\n  color: red;\n  font-size: 12px;\n  border: none;\n  background: none;\n  width: 100%;\n}\n.remove-all span:hover {\n  cursor: pointer;\n  color: rgb(185, 37, 37);\n}\n.asset-content {\n  max-height: 545px;\n  overflow-y: scroll;\n}\n.btn-drag-item {\n  margin-right: 8px;\n  cursor: move;\n  cursor: grab;\n}\n.btn-drag-item:active {\n  cursor: grabbing;\n}\n.asset-content::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n.toolbar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-top: var(--v-list-item-margin, 4px);\n}\n.container .v-card {\n  max-width: 80%;\n}\n.toolbar-item {\n  margin-top: 10px;\n  cursor: pointer;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: var(--v-list-item-margin, 4px);\n  transition: background-color 500ms ease, text-color 500ms ease;\n  border-radius: var(--v-list-item-border-radius, var(--theme--border-radius));\n}\n.toolbar_item_active {\n  background: var(--theme--primary);\n  color: white;\n}\n.toolbar-item:hover {\n  background: var(--theme--primary);\n  color: white;\n}\n.grid-bg{\n  margin: 0;\n  background-color: #fff; /* White background */\n  background-image:\n      linear-gradient(to right, rgba(204, 204, 204, 0.29) 1px, transparent 1px), /* Vertical lines */\n      linear-gradient(to bottom, rgba(204, 204, 204, 0.29) 1px, transparent 1px); /* Horizontal lines */\n  background-size: 5px 5px; /* Size of the grid cell */\n}\n.cropper {\n  height: 600px;\n  width: 600px;\n  background: transparent;\n}\n\n";
+>>>>>>> 68a436f (update)
 n(css,{});
 
 const _sfc_main = {
@@ -30169,6 +30266,7 @@ const _sfc_main = {
   watch: {
     currentVariantConfigs: {
       handler(newConfigs, oldConfigs) {
+<<<<<<< HEAD
         const width = newConfigs.width;
         const height = newConfigs.height;
         if (this.showCrop) {
@@ -30185,6 +30283,9 @@ const _sfc_main = {
         }
         this.cropWidth = width;
         this.cropHeight = height;
+=======
+        this.updateCurrentVariantShow();
+>>>>>>> 68a436f (update)
       },
       deep: true,
     }
@@ -30208,6 +30309,18 @@ const _sfc_main = {
       this.currentVariantConfigs.tl_px = tl_px;
       this.currentVariantConfigs.br_px = br_px;
     },
+<<<<<<< HEAD
+=======
+    updateVariantConfigByCrop() {
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
+      this.currentVariantConfigs.width = coordinates.width;
+      this.currentVariantConfigs.height = coordinates.height;
+      const tl_px = `${coordinates.left},${coordinates.top}`;
+      const br_px = `${coordinates.left + coordinates.width},${coordinates.top + coordinates.height}`;
+      this.currentVariantConfigs.tl_px = tl_px;
+      this.currentVariantConfigs.br_px = br_px;
+    },
+>>>>>>> 68a436f (update)
     toggleCrop() {
       this.showCrop = !this.showCrop;
     },
@@ -30253,7 +30366,10 @@ const _sfc_main = {
   emits: ['input', 'close'],
   setup(props, {emit}) {
     const isOpen = ref(false);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 68a436f (update)
     const api = useApi();
     const loadConfigDone = ref(false);
     const isLoading = ref(true);
@@ -30272,6 +30388,7 @@ const _sfc_main = {
     const currentVariantShow = ref(null);
     const currentVariantOrigin = ref(null);
     const showCrop = ref(false);
+<<<<<<< HEAD
     const showVariantsList = ref([]);
     const currentVariantConfigs = ref({
       width: 100,
@@ -30279,6 +30396,16 @@ const _sfc_main = {
     });
     const cropWidth = ref(0);
     const cropHeight = ref(0);
+=======
+    const currentToolbar = ref("size");
+    const showVariantsList = ref([]);
+    const currentVariantConfigs = ref({
+      width: null,
+      height: null,
+      org_if_sml: false,
+      gravity: 'smart'
+    });
+>>>>>>> 68a436f (update)
 
     onMounted(() => {
       init();
@@ -30287,7 +30414,10 @@ const _sfc_main = {
     function closeVariantDialog() {
       isShowVariantDialog.value = false;
       currentVariantShow.value = null;
+<<<<<<< HEAD
       this.showCrop = false;
+=======
+>>>>>>> 68a436f (update)
     }
 
     function showVariantDialog(item, variant) {
@@ -30298,12 +30428,24 @@ const _sfc_main = {
       const url = new URL(variant.img_url);
       const width = url.searchParams.get("width");
       const height = url.searchParams.get("height");
+<<<<<<< HEAD
       currentVariantConfigs.value = {
         width: width,
         height: height,
       };
       cropWidth.value = width;
       cropHeight.value = height;
+=======
+      const gravity = url.searchParams.get("gravity");
+
+      currentVariantConfigs.value = {
+        width: width,
+        height: height,
+        gravity: gravity,
+      };
+
+      console.log(`${variant.img_url} Width: ${width}, Height: ${height}`);
+>>>>>>> 68a436f (update)
     }
 
     async function relaceVariantDialog(item, variant) {
@@ -30324,6 +30466,13 @@ const _sfc_main = {
       }
     }
 
+<<<<<<< HEAD
+=======
+    function changeToolbar(toolbar) {
+      currentToolbar.value = toolbar;
+    }
+
+>>>>>>> 68a436f (update)
     return {
       openModal,
       closeModal,
@@ -30346,13 +30495,22 @@ const _sfc_main = {
       showVariantDialog,
       isShowVariantDialog,
       currentVariantShow,
+<<<<<<< HEAD
+=======
+      currentToolbar,
+      changeToolbar,
+>>>>>>> 68a436f (update)
       currentVariantConfigs,
       showVariantsList,
       currentVariantOrigin,
       showCrop,
+<<<<<<< HEAD
       openEditModal,
       cropWidth,
       cropHeight,
+=======
+      openEditModal
+>>>>>>> 68a436f (update)
     };
 
     function log() {
@@ -30893,16 +31051,46 @@ const _hoisted_45 = {
 };
 const _hoisted_46 = { style: {"display":"flex","justify-content":"space-between","border":"1px solid lightgray","height":"500px"} };
 const _hoisted_47 = {
+<<<<<<< HEAD
   id: "variants-toolbar-config",
   style: {"width":"300px","border-right":"1px solid lightgray","padding":"10px","display":"flex","flex-direction":"column"}
 };
 const _hoisted_48 = { id: "variants-toolbar-config-size" };
 const _hoisted_49 = { style: {"margin-top":"15px"} };
 const _hoisted_50 = {
+=======
+  id: "variants-toolbar",
+  style: {"width":"50px","padding":"5px","display":"flex","align-items":"center","justify-content":"start","flex-direction":"column","border-right":"1px solid lightgray"}
+};
+const _hoisted_48 = {
+  id: "variants-toolbar-config",
+  style: {"width":"300px","border-right":"1px solid lightgray","padding":"10px","display":"flex","flex-direction":"column"}
+};
+const _hoisted_49 = {
+  key: 0,
+  id: "variants-toolbar-config-size"
+};
+const _hoisted_50 = { style: {"margin-top":"15px"} };
+const _hoisted_51 = {
+  key: 1,
+  id: "variants-toolbar-config-enlargement"
+};
+const _hoisted_52 = { style: {"display":"flex","justify-content":"start"} };
+const _hoisted_53 = {
+  key: 2,
+  id: "variants-toolbar-config-crop"
+};
+const _hoisted_54 = {
+  key: 3,
+  id: "variants-toolbar-config-addition"
+};
+const _hoisted_55 = {
+>>>>>>> 68a436f (update)
   id: "variants-toolbar-image",
   class: "grid-bg",
   style: {"width":"100%","display":"flex","justify-content":"center","align-items":"center","overflow":"hidden","max-height":"100%","position":"relative","padding":"30px"}
 };
+<<<<<<< HEAD
 const _hoisted_51 = { style: {"position":"absolute","top":"5px","right":"5px","display":"flex","justify-content":"end","align-items":"center"} };
 const _hoisted_52 = ["src"];
 const _hoisted_53 = { key: 1 };
@@ -30915,6 +31103,20 @@ const _hoisted_56 = { class: "modal" };
 const _hoisted_57 = { class: "modal-header" };
 const _hoisted_58 = { class: "modal-body" };
 const _hoisted_59 = { class: "modal-footer" };
+=======
+const _hoisted_56 = { style: {"position":"absolute","top":"5px","right":"5px","display":"flex","justify-content":"end","align-items":"center"} };
+const _hoisted_57 = ["src"];
+const _hoisted_58 = { key: 1 };
+const _hoisted_59 = {
+  key: 0,
+  class: "toolbar"
+};
+const _hoisted_60 = { key: 1 };
+const _hoisted_61 = { class: "modal" };
+const _hoisted_62 = { class: "modal-header" };
+const _hoisted_63 = { class: "modal-body" };
+const _hoisted_64 = { class: "modal-footer" };
+>>>>>>> 68a436f (update)
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_VIcon = resolveComponent("VIcon");
@@ -30927,12 +31129,20 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_VDialog = resolveComponent("VDialog");
   const _component_VCardTitle = resolveComponent("VCardTitle");
   const _component_VInput = resolveComponent("VInput");
+<<<<<<< HEAD
+=======
+  const _component_VCheckbox = resolveComponent("VCheckbox");
+>>>>>>> 68a436f (update)
   const _component_cropper = resolveComponent("cropper");
   const _component_VCardText = resolveComponent("VCardText");
   const _component_VCard = resolveComponent("VCard");
 
   return (openBlock(), createElementBlock(Fragment$1, null, [
+<<<<<<< HEAD
     _cache[28] || (_cache[28] = createElementVNode("link", {
+=======
+    _cache[36] || (_cache[36] = createElementVNode("link", {
+>>>>>>> 68a436f (update)
       rel: "stylesheet",
       type: "text/css",
       href: "https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"
@@ -31061,7 +31271,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                   outlined: true,
                                   onClick: $event => ($setup.showVariantDialog(item, variant))
                                 }, {
+<<<<<<< HEAD
                                   default: withCtx(() => _cache[10] || (_cache[10] = [
+=======
+                                  default: withCtx(() => _cache[14] || (_cache[14] = [
+>>>>>>> 68a436f (update)
                                     createTextVNode(" Edit ")
                                   ])),
                                   _: 2 /* DYNAMIC */
@@ -31071,7 +31285,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                   secondary: true,
                                   onClick: $event => ($setup.openEditModal(item, variant))
                                 }, {
+<<<<<<< HEAD
                                   default: withCtx(() => _cache[11] || (_cache[11] = [
+=======
+                                  default: withCtx(() => _cache[15] || (_cache[15] = [
+>>>>>>> 68a436f (update)
                                     createTextVNode(" Replace ")
                                   ])),
                                   _: 2 /* DYNAMIC */
@@ -31199,7 +31417,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           : createCommentVNode("v-if", true)
       ]),
       ($setup.getIsOverLimit())
+<<<<<<< HEAD
         ? (openBlock(), createElementBlock("div", _hoisted_45, _cache[12] || (_cache[12] = [
+=======
+        ? (openBlock(), createElementBlock("div", _hoisted_45, _cache[16] || (_cache[16] = [
+>>>>>>> 68a436f (update)
             createElementVNode("span", { class: "ml-1" }, "Exceeded maximum number of assets", -1 /* HOISTED */)
           ])))
         : createCommentVNode("v-if", true),
@@ -31211,13 +31433,21 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           createVNode(_component_v_card, { class: "dialog-content" }, {
             default: withCtx(() => [
               createVNode(_component_v_card_title, null, {
+<<<<<<< HEAD
                 default: withCtx(() => _cache[13] || (_cache[13] = [
+=======
+                default: withCtx(() => _cache[17] || (_cache[17] = [
+>>>>>>> 68a436f (update)
                   createTextVNode("Scaleflex DAM")
                 ])),
                 _: 1 /* STABLE */
               }),
               createVNode(_component_v_card_text, null, {
+<<<<<<< HEAD
                 default: withCtx(() => _cache[14] || (_cache[14] = [
+=======
+                default: withCtx(() => _cache[18] || (_cache[18] = [
+>>>>>>> 68a436f (update)
                   createTextVNode("Are you sure you want to delete everything? Please confirm to proceed.")
                 ])),
                 _: 1 /* STABLE */
@@ -31228,7 +31458,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     onClick: $setup.removeAllAssets,
                     warning: true
                   }, {
+<<<<<<< HEAD
                     default: withCtx(() => _cache[15] || (_cache[15] = [
+=======
+                    default: withCtx(() => _cache[19] || (_cache[19] = [
+>>>>>>> 68a436f (update)
                       createTextVNode(" Yes ")
                     ])),
                     _: 1 /* STABLE */
@@ -31237,7 +31471,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     onClick: $setup.closeDialog,
                     secondary: true
                   }, {
+<<<<<<< HEAD
                     default: withCtx(() => _cache[16] || (_cache[16] = [
+=======
+                    default: withCtx(() => _cache[20] || (_cache[20] = [
+>>>>>>> 68a436f (update)
                       createTextVNode(" No ")
                     ])),
                     _: 1 /* STABLE */
@@ -31253,7 +31491,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8 /* PROPS */, ["modelValue"]),
       createVNode(_component_VDialog, {
         modelValue: $setup.isShowVariantDialog,
+<<<<<<< HEAD
         "onUpdate:modelValue": _cache[4] || (_cache[4] = $event => (($setup.isShowVariantDialog) = $event))
+=======
+        "onUpdate:modelValue": _cache[8] || (_cache[8] = $event => (($setup.isShowVariantDialog) = $event))
+>>>>>>> 68a436f (update)
       }, {
         default: withCtx(() => [
           createVNode(_component_VCard, {
@@ -31262,11 +31504,16 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           }, {
             default: withCtx(() => [
               createVNode(_component_VCardTitle, null, {
+<<<<<<< HEAD
                 default: withCtx(() => _cache[17] || (_cache[17] = [
+=======
+                default: withCtx(() => _cache[21] || (_cache[21] = [
+>>>>>>> 68a436f (update)
                   createTextVNode(" Edit Image Variants ")
                 ])),
                 _: 1 /* STABLE */
               }),
+<<<<<<< HEAD
               createVNode(_component_VCardText, { style: {"position":"relative"} }, {
                 default: withCtx(() => [
                   createElementVNode("div", _hoisted_46, [
@@ -31318,6 +31565,123 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                               key: 1,
                               onClick: $options.updateVariantByCrop,
                               icon: true,
+=======
+              createVNode(_component_VCardText, null, {
+                default: withCtx(() => [
+                  createElementVNode("div", _hoisted_46, [
+                    createElementVNode("div", _hoisted_47, [
+                      createElementVNode("div", {
+                        onClick: _cache[1] || (_cache[1] = $event => ($setup.changeToolbar('size'))),
+                        class: normalizeClass([{ toolbar_item_active: $setup.currentToolbar === 'size'}, "toolbar-item"])
+                      }, [
+                        createVNode(_component_VIcon, {
+                          small: true,
+                          name: "width_wide"
+                        })
+                      ], 2 /* CLASS */),
+                      createElementVNode("div", {
+                        onClick: _cache[2] || (_cache[2] = $event => ($setup.changeToolbar('enlargement'))),
+                        class: normalizeClass([{ toolbar_item_active: $setup.currentToolbar === 'enlargement'}, "toolbar-item"])
+                      }, [
+                        createVNode(_component_VIcon, {
+                          small: true,
+                          name: "photo_library"
+                        })
+                      ], 2 /* CLASS */),
+                      createElementVNode("div", {
+                        onClick: _cache[3] || (_cache[3] = $event => ($setup.changeToolbar('crop'))),
+                        class: normalizeClass([{ toolbar_item_active: $setup.currentToolbar === 'crop'}, "toolbar-item"])
+                      }, [
+                        createVNode(_component_VIcon, {
+                          small: true,
+                          name: "crop"
+                        })
+                      ], 2 /* CLASS */),
+                      createElementVNode("div", {
+                        onClick: _cache[4] || (_cache[4] = $event => ($setup.changeToolbar('addition'))),
+                        class: normalizeClass([{ toolbar_item_active: $setup.currentToolbar === 'addition'}, "toolbar-item"])
+                      }, [
+                        createVNode(_component_VIcon, {
+                          small: true,
+                          name: "flip"
+                        })
+                      ], 2 /* CLASS */)
+                    ]),
+                    createElementVNode("div", _hoisted_48, [
+                      ($setup.currentToolbar === 'size')
+                        ? (openBlock(), createElementBlock("div", _hoisted_49, [
+                            _cache[24] || (_cache[24] = createElementVNode("div", { style: {"margin-bottom":"15px"} }, [
+                              createElementVNode("span", { style: {"font-size":"16px"} }, "Size"),
+                              createElementVNode("p", { style: {"font-size":"12px","text-align":"justify","hyphens":"auto"} }, "Change width and height of the image")
+                            ], -1 /* HOISTED */)),
+                            createElementVNode("div", null, [
+                              _cache[22] || (_cache[22] = createElementVNode("span", null, "Width", -1 /* HOISTED */)),
+                              createVNode(_component_VInput, {
+                                small: true,
+                                modelValue: $setup.currentVariantConfigs['width'],
+                                "onUpdate:modelValue": _cache[5] || (_cache[5] = $event => (($setup.currentVariantConfigs['width']) = $event))
+                              }, null, 8 /* PROPS */, ["modelValue"])
+                            ]),
+                            createElementVNode("div", _hoisted_50, [
+                              _cache[23] || (_cache[23] = createElementVNode("span", null, "Height", -1 /* HOISTED */)),
+                              createVNode(_component_VInput, {
+                                small: true,
+                                modelValue: $setup.currentVariantConfigs['height'],
+                                "onUpdate:modelValue": _cache[6] || (_cache[6] = $event => (($setup.currentVariantConfigs['height']) = $event))
+                              }, null, 8 /* PROPS */, ["modelValue"])
+                            ])
+                          ]))
+                        : createCommentVNode("v-if", true),
+                      ($setup.currentToolbar === 'enlargement')
+                        ? (openBlock(), createElementBlock("div", _hoisted_51, [
+                            _cache[26] || (_cache[26] = createElementVNode("div", { style: {"margin-bottom":"15px"} }, [
+                              createElementVNode("span", { style: {"font-size":"16px"} }, "Enlargement"),
+                              createElementVNode("p", { style: {"font-size":"12px","text-align":"justify","hyphens":"auto"} }, "When resizing with width or height operation, Scaleflex Dam either reduces or increases the dimensions of the image to keep proportions.")
+                            ], -1 /* HOISTED */)),
+                            createElementVNode("div", _hoisted_52, [
+                              createVNode(_component_VCheckbox, {
+                                small: true,
+                                modelValue: $setup.currentVariantConfigs['org_if_sml'],
+                                "onUpdate:modelValue": _cache[7] || (_cache[7] = $event => (($setup.currentVariantConfigs['org_if_sml']) = $event))
+                              }, null, 8 /* PROPS */, ["modelValue"]),
+                              _cache[25] || (_cache[25] = createElementVNode("span", null, "No enlargement", -1 /* HOISTED */))
+                            ])
+                          ]))
+                        : createCommentVNode("v-if", true),
+                      ($setup.currentToolbar === 'crop')
+                        ? (openBlock(), createElementBlock("div", _hoisted_53, _cache[27] || (_cache[27] = [
+                            createElementVNode("div", { style: {"margin-bottom":"15px"} }, [
+                              createElementVNode("span", { style: {"font-size":"16px"} }, "Crop image"),
+                              createElementVNode("p", { style: {"font-size":"12px","text-align":"justify","hyphens":"auto"} }, "Resize and crop to achieve the desired width and heigh")
+                            ], -1 /* HOISTED */),
+                            createElementVNode("div", { style: {"display":"flex","justify-content":"start"} }, null, -1 /* HOISTED */)
+                          ])))
+                        : createCommentVNode("v-if", true),
+                      ($setup.currentToolbar === 'addition')
+                        ? (openBlock(), createElementBlock("div", _hoisted_54, " Addition "))
+                        : createCommentVNode("v-if", true)
+                    ]),
+                    createElementVNode("div", _hoisted_55, [
+                      createElementVNode("div", _hoisted_56, [
+                        createVNode(_component_VButton, {
+                          onClick: $options.toggleCrop,
+                          icon: true,
+                          xSmall: true,
+                          secondary: true
+                        }, {
+                          default: withCtx(() => [
+                            createVNode(_component_VIcon, {
+                              name: "crop",
+                              xSmall: true
+                            })
+                          ]),
+                          _: 1 /* STABLE */
+                        }, 8 /* PROPS */, ["onClick"]),
+                        ($setup.showCrop)
+                          ? (openBlock(), createBlock(_component_VButton, {
+                              key: 0,
+                              onClick: $options.updateVariantByCrop,
+>>>>>>> 68a436f (update)
                               xSmall: true,
                               style: {"margin-left":"8px"}
                             }, {
@@ -31325,7 +31689,12 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                 createVNode(_component_VIcon, {
                                   name: "save",
                                   xSmall: true
+<<<<<<< HEAD
                                 })
+=======
+                                }),
+                                _cache[28] || (_cache[28] = createElementVNode("span", null, "Update", -1 /* HOISTED */))
+>>>>>>> 68a436f (update)
                               ]),
                               _: 1 /* STABLE */
                             }, 8 /* PROPS */, ["onClick"]))
@@ -31336,6 +31705,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                             key: 0,
                             style: {"height":"80%","width":"auto"},
                             src: $setup.currentVariantShow
+<<<<<<< HEAD
                           }, null, 8 /* PROPS */, _hoisted_52))
                         : createCommentVNode("v-if", true),
                       ($setup.showCrop)
@@ -31361,6 +31731,21 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     onClick: _cache[3] || (_cache[3] = (...args) => ($setup.closeVariantDialog && $setup.closeVariantDialog(...args)))
                   }, [
                     createVNode(_component_VIcon, { name: "close" })
+=======
+                          }, null, 8 /* PROPS */, _hoisted_57))
+                        : createCommentVNode("v-if", true),
+                      ($setup.showCrop)
+                        ? (openBlock(), createElementBlock("div", _hoisted_58, [
+                            createVNode(_component_cropper, {
+                              onChange: $options.updateVariantConfigByCrop,
+                              class: "cropper",
+                              ref: "cropper",
+                              src: $setup.currentVariantOrigin
+                            }, null, 8 /* PROPS */, ["onChange", "src"])
+                          ]))
+                        : createCommentVNode("v-if", true)
+                    ])
+>>>>>>> 68a436f (update)
                   ])
                 ]),
                 _: 1 /* STABLE */
@@ -31373,14 +31758,22 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8 /* PROPS */, ["modelValue"])
     ]),
     ($setup.isTokenAndSecExists)
+<<<<<<< HEAD
       ? (openBlock(), createElementBlock("div", _hoisted_54, [
+=======
+      ? (openBlock(), createElementBlock("div", _hoisted_59, [
+>>>>>>> 68a436f (update)
           createVNode(_component_VButton, {
             onClick: $setup.openModal,
             disabled: $setup.addAssetsDisabled()
           }, {
             default: withCtx(() => [
               createVNode(_component_VIcon, { name: "image" }),
+<<<<<<< HEAD
               _cache[21] || (_cache[21] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Browse assets", -1 /* HOISTED */))
+=======
+              _cache[29] || (_cache[29] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Browse assets", -1 /* HOISTED */))
+>>>>>>> 68a436f (update)
             ]),
             _: 1 /* STABLE */
           }, 8 /* PROPS */, ["onClick", "disabled"]),
@@ -31389,13 +31782,21 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
               ? (openBlock(), createBlock(_component_VButton, {
                   key: 0,
                   type: "button",
+<<<<<<< HEAD
                   onClick: _cache[5] || (_cache[5] = $event => ($setup.refreshAssets())),
+=======
+                  onClick: _cache[9] || (_cache[9] = $event => ($setup.refreshAssets())),
+>>>>>>> 68a436f (update)
                   loading: $setup.getIsLoading(),
                   outlined: true
                 }, {
                   default: withCtx(() => [
                     createVNode(_component_VIcon, { name: "refresh" }),
+<<<<<<< HEAD
                     _cache[22] || (_cache[22] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Refresh", -1 /* HOISTED */))
+=======
+                    _cache[30] || (_cache[30] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Refresh", -1 /* HOISTED */))
+>>>>>>> 68a436f (update)
                   ]),
                   _: 1 /* STABLE */
                 }, 8 /* PROPS */, ["loading"]))
@@ -31405,30 +31806,47 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                   key: 1,
                   style: {"margin-left":"5px"},
                   type: "button",
+<<<<<<< HEAD
                   onClick: _cache[6] || (_cache[6] = $event => ($setup.clickRemoveAllAssets())),
+=======
+                  onClick: _cache[10] || (_cache[10] = $event => ($setup.clickRemoveAllAssets())),
+>>>>>>> 68a436f (update)
                   danger: true
                 }, {
                   default: withCtx(() => [
                     createVNode(_component_VIcon, { name: "delete" }),
+<<<<<<< HEAD
                     _cache[23] || (_cache[23] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Remove all", -1 /* HOISTED */))
+=======
+                    _cache[31] || (_cache[31] = createElementVNode("span", { style: {"margin-left":"5px"} }, "Remove all", -1 /* HOISTED */))
+>>>>>>> 68a436f (update)
                   ]),
                   _: 1 /* STABLE */
                 }))
               : createCommentVNode("v-if", true)
           ])
         ]))
+<<<<<<< HEAD
       : (openBlock(), createElementBlock("div", _hoisted_55, [
+=======
+      : (openBlock(), createElementBlock("div", _hoisted_60, [
+>>>>>>> 68a436f (update)
           createVNode(_component_VCard, { style: {"max-width":"100%","margin-top":"20px"} }, {
             default: withCtx(() => [
               createVNode(_component_VCardTitle, { style: {"color":"tomato","display":"flex","align-items":"center"} }, {
                 default: withCtx(() => [
                   createVNode(_component_VIcon, { name: "report" }),
+<<<<<<< HEAD
                   _cache[24] || (_cache[24] = createElementVNode("span", { style: {"font-size":"14px","margin-left":"5px"} }, "Scaleflex DAM Notice", -1 /* HOISTED */))
+=======
+                  _cache[32] || (_cache[32] = createElementVNode("span", { style: {"font-size":"14px","margin-left":"5px"} }, "Scaleflex DAM Notice", -1 /* HOISTED */))
+>>>>>>> 68a436f (update)
                 ]),
                 _: 1 /* STABLE */
               }),
               createVNode(_component_VCardText, { style: {"max-width":"100%","padding-bottom":"25px"} }, {
                 default: withCtx(() => [
+<<<<<<< HEAD
                   _cache[25] || (_cache[25] = createTextVNode(" Please visit the ")),
                   createElementVNode("span", {
                     style: {"text-decoration":"underline","color":"dodgerblue","cursor":"pointer"},
@@ -31436,6 +31854,15 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     target: "_blank"
                   }, "Scaleflex DAM Configuration"),
                   _cache[26] || (_cache[26] = createTextVNode(" to add your Token and Template ID before browsing assets. "))
+=======
+                  _cache[33] || (_cache[33] = createTextVNode(" Please visit the ")),
+                  createElementVNode("span", {
+                    style: {"text-decoration":"underline","color":"dodgerblue","cursor":"pointer"},
+                    onClick: _cache[11] || (_cache[11] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args))),
+                    target: "_blank"
+                  }, "Scaleflex DAM Configuration"),
+                  _cache[34] || (_cache[34] = createTextVNode(" to add your Token and Template ID before browsing assets. "))
+>>>>>>> 68a436f (update)
                 ]),
                 _: 1 /* STABLE */
               })
@@ -31448,6 +31875,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       class: "modal-overlay",
       id: "sfx-modal"
     }, [
+<<<<<<< HEAD
       createElementVNode("div", _hoisted_56, [
         createElementVNode("div", _hoisted_57, [
           createElementVNode("h3", null, toDisplayString($props.title), 1 /* TEXT */),
@@ -31464,6 +31892,24 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         createElementVNode("div", _hoisted_59, [
           createElementVNode("button", {
             onClick: _cache[9] || (_cache[9] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+=======
+      createElementVNode("div", _hoisted_61, [
+        createElementVNode("div", _hoisted_62, [
+          createElementVNode("h3", null, toDisplayString($props.title), 1 /* TEXT */),
+          createElementVNode("button", {
+            onClick: _cache[12] || (_cache[12] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+            class: "modal-close-btn"
+          }, "×")
+        ]),
+        createElementVNode("div", _hoisted_63, [
+          renderSlot(_ctx.$slots, "default", {}, () => [
+            _cache[35] || (_cache[35] = createElementVNode("div", { id: "sfx-dam-widget" }, null, -1 /* HOISTED */))
+          ])
+        ]),
+        createElementVNode("div", _hoisted_64, [
+          createElementVNode("button", {
+            onClick: _cache[13] || (_cache[13] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+>>>>>>> 68a436f (update)
             class: "btn"
           }, "Close")
         ])

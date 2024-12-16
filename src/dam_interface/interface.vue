@@ -410,7 +410,6 @@ export default {
   emits: ['input', 'close'],
   setup(props, {emit}) {
     const isOpen = ref(false);
-
     const api = useApi();
     const loadConfigDone = ref(false);
     const isLoading = ref(true);

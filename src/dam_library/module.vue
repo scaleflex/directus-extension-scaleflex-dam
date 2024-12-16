@@ -3,7 +3,7 @@
     <template #navigation>
       <div style="margin-top: 20px; padding: 0 10px">
         <div style="display: flex; flex-direction: column; align-content: center">
-          <div @click="toDamSetting" class="external-link">
+          <div v-if="isAdministrator" @click="toDamSetting" class="external-link">
             <VIcon name="settings" style="color: var(--theme--primary)" />
             <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex DAM</span>
           </div>
@@ -41,6 +41,7 @@
 <script>
 import {ref, onMounted} from "vue";
 import {useApi} from "@directus/extensions-sdk";
+import { createDirectus, rest, readMe } from '@directus/sdk';
 
 export default {
   props: {
@@ -62,6 +63,7 @@ export default {
     const limitType = ref([]);
     const endpoint = ref('');
     const isTokenAndSecExists = ref(false);
+    const isAdministrator = ref(false);
 
     onMounted(() => {
       init().then(function () {
@@ -85,7 +87,8 @@ export default {
     return {
       getIsLoading,
       toDamSetting,
-      isTokenAndSecExists
+      isTokenAndSecExists,
+      isAdministrator
     };
 
     function getIsLoading() {
@@ -97,6 +100,17 @@ export default {
         isLoading.value = false;
         loadConfigDone.value = true;
       })
+
+      const client = createDirectus('http://localhost:8055').with(rest());
+      const result = await client.request(readMe({
+		    fields: ['role.policies.policy.admin_access'],
+	    }));
+
+      if (result?.role?.policies) {
+        const policies =  result?.role?.policies
+        const hasAdminAccess = policies.some(item => item.policy.admin_access);
+        isAdministrator.value = hasAdminAccess
+      }
     }
 
     async function loadData() {

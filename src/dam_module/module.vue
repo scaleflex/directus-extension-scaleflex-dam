@@ -3,7 +3,7 @@
     <template #navigation>
       <div style="margin-top: 20px; padding: 0 10px">
           <div style="display: flex; flex-direction: column; align-content: center">
-            <div style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 8px; border-radius: 4px; align-items: center;">
+            <div v-if="isAdministrator" style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 8px; border-radius: 4px; align-items: center;">
               <VIcon name="settings" style="color: var(--theme--primary)"/>
               <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex DAM</span>
             </div>
@@ -164,8 +164,9 @@
 </template>
 
 <script>
-import {ref} from 'vue';
+import {ref, onMounted} from 'vue';
 import {useApi, useStores} from '@directus/extensions-sdk';
+import { createDirectus, rest, readMe } from '@directus/sdk';
 
 export default {
   props: {
@@ -191,7 +192,25 @@ export default {
     const dialogTitle = ref(null);
     const dialogText = ref(null);
     const dialogReset = ref(false);
+    const isAdministrator = ref(false);
 
+    onMounted(() => {
+      init();
+    });
+
+    async function init() {
+      const client = createDirectus('http://localhost:8055').with(rest());
+      const result = await client.request(readMe({
+		    fields: ['role.policies.policy.admin_access'],
+	    }));
+
+      if (result?.role?.policies) {
+        const policies =  result?.role?.policies
+        const hasAdminAccess = policies.some(item => item.policy.admin_access);
+        isAdministrator.value = hasAdminAccess
+        if (!hasAdminAccess) toDam()
+      }
+    }
 
     async function ensureCollectionExists() {
       loading.value = true;
@@ -446,7 +465,8 @@ export default {
       confirmResetAllSettings,
       dialogReset,
       resetAllSettings,
-      toDam
+      toDam,
+      isAdministrator
     };
   },
 };
