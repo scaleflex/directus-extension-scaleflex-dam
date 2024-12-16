@@ -174,39 +174,11 @@
         <VCardTitle>
           Edit Image Variants
         </VCardTitle>
-        <VCardText>
+        <VCardText style="position: relative">
           <div style="display: flex; justify-content: space-between; border: 1px solid lightgray; height: 500px">
-            <div id="variants-toolbar"
-                 style="width: 50px; padding: 5px; display: flex; align-items: center; justify-content: start; flex-direction: column; border-right: 1px solid lightgray;">
-              <div
-                  @click="changeToolbar('size')"
-                  :class="{ toolbar_item_active: currentToolbar === 'size'}"
-                  class="toolbar-item">
-                <VIcon :small="true" name="width_wide"/>
-              </div>
-              <div
-                  @click="changeToolbar('enlargement')"
-                  :class="{ toolbar_item_active: currentToolbar === 'enlargement'}"
-                  class="toolbar-item">
-                <VIcon :small="true" name="photo_library"/>
-              </div>
-              <div
-                  @click="changeToolbar('crop')"
-                  :class="{ toolbar_item_active: currentToolbar === 'crop'}"
-                  class="toolbar-item">
-                <VIcon :small="true" name="crop"/>
-              </div>
-              <div
-                  @click="changeToolbar('addition')"
-                  :class="{ toolbar_item_active: currentToolbar === 'addition'}"
-                  class="toolbar-item">
-                <VIcon :small="true" name="flip"/>
-              </div>
-            </div>
-
             <div id="variants-toolbar-config"
                  style="width: 300px; border-right: 1px solid lightgray; padding: 10px; display: flex; flex-direction: column;">
-              <div id="variants-toolbar-config-size" v-if="currentToolbar === 'size'">
+              <div id="variants-toolbar-config-size">
                 <div style="margin-bottom: 15px">
                   <span style="font-size: 16px;">Size</span>
                   <p style="font-size: 12px; text-align: justify;  hyphens: auto;">Change width and height of the image</p>
@@ -220,50 +192,36 @@
                   <VInput :small="true" v-model="currentVariantConfigs['height']"/>
                 </div>
               </div>
-              <div id="variants-toolbar-config-enlargement" v-if="currentToolbar === 'enlargement'">
-                <div style="margin-bottom: 15px">
-                  <span style="font-size: 16px;">Enlargement</span>
-                  <p style="font-size: 12px; text-align: justify; hyphens: auto;">When resizing with width or height operation,
-                    Scaleflex Dam either reduces or increases the dimensions of the image to keep proportions.</p>
-                </div>
-                <div style="display: flex; justify-content: start;">
-                  <VCheckbox :small="true" v-model="currentVariantConfigs['org_if_sml']"/>
-                  <span>No enlargement</span>
-                </div>
-              </div>
-              <div id="variants-toolbar-config-crop" v-if="currentToolbar === 'crop'">
-                <div style="margin-bottom: 15px">
-                  <span style="font-size: 16px;">Crop image</span>
-                  <p style="font-size: 12px; text-align: justify; hyphens: auto;">Resize and crop to achieve the desired width and heigh</p>
-                </div>
-                <div style="display: flex; justify-content: start;">
-                </div>
-              </div>
-              <div id="variants-toolbar-config-addition" v-if="currentToolbar === 'addition'">
-                Addition
-              </div>
             </div>
             <div id="variants-toolbar-image" class="grid-bg"
                  style="width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; max-height: 100%; position: relative; padding: 30px">
               <div style="position: absolute; top: 5px; right: 5px; display: flex; justify-content: end; align-items: center;">
-                <VButton @click="toggleCrop" :icon="true" :xSmall="true" :secondary="true">
+                <VButton  v-if="!showCrop" @click="toggleCrop" :icon="true" :xSmall="true" :secondary="true">
                   <VIcon name="crop" :xSmall="true" />
                 </VButton>
-                <VButton v-if="showCrop" @click="updateVariantByCrop":xSmall="true" style="margin-left: 8px">
+                <VButton v-if="showCrop" @click="updateVariantByCrop" :icon="true" :xSmall="true" style="margin-left: 8px">
                   <VIcon name="save" :xSmall="true" />
-                  <span>Update</span>
                 </VButton>
               </div>
               <img v-if="!showCrop" style="height: 80%; width: auto" :src="currentVariantShow"/>
               <div v-if="showCrop">
                 <cropper
-                    @change="updateVariantConfigByCrop"
                     class="cropper"
                     ref="cropper"
                     :src="currentVariantOrigin"
+                    :default-size="{
+                      width: cropWidth,
+                      height: cropHeight
+                    }"
+                    :stencil-props="{
+                      resizable: false,
+                    }"
                 />
               </div>
             </div>
+          </div>
+          <div class="btn-close-variant" @click="closeVariantDialog">
+            <VIcon name="close"/>
           </div>
         </VCardText>
       </VCard>
@@ -368,7 +326,22 @@ export default {
   watch: {
     currentVariantConfigs: {
       handler(newConfigs, oldConfigs) {
-        this.updateCurrentVariantShow();
+        const width = newConfigs.width;
+        const height = newConfigs.height;
+        if (this.showCrop) {
+          this.$refs.cropper.setCoordinates(({ coordinates, imageSize }) => {
+            return {
+              width,
+              height,
+              left: imageSize.width/2 - width/2,
+              top: imageSize.height/2 - height/2
+            }
+          });
+        } else {
+          this.updateCurrentVariantShow();
+        }
+        this.cropWidth = width;
+        this.cropHeight = height;
       },
       deep: true,
     }
@@ -385,15 +358,6 @@ export default {
     updateVariantByCrop() {
       const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.showCrop = false;
-      this.currentVariantConfigs.width = coordinates.width;
-      this.currentVariantConfigs.height = coordinates.height;
-      const tl_px = `${coordinates.left},${coordinates.top}`;
-      const br_px = `${coordinates.left + coordinates.width},${coordinates.top + coordinates.height}`;
-      this.currentVariantConfigs.tl_px = tl_px;
-      this.currentVariantConfigs.br_px = br_px;
-    },
-    updateVariantConfigByCrop() {
-      const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.currentVariantConfigs.width = coordinates.width;
       this.currentVariantConfigs.height = coordinates.height;
       const tl_px = `${coordinates.left},${coordinates.top}`;
@@ -465,14 +429,13 @@ export default {
     const currentVariantShow = ref(null);
     const currentVariantOrigin = ref(null);
     const showCrop = ref(false);
-    const currentToolbar = ref("size");
     const showVariantsList = ref([]);
     const currentVariantConfigs = ref({
-      width: null,
-      height: null,
-      org_if_sml: false,
-      gravity: 'smart'
+      width: 100,
+      height: 100,
     });
+    const cropWidth = ref(0);
+    const cropHeight = ref(0);
 
     onMounted(() => {
       init();
@@ -481,6 +444,7 @@ export default {
     function closeVariantDialog() {
       isShowVariantDialog.value = false
       currentVariantShow.value = null
+      this.showCrop = false;
     }
 
     function showVariantDialog(item, variant) {
@@ -491,15 +455,12 @@ export default {
       const url = new URL(variant.img_url);
       const width = url.searchParams.get("width");
       const height = url.searchParams.get("height");
-      const gravity = url.searchParams.get("gravity");
-
       currentVariantConfigs.value = {
         width: width,
         height: height,
-        gravity: gravity,
       };
-
-      console.log(`${variant.img_url} Width: ${width}, Height: ${height}`);
+      cropWidth.value = width;
+      cropHeight.value = height;
     }
 
     async function relaceVariantDialog(item, variant) {
@@ -518,10 +479,6 @@ export default {
       if (damButton) {
         damButton.click();
       }
-    }
-
-    function changeToolbar(toolbar) {
-      currentToolbar.value = toolbar;
     }
 
     return {
@@ -546,13 +503,13 @@ export default {
       showVariantDialog,
       isShowVariantDialog,
       currentVariantShow,
-      currentToolbar,
-      changeToolbar,
       currentVariantConfigs,
       showVariantsList,
       currentVariantOrigin,
       showCrop,
-      openEditModal
+      openEditModal,
+      cropWidth,
+      cropHeight,
     };
 
     function log() {
@@ -1241,27 +1198,6 @@ export default {
   max-width: 80%;
 }
 
-.toolbar-item {
-  margin-top: 10px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: var(--v-list-item-margin, 4px);
-  transition: background-color 500ms ease, text-color 500ms ease;
-  border-radius: var(--v-list-item-border-radius, var(--theme--border-radius));
-}
-
-.toolbar_item_active {
-  background: var(--theme--primary);
-  color: white;
-}
-
-.toolbar-item:hover {
-  background: var(--theme--primary);
-  color: white;
-}
-
 .grid-bg{
   margin: 0;
   background-color: #fff; /* White background */
@@ -1272,9 +1208,16 @@ export default {
 }
 
 .cropper {
-  height: 600px;
-  width: 600px;
+  max-height: 500px;
+  max-width: 85%;
   background: transparent;
+  margin: 0 auto;
+}
+
+.btn-close-variant {
+  position: absolute;
+  top: -59px;
+  right: 6px;
 }
 
 </style>
