@@ -7,7 +7,7 @@
         :init="{
           plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
           toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
-           'outdent indent link removeformat blockquote fullscreen code | sfxDAM',
+           'outdent indent link removeformat blockquote fullscreen code sfxDAM',
           setup: (editor) => {
             editor.on('init', () => {
               editor.setContent(value);
@@ -23,6 +23,18 @@
             editor.on('input', () => {
               const content = editor.getContent();
               emit('input', content);
+            });
+
+            editor.on('ObjectResized', function(e) {
+              if (e.target.nodeName === 'IMG') {
+                let selectedImage = editor.selection.getNode();
+
+                const currentURL = selectedImage.getAttribute('src');
+                const newURL = updateUrlParams(currentURL, {w: e.width, h: e.height});
+                // Set new image URL
+                selectedImage.setAttribute('src', newURL);
+                selectedImage.setAttribute('data-mce-src', newURL);
+              }
             });
           }
         }"
@@ -161,7 +173,6 @@ export default {
       return type.startsWith("audio");
     }
 
-
     function renderWidget(frConfig, editor_id) {
       if (!window.Filerobot) {
         return;
@@ -210,7 +221,6 @@ export default {
           })
           .use(XHRUpload)
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
-            console.dir(files);
             const htmlRender = renderHTMLFromJSON(files);
             tinymce.get(editor_id).insertContent(htmlRender)
             closeModal();
@@ -238,10 +248,10 @@ export default {
         const file = item.file;
         const type = file.type;
         const title = file.meta?.title?.en || "No Title";
-        const cdnLink = file.url?.cdn || "";
+        let cdnLink = file.url?.cdn || "";
 
         if (file.url?.download !== undefined) {
-          cdnLink.value = file.url?.download;
+          cdnLink = file.url?.download;
         }
 
         // Create HTML content based on the file type
@@ -263,10 +273,28 @@ export default {
       return result;
     }
 
+    function updateUrlParams(url, params) {
+      // Create URL Object
+      const urlObj = new URL(url);
+
+      // Loop all parameters
+      for (const [key, value] of Object.entries(params)) {
+        if (value === null || value === undefined) {
+          // Remove param if value is null or undefined
+          urlObj.searchParams.delete(key);
+        } else {
+          // Update/Add parameter
+          urlObj.searchParams.set(key, value);
+        }
+      }
+      return urlObj.toString();
+    }
+
     return {
       closeModal,
       openModal,
       emit,
+      updateUrlParams
     }
   },
   beforeDestroy() {
