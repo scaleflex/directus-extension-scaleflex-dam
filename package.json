@@ -76,6 +76,7 @@
 		"@tiptap/pm": "^2.10.3",
 		"@tiptap/starter-kit": "^2.10.3",
 		"@tiptap/vue-3": "^2.10.3",
+		"lodash": "^4.17.21",
 		"vue-advanced-cropper": "^2.8.9",
 		"vue-plugin-load-script": "^2.1.1"
 	}

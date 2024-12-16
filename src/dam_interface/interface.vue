@@ -185,11 +185,11 @@
                 </div>
                 <div>
                   <span>Width</span>
-                  <VInput :small="true" v-model="currentVariantConfigs['width']"/>
+                  <VInput :small="true" v-model="currentVariantConfigs['width']" />
                 </div>
                 <div style="margin-top: 15px">
                   <span>Height</span>
-                  <VInput :small="true" v-model="currentVariantConfigs['height']"/>
+                  <VInput :small="true" v-model="currentVariantConfigs['height']" />
                 </div>
               </div>
             </div>
@@ -312,6 +312,7 @@ import {ref, onMounted, toRaw, isProxy} from "vue";
 import {useApi} from "@directus/extensions-sdk";
 import {VueDraggableNext} from "vue-draggable-next";
 import { Cropper } from 'vue-advanced-cropper'
+import { debounce } from "lodash";
 import 'vue-advanced-cropper/dist/style.css';
 import 'vue-advanced-cropper/dist/theme.compact.css';
 
@@ -339,7 +340,7 @@ export default {
   },
   watch: {
     currentVariantConfigs: {
-      handler(newConfigs, oldConfigs) {
+      handler: debounce( function (newConfigs, oldConfigs) {
         const width = newConfigs.width;
         const height = newConfigs.height;
         if (this.showCrop) {
@@ -356,7 +357,7 @@ export default {
         }
         this.cropWidth = width;
         this.cropHeight = height;
-      },
+      }, 500),
       deep: true,
     }
   },
