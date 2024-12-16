@@ -2,16 +2,32 @@
   <div v-if="editor" class="container">
     <link rel="stylesheet" type="text/css"
           href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
-    <div class="control-group" style="padding: 20px 0">
-      <div class="button-group">
-        <VButton
-            @click="openModal"
-        >
-          <VIcon name="image"/>
-          <span style="margin-left: 5px">Browse assets</span>
-        </VButton>
+    <div v-if="isTokenAndSecExists" class="toolbar">
+      <div class="control-group" style="padding: 20px 0">
+        <div class="button-group">
+          <VButton
+              @click="openModal"
+          >
+            <VIcon name="image"/>
+            <span style="margin-left: 5px">Browse assets</span>
+          </VButton>
+        </div>
       </div>
     </div>
+    <div v-else>
+      <VCard style="max-width: 100%; margin: 20px 0">
+        <VCardTitle style="color: tomato; display: flex; align-items: center;">
+          <VIcon name="report"/>
+          <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
+        </VCardTitle>
+        <VCardText style="max-width: 100%; padding-bottom: 25px">
+          Please visit the <span style="text-decoration: underline; color: dodgerblue; cursor: pointer"
+                                 @click="toDamSetting">Scaleflex DAM Configuration</span>
+          to add your Token and Template ID before browsing assets.
+        </VCardText>
+      </VCard>
+    </div>
+
     <editor-content :editor="editor" />
   </div>
 
@@ -55,11 +71,6 @@ export default {
     attributes: {type: String, default: null},
     config: {type: Object, default: null},
   },
-  methods: {
-    addImage(url) {
-      this.editor.chain().focus().setImage({ src: url }).run()
-    },
-  },
   emits: ['input', 'close'],
   setup(props, {emit}) {
     const editor = ref(null);
@@ -74,7 +85,6 @@ export default {
     const limit = ref(null);
     const attributes = ref([]);
     const limitType = ref([]);
-    const endpoint = ref('');
     const isTokenAndSecExists = ref(false);
 
     onMounted(() => {
@@ -85,12 +95,13 @@ export default {
             inline: true,
           }),
         ],
-        content: props.value || '<p>Default content</p>',
+        content: props.value || '',
         onUpdate({ editor }) {
           emit('input', editor.getHTML());
         },
       });
 
+      //Get Scaleflex DAM token, sec
       init();
     });
 
@@ -98,7 +109,7 @@ export default {
         () => props.value,
         (newValue) => {
           if (editor.value && editor.value.getHTML() !== newValue) {
-            editor.value.commands.setContent(newValue || '<p>Default content</p>');
+            editor.value.commands.setContent(newValue || '');
           }
         }
     );
@@ -143,7 +154,6 @@ export default {
 
         if (!data) throw new Error('Data not found');
         if (data.token && data.sec) {
-          endpoint.value = `https://api.filerobot.com/${data.token}/v5`;
           token.value = data.token || '';
           sec.value = data.sec || '';
           directory.value = data.directory || '';
@@ -162,7 +172,7 @@ export default {
           attributes.value = data.attributes ? data.attributes.split(",") : [];
         }
       } catch (error) {
-
+          console.error(error);
       }
     }
 
@@ -216,11 +226,15 @@ export default {
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
             files.forEach(item => {
               if (item.file?.url.download !== undefined) {
+                //check Variation option is use
                 editor.value.chain().focus().setImage({ src: item.file?.url.download }).run();
               } else {
+                //default
                 editor.value.chain().focus().setImage({ src: item.file?.url.cdn }).run();
               }
             });
+
+            // set new content
             emit('input', editor.value.getHTML());
             closeModal();
           })
@@ -238,11 +252,20 @@ export default {
           });
     }
 
+    function toDamSetting() {
+      const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
+      if (damButton) {
+        damButton.click();
+      }
+    }
+
     return {
       editor,
       openModal,
       closeModal,
-      isOpen
+      isOpen,
+      isTokenAndSecExists,
+      toDamSetting
     };
   },
 };
