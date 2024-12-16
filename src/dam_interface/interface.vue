@@ -224,6 +224,20 @@
             <VIcon name="close"/>
           </div>
         </VCardText>
+        <v-card-actions>
+          <VButton
+              @click="saveVariant"
+              :warning="true"
+          >
+            Save
+          </VButton>
+          <VButton
+              @click="closeVariantDialog"
+              :secondary="true"
+          >
+            Cancel
+          </VButton>
+        </v-card-actions>
       </VCard>
     </VDialog>
   </div>
@@ -338,7 +352,7 @@ export default {
             }
           });
         } else {
-          this.updateCurrentVariantShow();
+          //this.updateCurrentVariantShow();
         }
         this.cropWidth = width;
         this.cropHeight = height;
@@ -426,6 +440,8 @@ export default {
     const configVariantsExist = ref(false);
     const isShowVariantDialog = ref(false);
     const currentVariantShow = ref(null);
+    const currentItemVariantShow = ref(null);
+    const currentConfigVariantShow = ref(null);
     const currentVariantOrigin = ref(null);
     const showCrop = ref(false);
     const showVariantsList = ref([]);
@@ -443,14 +459,19 @@ export default {
     function closeVariantDialog() {
       isShowVariantDialog.value = false
       currentVariantShow.value = null
-      this.showCrop = false;
+      showCrop.value = false;
+    }
+
+    function removeAllQuery(url) {
+      return url.split('?')[0]; // Split the URL at '?' and return the part before it
     }
 
     function showVariantDialog(item, variant) {
       isShowVariantDialog.value = true;
       currentVariantShow.value = variant.img_url;
-      currentVariantOrigin.value = item.cdn;
-
+      currentItemVariantShow.value = item;
+      currentConfigVariantShow.value = variant;
+      currentVariantOrigin.value = removeAllQuery(variant.img_url);
       const url = new URL(variant.img_url);
       const width = url.searchParams.get("width");
       const height = url.searchParams.get("height");
@@ -509,6 +530,7 @@ export default {
       openEditModal,
       cropWidth,
       cropHeight,
+      saveVariant
     };
 
     function log() {
@@ -824,6 +846,49 @@ export default {
 
     function getTotalAssets() {
       return props.value ? props.value.length : 0;
+    }
+
+    function removeQueryMark(url) {
+      // Remove trailing '?' if there are no query parameters after it
+      return url.replace(/\?$/, '');
+    }
+
+    function checkAndRemoveQueryMark(url) {
+      // Check if the URL contains query parameters
+      if (url.includes('?') && url.split('?')[1].length === 0) {
+        // If only '?' is present, remove it
+        return removeQueryMark(url);
+      }
+      // Otherwise, return the URL as is
+      return url;
+    }
+
+    
+    function genQueryParameters(url, params) {
+      return `${checkAndRemoveQueryMark(url)}?${params.toString()}`
+    }
+
+    function saveVariant() {
+      
+      const item = currentItemVariantShow.value;
+      const variant =  currentConfigVariantShow.value;
+      let currentFiles = toRaw(props.value);
+      const fileIndex = currentFiles.findIndex(file => file.uuid === item.uuid);
+      const currentFileEdit = currentFiles[fileIndex]
+      const currentVariantIndexEdit  = currentFileEdit.variants.findIndex(currentVariant => currentVariant.code === variant.code);
+      const variantConfigs = currentVariantConfigs.value;
+      let cdnLink = variant.img_url;
+      for (let configKey of Object.entries(variantConfigs)) {
+        cdnLink = removeURLParameter(cdnLink, configKey[0]);
+      } 
+      const params = new URLSearchParams(variantConfigs);
+      const updatedUrl = genQueryParameters(cdnLink, params);
+      console.log(updatedUrl)
+      currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = updatedUrl
+      showVariantsList.value = []
+      showVariantsList.value = [item.uuid]
+      emit('input', currentFiles);
+      closeVariantDialog()
     }
 
     function editFile(file, item, variant) {
