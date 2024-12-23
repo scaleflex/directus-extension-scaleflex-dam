@@ -723,7 +723,7 @@ export default {
             ownerName: response?.file?.owner?.name,
           };
 
-          if (configVariantsExist && tempFile.type.startsWith("image")) {
+          if (configVariantsExist.value && tempFile.type.startsWith("image")) {
             const imageUrls = []
             const variants = props.config.variants
             for (let value of variants) {
@@ -742,8 +742,11 @@ export default {
             tempFile.attributes = getAttributesData(response?.file);
           }
 
+          console.log(tempFile)
+
           return tempFile; // Return the data for each file
         } catch (err) {
+          console.log(err)
           return null; // Return null in case of error for this file
         }
       });
@@ -751,10 +754,10 @@ export default {
       // Wait for all fetch operations to complete and collect all results
       try {
         const results = await Promise.all(fetchPromises);
-
+        console.log(results);
         const tempFiles = results.filter(file => file);
         let updatedFiles = null;
-
+ 
         if (isRefresh || !props.value) updatedFiles = [...tempFiles];
         else updatedFiles = [...props.value, ...tempFiles];
 
