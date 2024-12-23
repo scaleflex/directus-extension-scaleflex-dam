@@ -742,11 +742,8 @@ export default {
             tempFile.attributes = getAttributesData(response?.file);
           }
 
-          console.log(tempFile)
-
           return tempFile; // Return the data for each file
         } catch (err) {
-          console.log(err)
           return null; // Return null in case of error for this file
         }
       });
@@ -754,7 +751,6 @@ export default {
       // Wait for all fetch operations to complete and collect all results
       try {
         const results = await Promise.all(fetchPromises);
-        console.log(results);
         const tempFiles = results.filter(file => file);
         let updatedFiles = null;
  
@@ -891,7 +887,6 @@ export default {
       } 
       const params = new URLSearchParams(variantConfigs);
       const updatedUrl = genQueryParameters(cdnLink, params);
-      console.log(updatedUrl)
       currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = updatedUrl
       showVariantsList.value = []
       showVariantsList.value = [item.uuid]
@@ -975,7 +970,6 @@ export default {
             }
 
             if (successful) {
-              console.dir(successful);
               successful.forEach((item, key) => {
                 // do something
               });
