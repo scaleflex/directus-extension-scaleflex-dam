@@ -1,29 +1,27 @@
 <template>
   <private-view title="Scaleflex DAM">
     <template #navigation>
-      <div style="margin-top: 20px; padding: 0 10px">
-          <div style="display: flex; flex-direction: column; align-content: center">
-            <div v-if="isAdministrator" style="display: flex; background: var(--theme--navigation--project--background); padding: 5px 8px; border-radius: 4px; align-items: center;">
-              <VIcon name="settings" style="color: var(--theme--primary)"/>
-              <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex DAM</span>
-            </div>
-            <div @click="toDam" class="external-link" style="margin-top: 8px">
-              <VIcon name="gallery_thumbnail" style="color: var(--theme--primary)"/>
-              <span style="margin-left: 4px; font-size: 14px;  display: block">Assets Library</span>
-            </div>
-            <a href="https://docs.scaleflex.com/digital-asset-management-dam/plugins-and-connectors/plugins/directus" target="_blank" class="external-link"  style="margin-top: 8px">
-              <VIcon name="description" style="color: var(--theme--primary)" />
-              <span style="margin-left: 4px; font-size: 14px;  display: block">Documentation</span>
-            </a>
-          </div>
+      <div class="left-menu">
+        <div v-if="isAdministrator" class="settings">
+          <VIcon name="settings"/>
+          <span>Scaleflex DAM</span>
+        </div>
+        <div @click="toDam" class="external-link">
+          <VIcon name="gallery_thumbnail"/>
+          <span>Assets Library</span>
+        </div>
+        <a href="https://docs.scaleflex.com/digital-asset-management-dam/plugins-and-connectors/plugins/directus" target="_blank" class="external-link">
+          <VIcon name="description"/>
+          <span>Documentation</span>
+        </a>
       </div>
     </template>
-    <VCard style="margin:0 32px 32px 32px; max-width: 100%">
-      <VCardTitle style="padding: 15px">
+    <VCard class="main-card">
+      <VCardTitle class="card-title">
         About Scaleflex DAM
       </VCardTitle>
-      <VCardText style="padding: 15px; width: 100%; position: relative">
-        <div style="display: flex; align-items: center; justify-content: start; margin-bottom: 20px">
+      <VCardText class="card-content">
+        <div class="sfx-logo">
           <img src="https://frzjaqrbb.filerobot.com/plugins_assets/scaleflex.svg" />
         </div>
         <div style="z-index: 999">
@@ -31,24 +29,24 @@
           optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.
         </div>
         <a href="https://www.scaleflex.com" target="_blank" class="homepage">
-          <VIcon name="house" :small="true" style="margin-top: 2px"/>
-          <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex Home</span>
+          <VIcon name="house" :small="true"/>
+          <span>Scaleflex Home</span>
         </a>
-        <img src="https://frzjaqrbb.filerobot.com/plugins_assets/dam.svg" style="position: absolute; right: 10px; top: -40px; width: 180px; z-index: 1; opacity: 0.4;" />
+        <img src="https://frzjaqrbb.filerobot.com/plugins_assets/dam.svg" class="sfx-logo-abs" />
       </VCardText>
     </VCard>
     <div class="sfx-padding-box">
-      <div style="font-size: 18px; margin-bottom: 20px">
+      <div class="setting-title">
         <h2 >Base configurations</h2>
         <p class="guide-text">The following fields are required to integrate the Scaleflex DAM Widget within Directus.</p>
       </div>
-      <div style="margin-bottom: 1rem">
+      <div class="mb-3">
         <label for="sfx_token"><b>Token</b></label>
         <VInput :disabled="loading" v-model="token"/>
         <p class="guide-text">Scaleflex DAM token from your account, you can obtain a token by fill in <a style="color: var(--theme--primary)"
             href="https://www.scaleflex.com/contact-us" target="_blank">Scaleflex contact page</a></p>
       </div>
-      <div style="margin-bottom: 1rem">
+      <div class="mb-3">
         <label for="sfx_sec"><b>Security Template</b></label>
         <VInput :disabled="loading" v-model="sec"/>
         <p class="guide-text">To load the Scaleflex DAM Widget or Scaleflex DAM Image Editor, you you need to create a
@@ -56,22 +54,22 @@
           in order for your Directus instantiation of the Widget to obtain proper credentials and access your
           storage</p>
       </div>
-      <div style="margin-bottom: 1rem">
+      <div class="mb-3">
         <label for="sfx_token"><b>Root Directory</b></label>
         <VInput :disabled="loading" v-model="directory"/>
         <p class="guide-text">The directory in your Hub, where the files will be stored</p>
       </div>
       <VDivider style="margin: 20px 0" />
-      <div style="font-size: 18px; margin-bottom: 20px">
+      <div class="setting-title">
         <h2 >Advanced configuration</h2>
         <p class="guide-text">This configuration will be overridden if 'Use Custom Setting' is activated in each Field Interface.</p>
       </div>
-      <div style="margin-bottom: 1rem">
+      <div class="mb-3">
         <label for="limit"><b>Limit</b></label>
         <VInput :disabled="loading" min="0" v-model="limit" type="number"/>
         <p class="guide-text">The max number of files that can be added to a single field, <b style="color: var(--theme--primary)">default: 0(unlimited)</b></p>
       </div>
-      <div style="margin-bottom: 1rem">
+      <div class="mb-3">
         <label for="attributes"><b>Attributes</b></label>
         <VSelect
             v-model="attributes"
@@ -96,7 +94,7 @@
         <p class="guide-text">Attribute from Scaleflex DAM asset that you want to include in Client response</p>
       </div>
 
-      <div style="margin-bottom: 1rem">
+      <div class="mb-3">
         <label for="limitType"><b>Limit Type</b></label>
         <VSelect
             v-model="limitType"
@@ -167,6 +165,7 @@
 import {ref, onMounted} from 'vue';
 import {useApi, useStores} from '@directus/extensions-sdk';
 import { createDirectus, rest, readMe } from '@directus/sdk';
+import './assets/style.css';
 
 export default {
   props: {
@@ -217,11 +216,9 @@ export default {
       const collectionName = props.collection;
 
       try {
-        // Kiểm tra xem collection đã tồn tại chưa
         const scaleflexCollection = await collectionsStore.getCollection(collectionName);
 
         if (!scaleflexCollection) {
-          // Tạo collection mới nếu chưa tồn tại
           await collectionsStore.upsertCollection(collectionName, {
             collection: collectionName,
             meta: {note: 'Scaleflex DAM'},
@@ -238,14 +235,9 @@ export default {
             },
           });
 
-
-          // Sau khi tạo collection xong, hidden collection
           await hiddenCollection();
-
-          // Sau khi tạo collection xong, tạo các fields
           await createFields();
-
-          collectionExists.value = false; // Đánh dấu rằng collection vừa được tạo
+          collectionExists.value = false;
         } else {
           collectionExists.value = true;
         }
@@ -304,15 +296,11 @@ export default {
       ];
 
       try {
-        // Tạo từng field
         for (const field of fieldsPayload) {
           await api.post(`/fields/${props.collection}`, field);
           console.log(`Field ${field.field} created.`);
         }
-
-        // Sau khi tạo fields xong, tạo dữ liệu mới
         await createFirstData();
-
       } catch (error) {
         console.error(`Failed to create fields: ${error.message}`);
       }
@@ -471,39 +459,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.sfx-padding-box {
-  padding: 0 32px 32px;
-}
-
-.guide-text {
-  font-size: 13px;
-  margin-top: 5px;
-  color: #285c72;
-}
-
-.homepage{
-  margin-top: 10px;
-  display: flex;
-  transition: color 500ms ease;
-  cursor: pointer;
-}
-
-.homepage:hover{
-  color: #285c72;
-}
-
-.external-link{
-  display: flex;
-  padding: 5px 8px;
-  border-radius: 4px;
-  transition: background 500ms ease;
-  align-items: center;
-  cursor: pointer;
-}
-
-.external-link:hover{
-  background: var(--theme--navigation--project--background);
-}
-</style>

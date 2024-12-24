@@ -1,0 +1,81 @@
+#sfx-dam-widget .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {
+    top: 0;
+}
+
+.header-bar {
+    z-index: 99999;
+}
+
+.filerobot-common-Search-searchInput {
+    background: #FFF;
+}
+
+.external-link{
+    display: flex;
+    padding: 5px 8px;
+    border-radius: 4px;
+    transition: background 500ms ease;
+    align-items: center;
+}
+
+.external-link:hover{
+    background: var(--theme--navigation--project--background);
+}
+
+.pd-default {
+    padding: 32px;
+}
+
+.mw-100 {
+    max-width: 100%;
+}
+
+.card-title-danger {
+    color: tomato; display: flex; align-items: center;
+}
+
+.card-title-danger .notice {
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.span-action {
+    text-decoration: underline;
+    color: dodgerblue;
+    cursor: pointer;
+}
+
+.card-content {
+    max-width: 100%;
+    padding-bottom: 25px;
+}
+
+.left-menu {
+    margin-top: 20px;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.left-menu .settings {
+    display: flex;
+    background: var(--theme--navigation--project--background);
+    padding: 5px 8px;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.left-menu i {
+    color: var(--theme--primary);
+}
+
+.left-menu span {
+    margin-left: 4px;
+    font-size: 14px;
+    display: block;
+}
+
+.left-menu .external-link {
+    margin-top: 8px;
+}
