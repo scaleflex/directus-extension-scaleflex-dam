@@ -10,7 +10,8 @@
            'outdent indent link removeformat blockquote fullscreen code sfxDAM',
           setup: (editor) => {
             editor.on('init', () => {
-              editor.setContent(value);
+              const content = (value != null) ? value : '';
+              editor.setContent(content);
             });
 
             editor.ui.registry.addToggleButton('sfxDAM', {
@@ -28,7 +29,6 @@
             editor.on('ObjectResized', function(e) {
               if (e.target.nodeName === 'IMG') {
                 let selectedImage = editor.selection.getNode();
-
                 const currentURL = selectedImage.getAttribute('src');
                 const newURL = updateUrlParams(currentURL, {w: e.width, h: e.height});
                 // Set new image URL
@@ -63,7 +63,8 @@
 
 import {onMounted, ref} from "vue";
 import {useApi} from "@directus/extensions-sdk";
-import Editor from '@tinymce/tinymce-vue'
+import Editor from '@tinymce/tinymce-vue';
+import './assets/style.css';
 
 export default {
   props: {
@@ -85,7 +86,6 @@ export default {
   emits: ['input', 'close'],
   setup(props, {emit}) {
     const isOpen = ref(false);
-
     const api = useApi();
     const loadConfigDone = ref(false);
     const isLoading = ref(true);
@@ -159,18 +159,6 @@ export default {
       } catch (error) {
 
       }
-    }
-
-    function isImage(type) {
-      return type.startsWith("image");
-    }
-
-    function isVideo(type) {
-      return type.startsWith("video");
-    }
-
-    function isAudio(type) {
-      return type.startsWith("audio");
     }
 
     function renderWidget(frConfig, editor_id) {
@@ -305,58 +293,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.ml-1 {
-  margin-left: 0.5rem;
-}
-
-#sfx-editor-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {
-  top: 0;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal {
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  width: 80%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  overflow-y: auto;
-  max-height: 80vh;
-  margin: 1.75rem auto;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.modal-body {
-  margin: 1rem 0;
-}
-
-.modal-footer {
-  text-align: right;
-}
-</style>

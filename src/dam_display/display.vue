@@ -39,6 +39,7 @@
 
 
 <script>
+import './assets/style.css';
 export default {
   props: {
     value: {
@@ -90,59 +91,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.media-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-  padding: 5px;
-}
-
-.media-item-wrapper {
-  position: relative;
-  transition: transform 0.2s ease, z-index 0.2s ease;
-}
-
-.media-item-wrapper.hovered {
-  transform: scale(1.2); /* Highlight effect */
-}
-
-.media-item {
-  width: 35px;
-  height: 35px;
-  border-radius: 35%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f0f0;
-  border: 2px solid white; /* Circle border for better visibility */
-  overflow: hidden;
-}
-
-.circle {
-  background-size: cover;
-  background-position: center;
-}
-
-.icon-wrapper {
-  background-color: #ddd; /* Placeholder background for icons */
-}
-
-.extra-items .media-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--v-button-background-color, var(--theme--primary));
-  opacity: 70%;
-  font-size: 14px;
-  color: white;
-  font-weight: bold;
-}
-
-.extra-count {
-  font-size: 14px;
-  font-weight: bold;
-}
-</style>

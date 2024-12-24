@@ -1,0 +1,110 @@
+.sfx-padding-box {
+    padding: 0 32px 32px;
+}
+
+.guide-text {
+    font-size: 13px;
+    margin-top: 5px;
+    color: #285c72;
+}
+
+.homepage{
+    margin-top: 10px;
+    display: flex;
+    transition: color 500ms ease;
+    cursor: pointer;
+}
+
+.homepage:hover{
+    color: #285c72;
+}
+
+.homepage span.v-icon {
+    margin-top: 2px;
+}
+
+.homepage span {
+    margin-left: 4px;
+    font-size: 14px;
+    display: block;
+    margin-top: 0;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.sfx-logo-abs {
+    position: absolute;
+    right: 10px;
+    top: -40px;
+    width: 180px;
+    z-index: 1;
+    opacity: 0.4;
+}
+
+.external-link{
+    display: flex;
+    padding: 5px 8px;
+    border-radius: 4px;
+    transition: background 500ms ease;
+    align-items: center;
+    cursor: pointer;
+}
+
+.external-link:hover{
+    background: var(--theme--navigation--project--background);
+}
+
+.left-menu {
+    margin-top: 20px;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.left-menu .settings {
+    display: flex;
+    background: var(--theme--navigation--project--background);
+    padding: 5px 8px;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.left-menu i {
+    color: var(--theme--primary);
+}
+
+.left-menu span {
+    margin-left: 4px;
+    font-size: 14px;
+    display: block;
+}
+
+.left-menu .external-link {
+    margin-top: 8px;
+}
+
+.main-card {
+    margin:0 32px 32px 32px;
+    max-width: 100% !important;
+}
+
+.main-card .card-content {
+    padding: 15px;
+    width: 100%;
+    position: relative;
+}
+
+.main-card .card-content .sfx-logo {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-bottom: 20px;
+}
+
+.setting-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+}

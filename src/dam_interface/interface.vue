@@ -6,14 +6,13 @@
   <div id="sfx-result">
     <draggable class="asset-content" :list="value" @change="log">
       <div v-for="(item, index) in value" :key="index" class="media-container">
-        <!-- Kiểm tra loại file và hiển thị phù hợp -->
         <template v-if="isImage(item.type)">
           <div class="sfx-item">
             <div class="sfx-item-inner">
               <div class="btn-drag-item">
                 <VIcon name="drag_handle"/>
               </div>
-              <div class="sfx-media-icon" target="_blank">
+              <div class="sfx-media-icon">
                 <a :href="item.cdn" target="_blank">
                   <img :src="createThumbnail(item.cdn)" :alt="item.name" class="media-item"/>
                   <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
@@ -23,12 +22,10 @@
                 <span>{{ trimText(item.name) }}</span>
               </div>
             </div>
-            <div style="display: flex; align-items: center; justify-content: end;">
-              <div  v-if="configVariantsExist"
-                  style="color: #285c72; margin-right: 20px"
+            <div class="flex-center-end">
+              <div  v-if="configVariantsExist" class="show-variants"
                    @click="showVariants(item.uuid)">
-                <VButton style="margin-right: 10px; display: flex; justify-content: center; align-items: center"
-                         :xSmall="true"
+                <VButton :xSmall="true"
                          :warning="showVariantsList.indexOf(item.uuid) > -1"
                          :outlined="true">
                   <VIcon style="margin-right: 5px" v-if="showVariantsList.indexOf(item.uuid) === -1" name="visibility" :xSmall="true" />
@@ -42,21 +39,20 @@
               </div>
             </div>
           </div>
-          <div
-              style="display: flex; flex-direction: column; justify-content: start; margin-top: 5px"
+          <div class="variants-container"
               v-if="configVariantsExist && showVariantsList.indexOf(item.uuid) > -1">
-            <div class="sfx-item" style="margin-left: 30px; padding: 3px 10px; display: flex; justify-content: space-between; align-items: center;"
+            <div class="sfx-item variant-item"
                  @click="showVariantsList.indexOf(item.uuid) > -1"
                 :small="true"
                 v-for="(variant, index) in item.variants"
                 :key="index"
             >
-              <div style="display: flex; justify-content: start; align-items: center;">
-                <img :src="variant.img_url" :alt="item.name" style="border-radius: 25%; border: 1px solid lightgray" class="media-item" width="30" height="30"/>
-                <span style="margin-left: 10px">{{ variant.name }}</span>
+              <div class="variant-info">
+                <img :src="variant.img_url" :alt="item.name" class="media-item variant-img" width="30" height="30"/>
+                <span class="variant-name">{{ variant.name }}</span>
               </div>
-              <div style="display: flex; justify-content: end; align-items: center;">
-                <VButton style="margin-right: 10px"
+              <div class="variant-actions">
+                <VButton class="margin-right"
                           :xSmall="true"
                          :outlined="true"
                          @click="showVariantDialog(item, variant)">
@@ -77,7 +73,7 @@
               <div class="btn-drag-item">
                 <VIcon name="drag_handle"/>
               </div>
-              <div class="sfx-media-icon" target="_blank">
+              <div class="sfx-media-icon">
                 <a :href="item.cdn" target="_blank">
                   <VIcon class="item-icon" name="videocam"/>
                   <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
@@ -98,7 +94,7 @@
               <div class="btn-drag-item">
                 <VIcon name="drag_handle"/>
               </div>
-              <div class="sfx-media-icon" target="_blank">
+              <div class="sfx-media-icon">
                 <a :href="item.cdn" target="_blank">
                   <VIcon class="item-icon" name="play_circle"/>
                   <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
@@ -119,7 +115,7 @@
               <div class="btn-drag-item">
                 <VIcon name="drag_handle"/>
               </div>
-              <div class="sfx-media-icon" target="_blank">
+              <div class="sfx-media-icon">
                 <a :href="item.cdn" target="_blank">
                   <VIcon class="item-icon" name="draft"/>
                   <VIcon color="white" name="visibility" :xsmall="true" class="media-item-icon"/>
@@ -143,8 +139,7 @@
         <span v-if="limitFiles() > 0"> / Limit {{ limitFiles() }}</span>
       </div>
     </div>
-    <div style="display: flex; align-items: center; justify-content: end;" v-if="getIsOverLimit()"
-         class="exceeds-the-limit">
+    <div v-if="getIsOverLimit()" class="exceeds-the-limit">
       <span class="ml-1">Exceeded maximum number of assets</span>
     </div>
     <VDialog v-model="dialogVisible">
@@ -170,40 +165,38 @@
     </VDialog>
 
     <VDialog v-model="isShowVariantDialog">
-      <VCard style="width: 70%" class="dialog-content">
+      <VCard class="dialog-content w-70">
         <VCardTitle>
           Edit Image Variants
         </VCardTitle>
-        <VCardText style="position: relative">
-          <div style="display: flex; justify-content: space-between; border: 1px solid lightgray; height: 500px">
-            <div id="variants-toolbar-config"
-                 style="width: 300px; border-right: 1px solid lightgray; padding: 10px; display: flex; flex-direction: column;">
+        <VCardText class="position-relative">
+          <div class="variant-toolbar">
+            <div id="variants-toolbar-config">
               <div id="variants-toolbar-config-size">
-                <div style="margin-bottom: 15px">
-                  <span style="font-size: 16px;">Size</span>
-                  <p style="font-size: 12px; text-align: justify;  hyphens: auto;">Change width and height of the image</p>
+                <div class="margin-bottom">
+                  <span class="font-16">Size</span>
+                  <p class="font-12 justify-text" style="hyphens: auto;">Change width and height of the image</p>
                 </div>
                 <div>
                   <span>Width</span>
                   <VInput :small="true" v-model="currentVariantConfigs['width']" />
                 </div>
-                <div style="margin-top: 15px">
+                <div class="margin-top">
                   <span>Height</span>
                   <VInput :small="true" v-model="currentVariantConfigs['height']" />
                 </div>
               </div>
             </div>
-            <div id="variants-toolbar-image" class="grid-bg"
-                 style="width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; max-height: 100%; position: relative; padding: 30px">
-              <div style="position: absolute; top: 5px; right: 5px; display: flex; justify-content: end; align-items: center;">
-                <VButton  v-if="!showCrop" @click="toggleCrop" :icon="true" :xSmall="true" :secondary="true" style="margin-left: 8px; z-index: 9;">
+            <div id="variants-toolbar-image" class="grid-bg variant-image-container">
+              <div class="variant-buttons">
+                <VButton  v-if="!showCrop" @click="toggleCrop" :icon="true" :xSmall="true" :secondary="true" class="margin-left crop-btn">
                   <VIcon name="crop" :xSmall="true" />
                 </VButton>
-                <VButton v-if="showCrop" @click="updateVariantByCrop" :icon="true" :xSmall="true" style="margin-left: 8px; z-index: 9;">
+                <VButton v-if="showCrop" @click="updateVariantByCrop" :icon="true" :xSmall="true" class="margin-left save-crop-btn">
                   <VIcon name="save" :xSmall="true" />
                 </VButton>
               </div>
-              <img v-if="!showCrop" style="height: 80%; width: auto" :src="currentVariantShow"/>
+              <img v-if="!showCrop" class="image-preview" :src="currentVariantShow"/>
               <div v-if="showCrop">
                 <cropper
                     class="cropper"
@@ -276,14 +269,13 @@
     </div>
   </div>
   <div v-else>
-    <VCard style="max-width: 100%; margin-top: 20px">
-      <VCardTitle style="color: tomato; display: flex; align-items: center;">
+    <VCard class="notice-card">
+      <VCardTitle class="notice-title">
         <VIcon name="report"/>
-        <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
+        <span class="notice-text">Scaleflex DAM Notice</span>
       </VCardTitle>
-      <VCardText style="max-width: 100%; padding-bottom: 25px">
-        Please visit the <span style="text-decoration: underline; color: dodgerblue; cursor: pointer"
-                               @click="toDamSetting" target="_blank">Scaleflex DAM Configuration</span>
+      <VCardText class="notice-body">
+        Please visit the <span class="notice-link" @click="toDamSetting">Scaleflex DAM Configuration</span>
         to add your Token and Template ID before browsing assets.
       </VCardText>
     </VCard>
@@ -315,6 +307,7 @@ import { Cropper } from 'vue-advanced-cropper'
 import { debounce } from "lodash";
 import 'vue-advanced-cropper/dist/style.css';
 import 'vue-advanced-cropper/dist/theme.compact.css';
+import './assets/style.css';
 
 export default {
   components: {
@@ -498,7 +491,6 @@ export default {
       renderEditWidget(frConfig, item, variant);
     }
 
-
     function toDamSetting() {
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
       if (damButton) {
@@ -619,10 +611,10 @@ export default {
           attributes.value = data.attributes ? data.attributes.split(",") : [];
         }
 
-        if (props.config && 'variants' in props.config) configVariantsExist.value = true
+        if (props.config && 'variants' in props.config) configVariantsExist.value = true;
 
       } catch (error) {
-
+        console.error(error);
       }
     }
 
@@ -634,16 +626,13 @@ export default {
           let valueTrim = value.trim();
           r[valueTrim] = file[valueTrim]
         }
-        return r
+        return r;
       }
     }
 
     function checkLimit(updatedFiles) {
-      if (limitFiles() > 0 && updatedFiles.length > limitFiles()) {
-        isOverLimit.value = true
-      } else {
-        isOverLimit.value = false
-      }
+      const limit = limitFiles();
+      isOverLimit.value = limit > 0 && updatedFiles.length > limit;
     }
 
     function getTypeAssets(type) {
@@ -686,6 +675,7 @@ export default {
 
       // get param from old url
       const oldParams = getURLParameters(oldUrl);
+
       // build the new url
       return buildURLWithParameters(newUrl, oldParams);
     }
@@ -753,10 +743,9 @@ export default {
         const results = await Promise.all(fetchPromises);
         const tempFiles = results.filter(file => file);
         let updatedFiles = null;
- 
+
         if (isRefresh || !props.value) updatedFiles = [...tempFiles];
         else updatedFiles = [...props.value, ...tempFiles];
-
 
         checkLimit(updatedFiles)
 
@@ -795,24 +784,23 @@ export default {
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-        const result = await response.json();
-        return result; // Return the result to be collected in the parent function
+        return await response.json(); // Return the result to be collected in the parent function
       } catch (err) {
         return null; // Return null in case of error
       } finally {
         isLoading.value = false;
       }
-    };
+    }
 
     function clickRemoveAllAssets() {
       dialogVisible.value = true;
-    };
+    }
 
     function removeAllAssets() {
       emit('input', []);
       isOverLimit.value = false;
       dialogVisible.value = false;
-    };
+    }
 
     function removeURLParameter(url, parameter) {
       //prefer to use l.search if you have a location/link object
@@ -835,14 +823,10 @@ export default {
       return url;
     }
 
-    function checkExist(file) {
-      return props.value.some((item) => item.uuid === file.uuid);
-    };
-
     async function refreshAssets() {
       if (isProxy(props.value)) await updateFiles(toRaw(props.value), true)
       else await updateFiles(props.value, true)
-    };
+    }
 
     function getIsOverLimit() {
       return isOverLimit.value
@@ -867,13 +851,11 @@ export default {
       return url;
     }
 
-    
     function genQueryParameters(url, params) {
       return `${checkAndRemoveQueryMark(url)}?${params.toString()}`
     }
 
     function saveVariant() {
-      
       const item = currentItemVariantShow.value;
       const variant =  currentConfigVariantShow.value;
       let currentFiles = toRaw(props.value);
@@ -884,10 +866,9 @@ export default {
       let cdnLink = variant.img_url;
       for (let configKey of Object.entries(variantConfigs)) {
         cdnLink = removeURLParameter(cdnLink, configKey[0]);
-      } 
+      }
       const params = new URLSearchParams(variantConfigs);
-      const updatedUrl = genQueryParameters(cdnLink, params);
-      currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = updatedUrl
+      currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = genQueryParameters(cdnLink, params);
       showVariantsList.value = []
       showVariantsList.value = [item.uuid]
       emit('input', currentFiles);
@@ -902,8 +883,7 @@ export default {
       const currentVariant = props.config.variants.find(currentVariant => currentVariant.code === variant.code);
       const params = new URLSearchParams(currentVariant.preset);
       let cdnLink = removeURLParameter(file.link, 'vh');
-      const updatedUrl = genQueryParameters(cdnLink, params);
-      currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = updatedUrl
+      currentFiles[fileIndex]['variants'][currentVariantIndexEdit]['img_url'] = genQueryParameters(cdnLink, params);
       showVariantsList.value = []
       showVariantsList.value = [item.uuid]
       emit('input', currentFiles);
@@ -981,7 +961,7 @@ export default {
       if (!window.Filerobot) {
         return;
       }
-      
+
       let Filerobot = window.Filerobot;
 
       let filerobot = null;
@@ -996,7 +976,7 @@ export default {
       // Plugins
       let Explorer = Filerobot.Explorer;
       let XHRUpload = Filerobot.XHRUpload;
-      
+
       filerobot
           .use(Explorer, {
             config: {
@@ -1032,7 +1012,6 @@ export default {
             if (failed) {
               console.dir(failed);
             }
-            
 
             if (successful) {
               console.dir(successful);
@@ -1046,244 +1025,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.exceeds-the-limit {
-  color: red;
-}
-
-.ml-1 {
-  margin-left: 0.5rem;
-}
-
-#sfx-modal .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {
-  top: 0;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal {
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  width: 80%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  overflow-y: auto;
-  max-height: 80vh;
-  margin: 1.75rem auto;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.modal-body {
-  margin: 1rem 0;
-}
-
-.modal-footer {
-  text-align: right;
-}
-
-.sfx-media-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 25%;
-  position: relative; /* Ensure the pseudo-element is positioned relative to this container */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.media-item-icon {
-  position: absolute !important;
-  top: 7px;
-  left: 5px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 9;
-}
-
-.sfx-media-icon::after {
-  content: ''; /* Empty content to create the pseudo-element */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  height: 100%;
-  background-color: #0c3745;
-  opacity: 0; /* Start with no visibility */
-  transition: opacity 0.3s ease; /* Smooth fade in/out effect */
-  backdrop-filter: blur(5px); /* Apply blur effect */
-  z-index: 1;
-}
-
-.sfx-media-icon:hover .media-item-icon {
-  opacity: 1;
-}
-
-.sfx-media-icon:hover::after {
-  opacity: 0.85; /* Show the white blur overlay on hover */
-}
-
-.sfx-media-icon img {
-  width: 34px;
-  height: 34px;
-  display: block;
-  margin: 0 auto;
-  object-fit: cover;
-  border-radius: 25%;
-}
-
-.sfx-item .item-info {
-  margin-left: 12px;
-}
-
-.sfx-item .item-info a {
-  color: var(--theme--primary);
-}
-
-.sfx-item-inner {
-  display: flex;
-  align-items: center;
-}
-
-.bottom-message {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  margin-top: var(--v-list-item-margin, 4px);
-}
-
-.sfx-item {
-  padding: 6px;
-  border: var(--theme--border-width) solid var(--v-list-item-border-color, var(--theme--form--field--input--border-color));
-  border-radius: var(--theme--border-radius);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--v-list-item-color, var(--v-list-color, var(--theme--foreground)));
-  margin-top: var(--v-list-item-margin, 4px);
-  cursor: pointer;
-  transition: border-color 500ms ease;
-}
-
-.sfx-item:hover {
-  border: var(--theme--border-width) solid var(--v-list-item-border-color-hover, var(--theme--form--field--input--border-color-hover));
-}
-
-.sfx-media-icon .icon {
-  width: 80px;
-  height: 80px;
-  position: relative;
-}
-
-.btn-delete-item:hover {
-  color: var(--theme--danger);
-}
-
-.sfx-media-icon .icon i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(50%, 50%);
-  font-size: 35px;
-}
-
-.item-icon {
-  width: 34px !important;
-  text-align: center;
-  padding: 0 var(--v-list-item-margin, 4px);
-}
-
-.remove-all span {
-  color: red;
-  font-size: 12px;
-  border: none;
-  background: none;
-  width: 100%;
-}
-
-.remove-all span:hover {
-  cursor: pointer;
-  color: rgb(185, 37, 37);
-}
-
-.asset-content {
-  max-height: 545px;
-  overflow-y: scroll;
-}
-
-.btn-drag-item {
-  margin-right: 8px;
-  cursor: move;
-  cursor: grab;
-}
-
-.btn-drag-item:active {
-  cursor: grabbing;
-}
-
-.asset-content::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(174, 174, 174, 0.3);
-  border-radius: 10px;
-  background-color: #F5F5F5;
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: var(--v-list-item-margin, 4px);
-}
-
-
-.container .v-card {
-  max-width: 80%;
-}
-
-.grid-bg{
-  margin: 0;
-  background-color: #fff; /* White background */
-  background-image:
-      linear-gradient(to right, rgba(204, 204, 204, 0.29) 1px, transparent 1px), /* Vertical lines */
-      linear-gradient(to bottom, rgba(204, 204, 204, 0.29) 1px, transparent 1px); /* Horizontal lines */
-  background-size: 5px 5px; /* Size of the grid cell */
-}
-
-.cropper {
-  max-height: 500px;
-  max-width: 85%;
-  background: transparent;
-  margin: 0 auto;
-}
-
-.btn-close-variant {
-  position: absolute;
-  top: -59px;
-  right: 6px;
-}
-
-</style>

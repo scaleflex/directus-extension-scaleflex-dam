@@ -1,36 +1,34 @@
 <template>
 	<private-view title="Scaleflex DAM">
     <template #navigation>
-      <div style="margin-top: 20px; padding: 0 10px">
-        <div style="display: flex; flex-direction: column; align-content: center">
-          <div v-if="isAdministrator" @click="toDamSetting" class="external-link">
-            <VIcon name="settings" style="color: var(--theme--primary)" />
-            <span style="margin-left: 4px; font-size: 14px;  display: block">Scaleflex DAM</span>
-          </div>
-          <div style="display: flex; align-items: center; background: var(--theme--navigation--project--background); padding: 5px 8px; border-radius: 4px; margin-top: 8px;">
-            <VIcon name="gallery_thumbnail" style="color: var(--theme--primary)"/>
-            <span style="margin-left: 4px; font-size: 14px;  display: block">Assets Library</span>
-          </div>
-          <a href="https://docs.scaleflex.com/digital-asset-management-dam/plugins-and-connectors/plugins/directus" target="_blank" class="external-link" style="margin-top: 8px;">
-            <VIcon name="description" style="color: var(--theme--primary)" />
-            <span style="margin-left: 4px; font-size: 14px;  display: block">Documentation</span>
-          </a>
+      <div class="left-menu">
+        <div v-if="isAdministrator" class="settings">
+          <VIcon name="settings"/>
+          <span>Scaleflex DAM</span>
         </div>
+        <div @click="toDam" class="external-link">
+          <VIcon name="gallery_thumbnail"/>
+          <span>Assets Library</span>
+        </div>
+        <a href="https://docs.scaleflex.com/digital-asset-management-dam/plugins-and-connectors/plugins/directus" target="_blank" class="external-link">
+          <VIcon name="description"/>
+          <span>Documentation</span>
+        </a>
       </div>
     </template>
     <link rel="stylesheet" type="text/css"
           href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
-    <div v-if="isTokenAndSecExists" style="margin: 32px">
+    <div v-if="isTokenAndSecExists" class="pd-default">
       <div id="sfx-dam-widget"></div>
     </div>
-    <div v-if="!isTokenAndSecExists" style="padding: 32px">
-      <VCard style="max-width: 100%;">
-        <VCardTitle style="color: tomato; display: flex; align-items: center;">
+    <div v-if="!isTokenAndSecExists" class="pd-default">
+      <VCard class="mw-100">
+        <VCardTitle class="card-title-danger">
           <VIcon name="report" />
-          <span style="font-size: 14px; margin-left: 5px">Scaleflex DAM Notice</span>
+          <span class="notice">Scaleflex DAM Notice</span>
         </VCardTitle>
-        <VCardText style="max-width: 100%; padding-bottom: 25px">
-          Please visit the <span style="text-decoration: underline; color: dodgerblue; cursor: pointer" @click="toDamSetting" target="_blank">Scaleflex DAM Configuration</span>
+        <VCardText class="card-content">
+          Please visit the <span class="span-action" @click="toDamSetting">Scaleflex DAM Configuration</span>
           to add your Token and Template ID before browsing assets.
         </VCardText>
       </VCard>
@@ -42,6 +40,7 @@
 import {ref, onMounted} from "vue";
 import {useApi} from "@directus/extensions-sdk";
 import { createDirectus, rest, readMe } from '@directus/sdk';
+import './assets/style.css';
 
 export default {
   props: {
@@ -84,11 +83,19 @@ export default {
       }
     }
 
+    function toDam() {
+      const damButton = document.querySelector('a[href="/admin/scaleflex-dam"]');
+      if (damButton) {
+        damButton.click();
+      }
+    }
+
     return {
       getIsLoading,
       toDamSetting,
       isTokenAndSecExists,
-      isAdministrator
+      isAdministrator,
+      toDam
     };
 
     function getIsLoading() {
@@ -108,8 +115,7 @@ export default {
 
       if (result?.role?.policies) {
         const policies =  result?.role?.policies
-        const hasAdminAccess = policies.some(item => item.policy.admin_access);
-        isAdministrator.value = hasAdminAccess
+        isAdministrator.value = policies.some(item => item.policy.admin_access);
       }
     }
 
@@ -191,7 +197,7 @@ export default {
           })
           .use(XHRUpload)
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
-            console.dir(files);
+            // console.dir(files);
           })
           .on('complete', ({failed, uploadID, successful}) => {
             if (failed) {
@@ -205,35 +211,7 @@ export default {
               });
             }
           });
-
-
     }
   }
 };
 </script>
-
-<style>
-#sfx-dam-widget .filerobot-Provider-ItemCategory-wrapper .filerobot-u-reset {
-  top: 0;
-}
-
-.header-bar {
-  z-index: 99999;
-}
-
-.filerobot-common-Search-searchInput {
-  background: #FFF;
-}
-
-.external-link{
-  display: flex;
-  padding: 5px 8px;
-  border-radius: 4px;
-  transition: background 500ms ease;
-  align-items: center;
-}
-
-.external-link:hover{
-  background: var(--theme--navigation--project--background);
-}
-</style>
