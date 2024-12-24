@@ -10,7 +10,8 @@
            'outdent indent link removeformat blockquote fullscreen code sfxDAM',
           setup: (editor) => {
             editor.on('init', () => {
-              editor.setContent(value);
+              const content = (value !== null) ? value : '';
+              editor.setContent(content);
             });
 
             editor.ui.registry.addToggleButton('sfxDAM', {

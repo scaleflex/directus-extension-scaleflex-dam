@@ -46,11 +46,6 @@
 			},
 			{
 				"type": "interface",
-				"name": "dam_tiptap",
-				"source": "src/dam_tiptap/index.js"
-			},
-			{
-				"type": "interface",
 				"name": "dam_interface",
 				"source": "src/dam_interface/index.js"
 			}
