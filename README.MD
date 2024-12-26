@@ -14,17 +14,17 @@ CONTENT_SECURITY_POLICY_DIRECTIVES__MEDIA_SRC: "'self', *.filerobot.com"
 ### Step 2: Active the Scaleflex DAM extension
 Click on **"Settings"** on the left menu and after that click **"Extensions"** on the sub-menu.
 
-![](docs/1.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/1.png)
 
 ### Step 3: Show the extension on the left menu
 Click **"Settings"** on the left menu and then click **"Settings"** on the sub-menu.
 Scroll to block **Modules** and check two items **"Scaleflex DAM Settings"** and **"Scaleflex DAM"**
 
-![](docs/2.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/2.png)
 
 ### Step 4: Fill in your configuration
 
-![](docs/3.webp)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/3.webp)
 
 * **Token:** Enter your Scaleflex DAM token here (eg: abcdefgh).
 * **Security Template:** To load the Scaleflex DAM Widget, you must create a Security Template in your Scaleflex DAM Hub.
@@ -38,44 +38,44 @@ Scroll to block **Modules** and check two items **"Scaleflex DAM Settings"** and
 ## How to use Scaleflex DAM field?
 **1/** Create a new field **"Scaleflex DAM"**
 
-![](docs/4.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/4.png)
 
 **2/** Select your display type
 On the list fields, select the new field just created. On the tab **"Display"**, choose **"DAM Assets"**.
 
-![](docs/5.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/5.png)
 
 **3/** Go to your content Model and you will see the new field just created. Click on **"Browse Assets"** to select the assets in **Scaleflex DAM**
 
-![](docs/6.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/6.png)
 
-![](docs/7.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/7.png)
 
 The result displayed after adding the assets
 
-![](docs/8.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/8.png)
 
 You can modify the image by clicking on **"Show variants"** to resize or crop the image.
 
-![](docs/9.webp) ![](docs/10.webp)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/9.webp) ![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/10.webp)
 
 In the list of items
 
-![](docs/11.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/11.png)
 
 ## Advanced Configuration Display
 You can set the limit asset showing in the list of items.
 In the **Field Settings**, click on the tab **"Display"** and choose **DAM Assets**. Input the limit items you want to show in the list.
 
-![](docs/12.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/12.png)
 
 ## Using TinyMCE Editor with Scaleflex DAM
 **1/** Create a new field **"WYSIWYG with Scaleflex DAM"**
 
-![](docs/13.png)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/13.png)
 
 **2/** Using the editor, click on the button **"DAM"** to add the asset to your content.
 Support image, video, and audio.
 
-![](docs/14.webp)
-![](docs/15.webp)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/14.webp)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/15.webp)
