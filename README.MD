@@ -69,6 +69,31 @@ In the **Field Settings**, click on the tab **"Display"** and choose **DAM Asset
 
 ![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/12.png)
 
+And the last thing, you can configure your variants asset in the tab **"Interface"**. For example:
+
+```javascript
+{
+    "variants": [
+        {
+            "code": "desktop",
+            "name": "Desktop",
+            "preset": {
+                "width": "200",
+                "height": "400"
+            }
+        },
+        {
+            "code": "tablet",
+            "name": "Tablet",
+            "preset": {
+                "width": "100",
+                "height": "200"
+            }
+        }
+    ]
+}
+```
+
 ## Using TinyMCE Editor with Scaleflex DAM
 **1/** Create a new field **"WYSIWYG with Scaleflex DAM"**
 
