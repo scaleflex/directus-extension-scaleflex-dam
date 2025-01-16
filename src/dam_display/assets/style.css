@@ -1,7 +1,5 @@
 .media-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    display: block;
     position: relative;
     padding: 5px;
 }
