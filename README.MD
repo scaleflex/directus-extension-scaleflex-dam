@@ -34,7 +34,7 @@ Scroll to block **Modules** and check two items **"Scaleflex DAM Settings"** and
 * **Limit:** The maximum number of files that can be added to a single field, default: 0 (unlimited).
 * **Attributes:** Attribute from Scaleflex DAM asset that you want to include in Client response.
 * **Limit Type:** File types are limited when using Widget.
-* **Tinymce Key:** API key required for TinyMCE when using it with DAM, Here’s a guide on how to get the key: [How to get tinymce cloud up in less than 5 minutes](https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/)
+* **TinyMCE Key:** API key required for TinyMCE when using it with DAM, Here’s a guide on how to get the key: [How to get tinymce cloud up in less than 5 minutes](https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/)
 
 ## How to use Scaleflex DAM field?
 **1/** Create a new field **"Scaleflex DAM"**
