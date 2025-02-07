@@ -2,7 +2,6 @@
   <link rel="stylesheet" type="text/css"
         href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
   <div>
-   
     <Editor
         v-if="getTinymceKey()"
         :api-key="getTinymceKey()"
@@ -41,7 +40,12 @@
           }
         }"
     />
-    <p v-else class="guide-text"><a href="/admin/scaleflex-dam-setting">Please Add Tinymce Key</a></p>
+    <div v-else>
+      <p v-if="isAdministrator" class="guide-text">
+        The TinyMCE key is missing. Please go to the <span class="span-action" @click="toDamSetting">Settings page</span> to add one.
+      </p>
+      <p v-else>The TinyMCE key is missing. Please contact your site manager to add it.</p>
+    </div>
   </div>
  
 
@@ -67,6 +71,7 @@
 
 import {onMounted, ref} from "vue";
 import {useApi} from "@directus/extensions-sdk";
+import { createDirectus, rest, readMe } from '@directus/sdk';
 import Editor from '@tinymce/tinymce-vue';
 import './assets/style.css';
 
@@ -102,10 +107,20 @@ export default {
     const limitType = ref([]);
     const endpoint = ref('');
     const isTokenAndSecExists = ref(false);
+    const isAdministrator = ref(false);
 
     onMounted(() => {
       init();
     });
+
+    function toDamSetting() {
+      const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
+      if (damButton) {
+        damButton.click();
+      } else {
+        window.location.href = "/admin/scaleflex-dam-setting"
+      }
+    }
 
     function closeModal() {
       document.getElementById("sfx-editor-modal").setAttribute("style", "display: none");
@@ -130,6 +145,19 @@ export default {
     }
 
     async function init() {
+      
+      const client = createDirectus(window.location.origin).with(rest());
+      const result = await client.request(readMe({
+		    fields: ['role.policies.policy.admin_access'],
+	    }));
+
+      if (result?.role?.policies) {
+        const policies =  result?.role?.policies
+        const hasAdminAccess = policies.some(item => item.policy.admin_access);
+        isAdministrator.value = hasAdminAccess
+        console.log(isAdministrator.value);
+      }
+
       await loadData().then(function () {
         isLoading.value = false;
         loadConfigDone.value = true;
@@ -295,7 +323,9 @@ export default {
       openModal,
       emit,
       updateUrlParams,
-      getTinymceKey
+      getTinymceKey,
+      isAdministrator,
+      toDamSetting
     }
   },
   beforeDestroy() {

@@ -127,7 +127,7 @@
         <label for="tinymceKey"><b>Tinymce Key</b></label>
         <VInput :disabled="loading" min="0" v-model="tinymceKey" />
         <p class="guide-text">To use TinyMCE with DAM, you need to register an account on TinyMCE Cloud and obtain an API key associated with an available domain. Here’s a guide on how to get the key: <a style="color: var(--theme--primary)"
-          href="https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/" target="_blank">https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/</a></p>
+          href="https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/" target="_blank">How to get tinymce cloud up in less than 5 minutes</a></p>
       </div>
 
       <div>
@@ -207,7 +207,7 @@ export default {
     });
 
     async function init() {
-      const client = createDirectus(process.env.PUBLIC_URL).with(rest());
+      const client = createDirectus(window.location.origin).with(rest());
       const result = await client.request(readMe({
 		    fields: ['role.policies.policy.admin_access'],
 	    }));

@@ -495,6 +495,8 @@ export default {
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
       if (damButton) {
         damButton.click();
+      } else {
+        window.location.href = "/admin/scaleflex-dam-setting"
       }
     }
 

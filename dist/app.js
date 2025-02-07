@@ -48,7 +48,7 @@ const _sfc_main$4 = {
     });
 
     async function init() {
-      const client = le$1(process.env.PUBLIC_URL).with(Fu());
+      const client = le$1(window.location.origin).with(Fu());
       const result = await client.request(Vm({
 		    fields: ['role.policies.policy.admin_access'],
 	    }));
@@ -335,8 +335,8 @@ const _hoisted_4$4 = {
   class: "homepage"
 };
 const _hoisted_5$4 = { class: "sfx-padding-box" };
-const _hoisted_6$2 = { class: "mb-3" };
-const _hoisted_7$2 = { class: "mb-3" };
+const _hoisted_6$3 = { class: "mb-3" };
+const _hoisted_7$3 = { class: "mb-3" };
 const _hoisted_8$1 = { class: "mb-3" };
 const _hoisted_9$1 = { class: "mb-3" };
 const _hoisted_10$1 = { class: "mb-3" };
@@ -420,7 +420,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
           createElementVNode("h2", null, "Base configurations"),
           createElementVNode("p", { class: "guide-text" }, "The following fields are required to integrate the Scaleflex DAM Widget within Directus.")
         ], -1 /* HOISTED */)),
-        createElementVNode("div", _hoisted_6$2, [
+        createElementVNode("div", _hoisted_6$3, [
           _cache[17] || (_cache[17] = createElementVNode("label", { for: "sfx_token" }, [
             createElementVNode("b", null, "Token")
           ], -1 /* HOISTED */)),
@@ -438,7 +438,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
             }, "Scaleflex contact page")
           ], -1 /* HOISTED */))
         ]),
-        createElementVNode("div", _hoisted_7$2, [
+        createElementVNode("div", _hoisted_7$3, [
           _cache[19] || (_cache[19] = createElementVNode("label", { for: "sfx_sec" }, [
             createElementVNode("b", null, "Security Template")
           ], -1 /* HOISTED */)),
@@ -555,7 +555,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
               style: {"color":"var(--theme--primary)"},
               href: "https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/",
               target: "_blank"
-            }, "https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/")
+            }, "How to get tinymce cloud up in less than 5 minutes")
           ], -1 /* HOISTED */))
         ]),
         createElementVNode("div", null, [
@@ -795,8 +795,8 @@ const _hoisted_5$3 = {
   key: 0,
   class: "media-item-wrapper extra-items"
 };
-const _hoisted_6$1 = { class: "media-item circle icon-wrapper" };
-const _hoisted_7$1 = { class: "extra-count" };
+const _hoisted_6$2 = { class: "media-item circle icon-wrapper" };
+const _hoisted_7$2 = { class: "extra-count" };
 
 function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_VIcon = resolveComponent("VIcon");
@@ -831,8 +831,8 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     }), 128 /* KEYED_FRAGMENT */)),
     ($props.value.length > $props.limit)
       ? (openBlock(), createElementBlock("div", _hoisted_5$3, [
-          createElementVNode("div", _hoisted_6$1, [
-            createElementVNode("span", _hoisted_7$1, "+" + toDisplayString($props.value.length - $props.limit), 1 /* TEXT */)
+          createElementVNode("div", _hoisted_6$2, [
+            createElementVNode("span", _hoisted_7$2, "+" + toDisplayString($props.value.length - $props.limit), 1 /* TEXT */)
           ])
         ]))
       : createCommentVNode("v-if", true)
@@ -906,6 +906,8 @@ const _sfc_main$2 = {
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
       if (damButton) {
         damButton.click();
+      } else {
+        window.location.href = "/admin/scaleflex-dam-setting";
       }
     }
 
@@ -934,7 +936,7 @@ const _sfc_main$2 = {
         loadConfigDone.value = true;
       });
 
-      const client = le$1(process.env.PUBLIC_URL).with(Fu());
+      const client = le$1(window.location.origin).with(Fu());
       const result = await client.request(Vm({
 		    fields: ['role.policies.policy.admin_access'],
 	    }));
@@ -1537,10 +1539,20 @@ const _sfc_main$1 = {
     const limitType = ref([]);
     const endpoint = ref('');
     const isTokenAndSecExists = ref(false);
+    const isAdministrator = ref(false);
 
     onMounted(() => {
       init();
     });
+
+    function toDamSetting() {
+      const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
+      if (damButton) {
+        damButton.click();
+      } else {
+        window.location.href = "/admin/scaleflex-dam-setting";
+      }
+    }
 
     function closeModal() {
       document.getElementById("sfx-editor-modal").setAttribute("style", "display: none");
@@ -1565,6 +1577,19 @@ const _sfc_main$1 = {
     }
 
     async function init() {
+      
+      const client = le$1(window.location.origin).with(Fu());
+      const result = await client.request(Vm({
+		    fields: ['role.policies.policy.admin_access'],
+	    }));
+
+      if (result?.role?.policies) {
+        const policies =  result?.role?.policies;
+        const hasAdminAccess = policies.some(item => item.policy.admin_access);
+        isAdministrator.value = hasAdminAccess;
+        console.log(isAdministrator.value);
+      }
+
       await loadData().then(function () {
         isLoading.value = false;
         loadConfigDone.value = true;
@@ -1730,7 +1755,9 @@ const _sfc_main$1 = {
       openModal,
       emit,
       updateUrlParams,
-      getTinymceKey
+      getTinymceKey,
+      isAdministrator,
+      toDamSetting
     }
   },
   beforeDestroy() {
@@ -1741,20 +1768,22 @@ const _sfc_main$1 = {
   },
 };
 
-const _hoisted_1$1 = {
-  key: 1,
+const _hoisted_1$1 = { key: 1 };
+const _hoisted_2$1 = {
+  key: 0,
   class: "guide-text"
 };
-const _hoisted_2$1 = { class: "modal" };
-const _hoisted_3$1 = { class: "modal-header" };
-const _hoisted_4$1 = { class: "modal-body" };
-const _hoisted_5$1 = { class: "modal-footer" };
+const _hoisted_3$1 = { key: 1 };
+const _hoisted_4$1 = { class: "modal" };
+const _hoisted_5$1 = { class: "modal-header" };
+const _hoisted_6$1 = { class: "modal-body" };
+const _hoisted_7$1 = { class: "modal-footer" };
 
 function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_Editor = resolveComponent("Editor");
 
   return (openBlock(), createElementBlock(Fragment, null, [
-    _cache[5] || (_cache[5] = createElementVNode("link", {
+    _cache[7] || (_cache[7] = createElementVNode("link", {
       rel: "stylesheet",
       type: "text/css",
       href: "https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"
@@ -1799,31 +1828,40 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }
           }, null, 8 /* PROPS */, ["api-key", "init"]))
-        : (openBlock(), createElementBlock("p", _hoisted_1$1, _cache[2] || (_cache[2] = [
-            createElementVNode("a", { href: "/admin/scaleflex-dam-setting" }, "Please Add Tinymce Key", -1 /* HOISTED */)
-          ])))
+        : (openBlock(), createElementBlock("div", _hoisted_1$1, [
+            ($setup.isAdministrator)
+              ? (openBlock(), createElementBlock("p", _hoisted_2$1, [
+                  _cache[3] || (_cache[3] = createTextVNode(" The TinyMCE key is missing. Please go to the ")),
+                  createElementVNode("span", {
+                    class: "span-action",
+                    onClick: _cache[0] || (_cache[0] = (...args) => ($setup.toDamSetting && $setup.toDamSetting(...args)))
+                  }, "Settings page"),
+                  _cache[4] || (_cache[4] = createTextVNode(" to add one. "))
+                ]))
+              : (openBlock(), createElementBlock("p", _hoisted_3$1, "The TinyMCE key is missing. Please contact your site manager to add it."))
+          ]))
     ]),
     createElementVNode("div", {
       style: normalizeStyle({ display: _ctx.isOpen ? 'block' : 'none' }),
       class: "modal-overlay",
       id: "sfx-editor-modal"
     }, [
-      createElementVNode("div", _hoisted_2$1, [
-        createElementVNode("div", _hoisted_3$1, [
-          _cache[3] || (_cache[3] = createElementVNode("h3", null, "Scaleflex DAM", -1 /* HOISTED */)),
+      createElementVNode("div", _hoisted_4$1, [
+        createElementVNode("div", _hoisted_5$1, [
+          _cache[5] || (_cache[5] = createElementVNode("h3", null, "Scaleflex DAM", -1 /* HOISTED */)),
           createElementVNode("button", {
-            onClick: _cache[0] || (_cache[0] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+            onClick: _cache[1] || (_cache[1] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
             class: "modal-close-btn"
           }, "×")
         ]),
-        createElementVNode("div", _hoisted_4$1, [
+        createElementVNode("div", _hoisted_6$1, [
           renderSlot(_ctx.$slots, "default", {}, () => [
-            _cache[4] || (_cache[4] = createElementVNode("div", { id: "sfx-dam-widget-editor" }, null, -1 /* HOISTED */))
+            _cache[6] || (_cache[6] = createElementVNode("div", { id: "sfx-dam-widget-editor" }, null, -1 /* HOISTED */))
           ])
         ]),
-        createElementVNode("div", _hoisted_5$1, [
+        createElementVNode("div", _hoisted_7$1, [
           createElementVNode("button", {
-            onClick: _cache[1] || (_cache[1] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
+            onClick: _cache[2] || (_cache[2] = (...args) => ($setup.closeModal && $setup.closeModal(...args))),
             class: "btn"
           }, "Close")
         ])
@@ -22974,6 +23012,8 @@ const _sfc_main = {
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
       if (damButton) {
         damButton.click();
+      } else {
+        window.location.href = "/admin/scaleflex-dam-setting";
       }
     }
 

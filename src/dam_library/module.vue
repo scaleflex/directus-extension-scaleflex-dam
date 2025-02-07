@@ -80,6 +80,8 @@ export default {
       const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
       if (damButton) {
         damButton.click();
+      } else {
+        window.location.href = "/admin/scaleflex-dam-setting"
       }
     }
 
@@ -108,7 +110,7 @@ export default {
         loadConfigDone.value = true;
       })
 
-      const client = createDirectus(process.env.PUBLIC_URL).with(rest());
+      const client = createDirectus(window.location.origin).with(rest());
       const result = await client.request(readMe({
 		    fields: ['role.policies.policy.admin_access'],
 	    }));
