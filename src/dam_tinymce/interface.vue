@@ -2,8 +2,10 @@
   <link rel="stylesheet" type="text/css"
         href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
   <div>
+   
     <Editor
-        api-key="qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc"
+        v-if="getTinymceKey()"
+        :api-key="getTinymceKey()"
         :init="{
           plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
           toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
@@ -39,7 +41,9 @@
           }
         }"
     />
+    <p v-else class="guide-text"><a href="/admin/scaleflex-dam-setting">Please Add Tinymce Key</a></p>
   </div>
+ 
 
   <div :style="{ display: isOpen ? 'block' : 'none' }" class="modal-overlay" id="sfx-editor-modal">
     <div class="modal">
@@ -90,6 +94,7 @@ export default {
     const loadConfigDone = ref(false);
     const isLoading = ref(true);
     const token = ref('');
+    const tinymceKey = ref(null);
     const sec = ref('');
     const directory = ref('');
     const limit = ref(null);
@@ -143,6 +148,7 @@ export default {
           sec.value = data.sec || '';
           directory.value = data.directory || '';
           isTokenAndSecExists.value = true;
+          tinymceKey.value = data.tinymceKey;
         } else {
           isTokenAndSecExists.value = false;
         }
@@ -261,6 +267,12 @@ export default {
       return result;
     }
 
+    function getTinymceKey()
+    {
+      if (tinymceKey.value && tinymceKey.value.trim() != '') return tinymceKey.value.trim()
+      return null
+    }
+
     function updateUrlParams(url, params) {
       // Create URL Object
       const urlObj = new URL(url);
@@ -282,7 +294,8 @@ export default {
       closeModal,
       openModal,
       emit,
-      updateUrlParams
+      updateUrlParams,
+      getTinymceKey
     }
   },
   beforeDestroy() {
