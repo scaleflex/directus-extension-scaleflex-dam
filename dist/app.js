@@ -541,7 +541,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
         ]),
         createElementVNode("div", _hoisted_12$1, [
           _cache[29] || (_cache[29] = createElementVNode("label", { for: "tinymceKey" }, [
-            createElementVNode("b", null, "Tinymce Key")
+            createElementVNode("b", null, "TinyMCE Key")
           ], -1 /* HOISTED */)),
           createVNode(_component_VInput, {
             disabled: $setup.loading,
