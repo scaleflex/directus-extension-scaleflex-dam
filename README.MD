@@ -24,7 +24,7 @@ Scroll to block **Modules** and check two items **"Scaleflex DAM Settings"** and
 
 ### Step 4: Fill in your configuration
 
-![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/3.webp)
+![](https://raw.githubusercontent.com/scaleflex/directus-extension-scaleflex-dam/master/docs/3.1.webp)
 
 * **Token:** Enter your Scaleflex DAM token here (eg: abcdefgh).
 * **Security Template:** To load the Scaleflex DAM Widget, you must create a Security Template in your Scaleflex DAM Hub.
