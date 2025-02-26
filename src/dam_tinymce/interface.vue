@@ -3,10 +3,9 @@
         href="https://scaleflex.cloudimg.io/v7/plugins/filerobot-widget/v3/latest/filerobot-widget.min.css"/>
   <div>
     <Editor
-        v-if="getTinymceKey()"
-        :api-key="getTinymceKey()"
+        api-key="no-api-key"
         :init="{
-          plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
+          plugins: 'media table lists image link pagebreak code insertdatetime preview fullscreen ',
           toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
            'outdent indent link removeformat blockquote fullscreen code sfxDAM',
           setup: (editor) => {
@@ -40,14 +39,7 @@
           }
         }"
     />
-    <div v-else>
-      <p v-if="isAdministrator" class="guide-text">
-        The TinyMCE key is missing. Please go to the <span class="span-action" @click="toDamSetting">Settings page</span> to add one.
-      </p>
-      <p v-else>The TinyMCE key is missing. Please contact your site manager to add it.</p>
-    </div>
   </div>
- 
 
   <div :style="{ display: isOpen ? 'block' : 'none' }" class="modal-overlay" id="sfx-editor-modal">
     <div class="modal">
@@ -71,9 +63,25 @@
 
 import {onMounted, ref} from "vue";
 import {useApi} from "@directus/extensions-sdk";
-import { createDirectus, rest, readMe } from '@directus/sdk';
+import {createDirectus, rest, readMe} from '@directus/sdk';
 import Editor from '@tinymce/tinymce-vue';
 import './assets/style.css';
+
+import 'tinymce/tinymce';
+
+import 'tinymce/icons/default';
+import 'tinymce/models/dom';
+import 'tinymce/plugins/code/plugin';
+import 'tinymce/plugins/fullscreen/plugin';
+import 'tinymce/plugins/image/plugin';
+import 'tinymce/plugins/insertdatetime/plugin';
+import 'tinymce/plugins/link/plugin';
+import 'tinymce/plugins/lists/plugin';
+import 'tinymce/plugins/media/plugin';
+import 'tinymce/plugins/pagebreak/plugin';
+import 'tinymce/plugins/preview/plugin';
+import 'tinymce/plugins/table/plugin';
+import 'tinymce/themes/silver';
 
 export default {
   props: {
@@ -86,7 +94,7 @@ export default {
       default: () => ({}),
     },
   },
-  components: { Editor },
+  components: {Editor},
   data() {
     return {
       editor: null,
@@ -99,7 +107,6 @@ export default {
     const loadConfigDone = ref(false);
     const isLoading = ref(true);
     const token = ref('');
-    const tinymceKey = ref(null);
     const sec = ref('');
     const directory = ref('');
     const limit = ref(null);
@@ -145,17 +152,16 @@ export default {
     }
 
     async function init() {
-      
+
       const client = createDirectus(window.location.origin).with(rest());
       const result = await client.request(readMe({
-		    fields: ['role.policies.policy.admin_access'],
-	    }));
+        fields: ['role.policies.policy.admin_access'],
+      }));
 
       if (result?.role?.policies) {
-        const policies =  result?.role?.policies
+        const policies = result?.role?.policies
         const hasAdminAccess = policies.some(item => item.policy.admin_access);
         isAdministrator.value = hasAdminAccess
-        console.log(isAdministrator.value);
       }
 
       await loadData().then(function () {
@@ -176,7 +182,6 @@ export default {
           sec.value = data.sec || '';
           directory.value = data.directory || '';
           isTokenAndSecExists.value = true;
-          tinymceKey.value = data.tinymceKey;
         } else {
           isTokenAndSecExists.value = false;
         }
@@ -295,12 +300,6 @@ export default {
       return result;
     }
 
-    function getTinymceKey()
-    {
-      if (tinymceKey.value && tinymceKey.value.trim() != '') return tinymceKey.value.trim()
-      return null
-    }
-
     function updateUrlParams(url, params) {
       // Create URL Object
       const urlObj = new URL(url);
@@ -323,7 +322,6 @@ export default {
       openModal,
       emit,
       updateUrlParams,
-      getTinymceKey,
       isAdministrator,
       toDamSetting
     }
@@ -336,3 +334,6 @@ export default {
   },
 };
 </script>
+<style>
+@import 'tinymce/skins/ui/oxide/skin.css';
+</style>

@@ -123,13 +123,6 @@
         <p class="guide-text">File types limit when use Widget</p>
       </div>
 
-      <div class="mb-3">
-        <label for="tinymceKey"><b>TinyMCE Key</b></label>
-        <VInput :disabled="loading" min="0" v-model="tinymceKey" />
-        <p class="guide-text">To use TinyMCE with DAM, you need to register an account on TinyMCE Cloud and obtain an API key associated with an available domain. Here’s a guide on how to get the key: <a style="color: var(--theme--primary)"
-          href="https://www.tiny.cloud/blog/how-to-get-tinymce-cloud-up-in-less-than-5-minutes/" target="_blank">How to get tinymce cloud up in less than 5 minutes</a></p>
-      </div>
-
       <div>
         <VButton v-if="!loading" @click="saveSfxToken">
           <VIcon name="save" />
@@ -186,7 +179,6 @@ export default {
     const collectionsStore = useCollectionsStore();
 
     const token = ref('');
-    const tinymceKey = ref('');
     const sec = ref('');
     const directory = ref('');
     const limit = ref('');
@@ -301,12 +293,7 @@ export default {
           type: 'string',
           meta: {interface: 'input', special: null},
           field: 'limitType',
-        },
-        {
-          type: 'string',
-          meta: {interface: 'input', special: null},
-          field: 'tinymceKey',
-        },
+        }
       ];
 
       try {
@@ -321,7 +308,7 @@ export default {
     }
 
     async function createFirstData() {
-      const payload = {token: '', sec: '', directory: '/', limit: null, limitType: '', attributes: '', tinymceKey: ''}
+      const payload = {token: '', sec: '', directory: '/', limit: null, limitType: '', attributes: ''}
       try {
         await api.post(`/items/${props.collection}`, payload);
       } catch (error) {
@@ -339,7 +326,6 @@ export default {
           const response = await api.get(`/items/${props.collection}/${props.id}`);
           const data = response.data.data;
           token.value = data.token || '';
-          tinymceKey.value = data.tinymceKey || '';
           sec.value = data.sec || '';
           directory.value = data.directory || '';
           limit.value = data.limit || 0;
@@ -360,8 +346,7 @@ export default {
           directory: '/',
           limit: null,
           attributes: null,
-          limitType: null,
-          tinymceKey: ''
+          limitType: null
         };
         await api.patch(`/items/${props.collection}/${props.id}`, payload);
         dialogType.value = 'success';
@@ -381,7 +366,6 @@ export default {
         limit.value = '';
         attributes.value = [];
         limitType.value = [];
-        tinymceKey.value = '';
       }
     }
 
@@ -413,8 +397,7 @@ export default {
             directory: directory.value,
             limit: limit.value,
             attributes: attributesString,
-            limitType: limitTypeString,
-            tinymceKey: tinymceKey.value
+            limitType: limitTypeString
           };
           await api.patch(`/items/${props.collection}/${props.id}`, payload);
           dialogType.value = 'success';
@@ -462,7 +445,6 @@ export default {
       limit,
       attributes,
       limitType,
-      tinymceKey,
       isValid,
       dialogVisible,
       closeDialog,
