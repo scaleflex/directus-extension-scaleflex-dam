@@ -249,7 +249,9 @@ export default {
           .use(XHRUpload)
           .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
             const htmlRender = renderHTMLFromJSON(files);
-            tinymce.get(editor_id).insertContent(htmlRender)
+            tinymce.get(editor_id).insertContent(htmlRender);
+            let newContent = tinymce.get(editor_id).getContent();
+            emit('input', newContent);
             closeModal();
           })
           .on('complete', ({failed, uploadID, successful}) => {
