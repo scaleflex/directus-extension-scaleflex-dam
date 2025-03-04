@@ -26,6 +26,11 @@
               emit('input', content);
             });
 
+            editor.on('change', () => {
+              const content = editor.getContent();
+              emit('input', content);
+            });
+
             editor.on('ObjectResized', function(e) {
               if (e.target.nodeName === 'IMG') {
                 let selectedImage = editor.selection.getNode();
@@ -98,6 +103,7 @@ export default {
   data() {
     return {
       editor: null,
+      content: ''
     };
   },
   emits: ['input', 'close'],
