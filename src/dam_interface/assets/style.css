@@ -49,6 +49,15 @@
 
 .modal-body {
     margin: 1rem 0;
+    position: relative;
+    height: calc(100vh - 265px);
+    overflow-y: auto;
+}
+
+.modal-body #sfx-dam-widget,
+.modal-body #sfx-dam-widget .filerobot-Root {
+    position: relative;
+    height: 100%;
 }
 
 .modal-footer {
