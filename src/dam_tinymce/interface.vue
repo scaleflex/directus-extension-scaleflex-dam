@@ -5,7 +5,7 @@
     <Editor
         api-key="no-api-key"
         :init="{
-          plugins: 'media table lists image link pagebreak code insertdatetime preview fullscreen ',
+          plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
           toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
            'outdent indent link removeformat blockquote fullscreen code sfxDAM',
           setup: (editor) => {
@@ -73,11 +73,15 @@ import Editor from '@tinymce/tinymce-vue';
 import './assets/style.css';
 
 import 'tinymce/tinymce';
-
+import 'tinymce/themes/silver';
 import 'tinymce/icons/default';
+import 'tinymce/skins/ui/oxide/skin.min.css';
+
 import 'tinymce/models/dom';
 import 'tinymce/plugins/code/plugin';
 import 'tinymce/plugins/fullscreen/plugin';
+import 'tinymce/plugins/autoresize/plugin';
+import 'tinymce/plugins/directionality/plugin';
 import 'tinymce/plugins/image/plugin';
 import 'tinymce/plugins/insertdatetime/plugin';
 import 'tinymce/plugins/link/plugin';
@@ -86,7 +90,6 @@ import 'tinymce/plugins/media/plugin';
 import 'tinymce/plugins/pagebreak/plugin';
 import 'tinymce/plugins/preview/plugin';
 import 'tinymce/plugins/table/plugin';
-import 'tinymce/themes/silver';
 
 export default {
   props: {
@@ -277,7 +280,6 @@ export default {
     // Function to render HTML from JSON data
     function renderHTMLFromJSON(data) {
       let result = "";
-
       data.forEach(item => {
         // Extract necessary properties from the JSON structure
         const file = item.file;
@@ -291,7 +293,7 @@ export default {
 
         // Create HTML content based on the file type
         let itemContent = `<div>`;
-        if (type === 'image/jpeg' || type === 'image/png') {
+        if (type.startsWith('image/')) {
           itemContent += `<img src='${cdnLink}' alt='${title}' />`;
         } else if (type === 'video/mp4' || type.startsWith('video/')) {
           itemContent += `<video src='${cdnLink}' controls></video>`;
@@ -342,6 +344,3 @@ export default {
   },
 };
 </script>
-<style>
-@import 'tinymce/skins/ui/oxide/skin.css';
-</style>
