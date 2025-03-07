@@ -24,12 +24,7 @@
               }
             });
 
-            editor.on('input', () => {
-              const content = editor.getContent();
-              emit('input', content);
-            });
-
-            editor.on('change', () => {
+            editor.on('input change', () => {
               const content = editor.getContent();
               emit('input', content);
             });
