@@ -2,7 +2,7 @@
 	"name": "@plugins_sfx/directus-extension-scaleflex-dam",
 	"description": "Scaleflex DAM (Filerobot) is a scalable and performance-oriented Digital Asset Management platform with integrated image and video optimizers to store, organize, optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.",
 	"icon": "extension",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"homepage": "https://github.com/scaleflex/directus-extension-scaleflex-dam",
 	"repository": {
 		"type": "git",
@@ -86,6 +86,6 @@
 		"lodash": "^4.17.21",
 		"vue-advanced-cropper": "^2.8.9",
 		"vue-plugin-load-script": "^2.1.1",
-		"tinymce": "6.8.5"
+		"tinymce": "7.7.1"
 	}
 }

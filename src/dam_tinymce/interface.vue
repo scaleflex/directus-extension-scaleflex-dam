@@ -8,6 +8,9 @@
           plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
           toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
            'outdent indent link removeformat blockquote fullscreen code sfxDAM',
+          skin: false,
+          content_css: false,
+          content_style: [contentCss, contentUiCss].join('\n'),
           setup: (editor) => {
             editor.on('init', () => {
               const content = (value != null) ? value : '';
@@ -29,30 +32,6 @@
             editor.on('change', () => {
               const content = editor.getContent();
               emit('input', content);
-            });
-
-            editor.on('ObjectSelected', function(e) {
-              if (e.target.nodeName === 'IMG') {
-                let selectedImage = editor.selection.getNode();
-                let width = '';
-                let height = '';
-                if (selectedImage.hasAttributes('width')) {
-                  width = selectedImage.getAttribute('width');
-                }
-
-                if (selectedImage.hasAttributes('height')) {
-                  height = selectedImage.getAttribute('height');
-                }
-
-                if (width !== '' || height !== '') {
-                  const currentURL = selectedImage.getAttribute('src');
-                  const newURL = updateUrlParams(currentURL, {w: width, h: height});
-                  // Set new image URL
-                  selectedImage.setAttribute('src', newURL);
-                  selectedImage.setAttribute('data-mce-src', newURL);
-
-                }
-              }
             });
 
             editor.on('ObjectResized', function(e) {
@@ -99,7 +78,6 @@ import './assets/style.css';
 import 'tinymce/tinymce';
 import 'tinymce/themes/silver';
 import 'tinymce/icons/default';
-import 'tinymce/skins/ui/oxide/skin.min.css';
 
 import 'tinymce/models/dom';
 import 'tinymce/plugins/code/plugin';
@@ -114,6 +92,9 @@ import 'tinymce/plugins/media/plugin';
 import 'tinymce/plugins/pagebreak/plugin';
 import 'tinymce/plugins/preview/plugin';
 import 'tinymce/plugins/table/plugin';
+
+import contentCss from 'tinymce/skins/content/default/content.min.css';
+import contentUiCss from 'tinymce/skins/ui/oxide/content.min.css';
 
 export default {
   props: {
@@ -357,7 +338,9 @@ export default {
       emit,
       updateUrlParams,
       isAdministrator,
-      toDamSetting
+      toDamSetting,
+      contentUiCss,
+      contentCss
     }
   },
   beforeDestroy() {
@@ -368,3 +351,6 @@ export default {
   },
 };
 </script>
+<style>
+@import 'tinymce/skins/ui/oxide/skin.min.css';
+</style>
