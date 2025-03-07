@@ -31,6 +31,30 @@
               emit('input', content);
             });
 
+            editor.on('ObjectSelected', function(e) {
+              if (e.target.nodeName === 'IMG') {
+                let selectedImage = editor.selection.getNode();
+                let width = '';
+                let height = '';
+                if (selectedImage.hasAttributes('width')) {
+                  width = selectedImage.getAttribute('width');
+                }
+
+                if (selectedImage.hasAttributes('height')) {
+                  height = selectedImage.getAttribute('height');
+                }
+
+                if (width !== '' || height !== '') {
+                  const currentURL = selectedImage.getAttribute('src');
+                  const newURL = updateUrlParams(currentURL, {w: width, h: height});
+                  // Set new image URL
+                  selectedImage.setAttribute('src', newURL);
+                  selectedImage.setAttribute('data-mce-src', newURL);
+
+                }
+              }
+            });
+
             editor.on('ObjectResized', function(e) {
               if (e.target.nodeName === 'IMG') {
                 let selectedImage = editor.selection.getNode();
