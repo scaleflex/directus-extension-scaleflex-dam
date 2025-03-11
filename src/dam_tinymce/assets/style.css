@@ -42,7 +42,7 @@
 .modal-body {
     margin: 1rem 0;
     position: relative;
-    height: calc(100vh - 265px);
+    height: calc(80vh - 105px);
     overflow-y: auto;
 }
 
