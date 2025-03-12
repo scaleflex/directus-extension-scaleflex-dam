@@ -299,7 +299,6 @@ export default {
       try {
         for (const field of fieldsPayload) {
           await api.post(`/fields/${props.collection}`, field);
-          console.log(`Field ${field.field} created.`);
         }
         await createFirstData();
       } catch (error) {
