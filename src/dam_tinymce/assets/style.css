@@ -55,3 +55,7 @@
     position: relative;
     height: 100%;
 }
+
+.tox-promotion, .tox-statusbar__right-container {
+    display: none !important;
+}
