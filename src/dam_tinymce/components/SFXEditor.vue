@@ -7,9 +7,8 @@
         v-model="internalValue"
         license-key="gpl"
         :init="{
-          plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
-          toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
-           'outdent indent link removeformat blockquote fullscreen code sfxDAM',
+          plugins: tinyMceConfig.plugins,
+          toolbar: tinyMceConfig.toolbar,
           skin: false,
           content_css: false,
           content_style: [contentCss, contentUiCss].join('\n'),
@@ -69,7 +68,8 @@ export default {
     sec: { type: String, required: true },
     token: { type: String, required: true },
     directory: { type: String, required: true },
-    limitType: { type: Array, default: () => [] }
+    limitType: { type: Array, default: () => [] },
+    tinyMceConfig: { type: Object, default: () => {} }
   },
   components: {Editor},
   data() {
@@ -266,6 +266,8 @@ export default {
       });
     }
 
+    const tinyMceConfig = props.tinyMceConfig;
+
     return {
       closeModal,
       openModal,
@@ -273,7 +275,8 @@ export default {
       contentUiCss,
       contentCss,
       setup,
-      internalValue
+      internalValue,
+      tinyMceConfig
     }
   },
   beforeDestroy() {

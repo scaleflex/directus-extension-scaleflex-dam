@@ -1,6 +1,12 @@
 <template>
   <div>
-    <SFXEditor :directory="directory" :token="token" :sec="sec" :limit-type="limitType" v-model:value="internalValue"/>
+    <SFXEditor
+        v-model:value="internalValue"
+        :directory="directory"
+        :token="token"
+        :sec="sec"
+        :limit-type="limitType"
+        :tiny-mce-config="tinyMceConfig"/>
   </div>
 </template>
 
@@ -45,15 +51,6 @@ export default {
     onMounted(() => {
       init();
     });
-
-    function toDamSetting() {
-      const damButton = document.querySelector('a[href="/admin/scaleflex-dam-setting"]');
-      if (damButton) {
-        damButton.click();
-      } else {
-        window.location.href = "/admin/scaleflex-dam-setting"
-      }
-    }
 
     async function init() {
 
@@ -104,15 +101,21 @@ export default {
       }
     });
 
+    const tinyMceConfig = ref({
+      plugins: 'media table lists image link pagebreak code insertdatetime autoresize preview fullscreen directionality',
+      toolbar: 'h1 h2 h3 bold italic underline alignleft aligncenter alignright alignjustify bullist numlist ' +
+          'outdent indent link removeformat blockquote fullscreen code sfxDAM' // Please make sure the toolbar 'sfxDAM' is added
+    });
+
     return {
       emit,
       isAdministrator,
-      toDamSetting,
       internalValue,
       token,
       sec,
       directory,
-      limitType
+      limitType,
+      tinyMceConfig
     }
   },
   beforeDestroy() {

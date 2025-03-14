@@ -319,7 +319,6 @@ export default {
       type: String,
       default: null,
     },
-    collection: {type: String, default: 'scaleflex_dam_settings'},
     id: {type: Number, default: 1},
     title: {
       type: String,
